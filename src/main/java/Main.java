@@ -38,10 +38,10 @@ public class Main {
 
                     // testing
                     String test = "";
-            for (String item : req.attributes()) {
-                test += item;
+            for (String item : req.params().keySet()) {
+                test += item + "=" + req.params(item) + "<br>";
             }
-                    attributes.put("message", req.body());
+                    attributes.put("message", test);
                     return new ModelAndView(attributes, "message.ftl");
                 },new FreeMarkerEngine());
 
