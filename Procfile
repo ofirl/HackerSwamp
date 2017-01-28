@@ -1,1 +1,1 @@
-web:    java -jar out\artifacts\HackerSwamp_jar\HackerSwamp.jar
+web: java -jar target/helloworld.jar
