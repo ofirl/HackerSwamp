@@ -37,6 +37,8 @@ public class Main {
         }, new FreeMarkerEngine());
 
     get("/db", (req, res) -> {
+  /*private void showDatabase(HttpServletRequest req, HttpServletResponse resp)
+      throws ServletException, IOException { */
       Connection connection = null;
       Map<String, Object> attributes = new HashMap<>();
       try {
@@ -77,5 +79,4 @@ public class Main {
       return DriverManager.getConnection(dbUrl);
     }
   }
-
 }

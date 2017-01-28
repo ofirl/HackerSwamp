@@ -23,9 +23,9 @@
       <version>9.4-1201-jdbc4</version>
     </dependency>
     <dependency>
-      <groupId>org.jscience</groupId>
-      <artifactId>jscience</artifactId>
-      <version>4.3.1</version>
+      <groupId>com.heroku.sdk</groupId>
+      <artifactId>heroku-jdbc</artifactId>
+      <version>0.1.1</version>
     </dependency>
   </dependencies>
   <build>
@@ -43,13 +43,37 @@
 </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <version>2.4</version>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.5.1</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+          <optimize>true</optimize>
+          <debug>true</debug>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <finalName>helloworld</finalName>
+          <appendAssemblyId>false</appendAssemblyId>
+          <archive>
+            <manifest>
+              <mainClass>Main</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
         <executions>
           <execution>
-            <id>copy-dependencies</id>
+            <id>build-jar-with-dependencies</id>
             <phase>package</phase>
-            <goals><goal>copy-dependencies</goal></goals>
+            <goals>
+              <goal>single</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
