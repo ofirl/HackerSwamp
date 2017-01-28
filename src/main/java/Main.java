@@ -6,7 +6,6 @@ import java.util.Map;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-
 import static spark.Spark.*;
 import spark.template.freemarker.FreeMarkerEngine;
 import spark.ModelAndView;
@@ -71,5 +70,4 @@ public class Main {
       return DriverManager.getConnection(dbUrl);
     }
   }
-
 }
