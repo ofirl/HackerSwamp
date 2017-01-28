@@ -41,7 +41,7 @@ public class Main {
             for (String item : req.attributes()) {
                 test += item;
             }
-                    attributes.put("message", test);
+                    attributes.put("message", req.body());
                     return new ModelAndView(attributes, "message.ftl");
                 },new FreeMarkerEngine());
 
