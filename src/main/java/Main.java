@@ -32,15 +32,18 @@ public class Main {
         get("/db", (req, res) -> {
   /*private void showDatabase(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException { */
-            Connection connection = null;
+                    Connection connection = null;
 
-            Map<String, Object> attributes = new HashMap<>();
+                    Map<String, Object> attributes = new HashMap<>();
 
-            // testing
-            attributes.put("message", res);
-            return new ModelAndView("", "error.ftl");
+                    // testing
+                    attributes.put("message", res);
+                    return new ModelAndView("", "error.ftl");
+                },new FreeMarkerEngine());
+
             // end testing
 
+            /*
             try {
                 connection = getConnection();
 
@@ -63,7 +66,7 @@ public class Main {
                 if (connection != null) try{connection.close();} catch(SQLException e){}
             }
         }, new FreeMarkerEngine());
-
+*/
     }
 
     private static Connection getConnection() throws URISyntaxException, SQLException {
