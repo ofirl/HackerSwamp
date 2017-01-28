@@ -29,7 +29,7 @@ public class Main {
             return new ModelAndView(attributes, "index.ftl");
         }, new FreeMarkerEngine());
 
-        get("/db", (req, res) -> {
+        post("/db", (req, res) -> {
   /*private void showDatabase(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException { */
                     Connection connection = null;
