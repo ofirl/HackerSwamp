@@ -42,7 +42,7 @@ public class Main {
                 test += item;
             }
                     attributes.put("message", test);
-                    return new ModelAndView("", "error.ftl");
+                    return new ModelAndView(attributes, "error.ftl");
                 },new FreeMarkerEngine());
 
             // end testing
