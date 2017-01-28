@@ -1,1 +1,1 @@
-web: java -jar target/helloworld.jar
+weblistener: sh target/bin/weblistener

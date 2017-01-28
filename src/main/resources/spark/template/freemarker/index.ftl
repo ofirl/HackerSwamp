@@ -38,7 +38,7 @@
       <h3><span class="glyphicon glyphicon-link"></span> Next Steps</h3>
       <ul>
         <li>If you are following the <a href="https://devcenter.heroku.com/articles/getting-started-with-java">Getting Started</a> guide, then please head back to the tutorial and follow the next steps!</li>
-        <li>If you deployed this app by deploying the Heroku Button, then in a command line shell, run:</li>
+        <li>If you deployed this app by deploying the Heroku Button, then in a runRequest line shell, run:</li>
         <ul>
           <li><code>git clone https://github.com/heroku/java-getting-started.git</code> - this will create a local copy of the source code for the app</li>
           <li><code>cd java-getting-started</code> - change directory into the local source code repository</li>

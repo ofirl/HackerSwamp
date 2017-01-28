@@ -29,25 +29,41 @@ public class Main {
             return new ModelAndView(attributes, "index.ftl");
         }, new FreeMarkerEngine());
 
+
         post("/db", (req, res) -> {
   /*private void showDatabase(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException { */
-                    Connection connection = null;
+            // todo : call parser
 
-                    Map<String, Object> attributes = new HashMap<>();
+            Connection connection = null;
 
-                    // testing
-                    String test = "";
+            Map<String, Object> attributes = new HashMap<>();
+
+            // testing
+            String test = "";
             for (String item : req.params().keySet()) {
                 test += item + "=" + req.params(item) + "<br>";
             }
-                    attributes.put("message", req.body());
-                    return new ModelAndView(attributes, "message.ftl");
-                },new FreeMarkerEngine());
+            attributes.put("message", req.body());
+            return new ModelAndView(attributes, "message.ftl");
+        },new FreeMarkerEngine());
 
-            // end testing
 
-            /*
+        post("/test", (req, res) -> {
+  /*private void showDatabase(HttpServletRequest req, HttpServletResponse resp)
+      throws ServletException, IOException { */
+
+            Map<String, Object> attributes = new HashMap<>();
+            attributes.put("message", "test");
+            return new ModelAndView(attributes, "message.ftl");
+        },new FreeMarkerEngine());
+
+        get("/db", (req, res) -> {
+  /*private void showDatabase(HttpServletRequest req, HttpServletResponse resp)
+      throws ServletException, IOException { */
+            Connection connection = null;
+            Map<String, Object> attributes = new HashMap<>();
+
             try {
                 connection = getConnection();
 
@@ -70,7 +86,7 @@ public class Main {
                 if (connection != null) try{connection.close();} catch(SQLException e){}
             }
         }, new FreeMarkerEngine());
-*/
+
     }
 
     private static Connection getConnection() throws URISyntaxException, SQLException {
