@@ -37,7 +37,11 @@ public class Main {
                     Map<String, Object> attributes = new HashMap<>();
 
                     // testing
-                    attributes.put("message", res);
+                    String test = "";
+            for (String item : req.attributes()) {
+                test += item;
+            }
+                    attributes.put("message", test);
                     return new ModelAndView("", "error.ftl");
                 },new FreeMarkerEngine());
 
