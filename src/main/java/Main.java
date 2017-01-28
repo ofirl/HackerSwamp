@@ -11,8 +11,6 @@ import spark.template.freemarker.FreeMarkerEngine;
 import spark.ModelAndView;
 import static spark.Spark.get;
 
-import com.heroku.sdk.jdbc.DatabaseUrl;
-
 public class Main {
 
   public static void main(String[] args) {
@@ -30,10 +28,12 @@ public class Main {
         }, new FreeMarkerEngine());
 
     get("/db", (req, res) -> {
+  /*private void showDatabase(HttpServletRequest req, HttpServletResponse resp)
+      throws ServletException, IOException { */
       Connection connection = null;
       Map<String, Object> attributes = new HashMap<>();
       try {
-        connection = DatabaseUrl.extract().getConnection();
+        connection = getConnection();
 
         Statement stmt = connection.createStatement();
         stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
@@ -53,8 +53,21 @@ public class Main {
       } finally {
         if (connection != null) try{connection.close();} catch(SQLException e){}
       }
-    }, new FreeMarkerEngine());
+  }, new FreeMarkerEngine());
 
   }
 
+  private static Connection getConnection() throws URISyntaxException, SQLException {
+    URI dbUri = new URI(System.getenv("DATABASE_URL"));
+    int port = dbUri.getPort();
+    String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ":" + port + dbUri.getPath();
+
+    if (dbUri.getUserInfo() != null) {
+      String username = dbUri.getUserInfo().split(":")[0];
+      String password = dbUri.getUserInfo().split(":")[1];
+      return DriverManager.getConnection(dbUrl, username, password);
+    } else {
+      return DriverManager.getConnection(dbUrl);
+    }
+  }
 }
