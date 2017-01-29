@@ -49,7 +49,7 @@ public class Main {
         },new FreeMarkerEngine());
 
 
-        post("/test", (req, res) -> {
+        get("/test", (req, res) -> {
   /*private void showDatabase(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException { */
 
