@@ -11,7 +11,7 @@ import spark.template.freemarker.FreeMarkerEngine;
 import spark.ModelAndView;
 import static spark.Spark.get;
 
-public class Main {
+public class WebListener {
 
     public static void main(String[] args) {
 
