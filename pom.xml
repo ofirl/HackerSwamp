@@ -50,7 +50,7 @@
             <programs>
                 <program>
                     <mainClass>Main</mainClass>
-                    <name>weblistener</name>
+                    <name>web</name>
                 </program>
             </programs>
           </configuration>

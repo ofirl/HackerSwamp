@@ -1,1 +1,1 @@
-web: sh target/bin/weblistener
+web: sh target/bin/web
