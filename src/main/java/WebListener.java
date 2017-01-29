@@ -7,6 +7,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import static spark.Spark.*;
+
+import objects.ThreadedJob;
 import spark.template.freemarker.FreeMarkerEngine;
 import spark.ModelAndView;
 import static spark.Spark.get;
@@ -31,22 +33,12 @@ public class WebListener {
 
 
         post("/db", (req, res) -> {
-  /*private void showDatabase(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException { */
-            // todo : call parser
+            return Parser.requestResponse(req.body());
+        });
 
-            Connection connection = null;
-
-            Map<String, Object> attributes = new HashMap<>();
-
-            // testing
-            String test = "";
-            for (String item : req.params().keySet()) {
-                test += item + "=" + req.params(item) + "<br>";
-            }
-            attributes.put("message", req.body());
-            return new ModelAndView(attributes, "message.ftl");
-        },new FreeMarkerEngine());
+        post("/login", (req, res) -> {
+            return LoginHandler.checkLogin(req.body());
+        });
 
 
         get("/test", (req, res) -> {
