@@ -2,6 +2,7 @@ package interface_objects;
 
 import objects.DatabaseQuery;
 
+import java.sql.ResultSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedTransferQueue;
 
@@ -56,10 +57,10 @@ public class DatabaseHandler {
      * @param key the key to add the response to
      * @param response the response
      */
-    public static void addResponse(int key, String response) {
+    public static void addResponse(int key, ResultSet response) {
         synchronized (resultQueue.get(key)) {
             DatabaseQuery responseCommandRequest = resultQueue.get(key);
-            responseCommandRequest.response = response;
+            responseCommandRequest.result = response;
             responseCommandRequest.notify();
         }
     }
@@ -77,17 +78,17 @@ public class DatabaseHandler {
      * @param key the key to wait for response for
      * @return a response matching the key
      */
-    public static String waitForResponse(int key) {
+    public static ResultSet waitForResponse(int key) {
         synchronized (resultQueue.get(key)) {
             DatabaseQuery responseCommandRequest = resultQueue.get(key);
             try {
-                while (responseCommandRequest.response == null)
+                while (responseCommandRequest.result == null)
                     responseCommandRequest.wait();
             }
             catch (Exception e) { }
 
             resultQueue.remove(key);
-            return responseCommandRequest.response;
+            return responseCommandRequest.result;
         }
     }
 
@@ -101,7 +102,7 @@ public class DatabaseHandler {
         transferQuery(query);
     }
 
-    public static String requestResponse(String input) {
+    public static ResultSet requestResponse(String input) {
         // validity check
         if (input == null || input.equals(""))
             return null;

@@ -3,9 +3,8 @@ import objects.DatabaseQuery;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 
 public class DatabaseClient {
     public static void main(String[] args) {
@@ -21,6 +20,22 @@ public class DatabaseClient {
     }
 
     public static void executeQuery(DatabaseQuery query) {
+        Connection connection = null;
+
+        try {
+
+            Statement stmt = connection.createStatement();
+            //stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
+            //stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
+            ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
+
+            ArrayList<String> output = new ArrayList<String>();
+            while (rs.next()) {
+                output.add("Read from DB: " + rs.getTimestamp("tick"));
+            }
+        }
+        catch (Exception e) { }
+
 
     }
 
