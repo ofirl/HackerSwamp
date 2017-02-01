@@ -1,19 +1,27 @@
 package objects;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import interfaces.*;
 
 public class ThreadedJob extends Thread {
-    private Thread thread;
-    private long threadId;
-    private String name;
-    private Method entryPoint;
-    private CommandRequest runRequest;
+    public Thread thread;
+    public long threadId;
+    public String name;
+    private ThreadEntryPoint threadEntryPoint;
+    private ThreadOnFinish threadOnFinished;
+    private Object[] args;
 
-    ThreadedJob (Method entryPoint, CommandRequest runRequest, String name) {
-        this.entryPoint = entryPoint;
-        this.runRequest = runRequest;
+    /**
+     *
+     * @param entryPoint the entry point method of the thread
+     * @param args
+     * @param name
+     * @param onFinish
+     */
+    ThreadedJob (ThreadEntryPoint entryPoint, Object[] args, String name, ThreadOnFinish onFinish) {
+        threadEntryPoint = entryPoint;
+        this.args = args;
         this.name = name;
+        threadOnFinished = onFinish;
 
         thread = new Thread(this, name);
         threadId = thread.getId();
@@ -21,15 +29,28 @@ public class ThreadedJob extends Thread {
 
     public void start () {
         thread.start();
+        threadOnFinished.onFinish();
     }
 
     public void run () {
+        String error = null;
+        CommandRequest errorOutput = null;
+
         // try catch to avoid errors
         try {
-            entryPoint.invoke(this);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            // TODO : add error report
-            runRequest.response = "Error running the runRequest " + runRequest.command;
+            if (args != null) {
+                errorOutput = args[0].getClass() == CommandRequest.class ? (CommandRequest) args[0] : null;
+                threadEntryPoint.entryPoint();
+            }
+            else
+                threadEntryPoint.entryPoint();
+        } catch (Exception e) {
+            error = e.getMessage();
+            if (errorOutput != null)
+                errorOutput.response = "Error running the requestToHandle : " + errorOutput.command;
         }
+
+        if (error != null)
+            System.err.println("Error : exception caught on thread : " + thread.getName() + " - " + error);
     }
 }

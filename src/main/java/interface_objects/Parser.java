@@ -1,3 +1,5 @@
+package interface_objects;
+
 import objects.*;
 
 import java.util.HashMap;
@@ -30,6 +32,20 @@ public class Parser {
             parseQueue.transfer(c);
         }
         catch (Exception e) { }
+    }
+
+    /**
+     * receives a command from the queue, blocking
+     * @return the top command from the queue
+     */
+    public static CommandRequest receiveCommand() {
+        CommandRequest output = null;
+        try {
+            output = parseQueue.take();
+        }
+        catch (Exception e) { }
+
+        return output;
     }
 
     /**
@@ -106,15 +122,43 @@ public class Parser {
         return waitForResponse(c.username + "-" + c.command);
     }
 
-    public static String encodeArgument(String name, String arg) {
-        return name + "(" + arg.length() + ")=" + arg;
+    /**
+     * same as {@link #encodeArgumentList(HashMap)} but for single argument
+     * @param name the name of the argument
+     * @param value the value of the argument
+     * @return encoded argument as string
+     */
+    public static String encodeArgument(String name, String value) {
+        HashMap<String, String> arg = new HashMap<>();
+        arg.put(name, value);
+        return encodeArgumentList(arg);
     }
 
-    public static String encodeArgumentList(String[] name, String[] arg) {
-        //TODO : write
-        return "";
+    /**
+     * encodes a {@link HashMap} of key value pairs as string for adding to a response
+     * @param args {@link HashMap} of the key value pairs to encode
+     * @return encoded arguments as a string
+     */
+    public static String encodeArgumentList(HashMap<String, String> args) {
+        String output = "";
+        for (String key :
+                args.keySet()) {
+            String value = args.get(key);
+            output += key + "(" + value.length() + ")=" + value + "&"; // key(length)=value&
+        }
+
+        if (output != "")
+            output = output.substring(0, output.length() - 1);
+
+        return output;
     }
 
+    /**
+     * decodes received parameters (in the requestToHandle body)
+     * received parameters are of the form : key1(length)=value1&key2(length)=value2
+     * @param args arguments string to decode
+     * @return {@link HashMap} of the keys and values extracted
+     */
     public static HashMap<String, String> decodeArgumentsList(String args) {
         HashMap<String, String> output = new HashMap<>();
 

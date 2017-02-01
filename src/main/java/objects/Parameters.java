@@ -1,21 +1,28 @@
+package objects;
+
 /**
  * general class for all the parameters :
  * <ul>
  *     <li> login parameters
- *         <ul>
+ *          <ul>
  *              <li> {@link #authKeyChars} </li>
  *              <li> {@link #authKeyLength} </li>
- *         </ul>
- *     </li>
- *     <li> login error messages
+ *          </ul>
+ *      </li>
+ *      <li> login error messages
  *         <ul>
  *              <li> {@link #loginErrorArgumentsCount} </li>
  *              <li> {@link #loginErrorArgumentsSyntax} </li>
  *              <li> {@link #loginErrorInvalidArguments} </li>
  *              <li> {@link #loginErrorInvalidCredentials} </li>
  *              <li> {@link #loginErrorAuthKeyGeneration} </li>
- *         </ul>
- *     </li>
+ *      </ul>
+ *      </li>
+ *      <li> worker parameters
+ *          <ul>
+ *              <li> {@link #maxWorkerThreads} </li>
+ *          </ul>
+ *      </li>
  * </ul>
  */
 public class Parameters {
@@ -78,6 +85,15 @@ public class Parameters {
      * error for bad authentication key
      */
     public static String parserErrorBadAuthKey = "Error : no active player found for the authentication key";
+
+    // endregion
+
+    // region worker parameters
+
+    /**
+     * max worker threads allowed simultaneously
+     */
+    public static int maxWorkerThreads = 5;
 
     // endregion
 }

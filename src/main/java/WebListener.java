@@ -8,7 +8,8 @@ import java.net.URISyntaxException;
 
 import static spark.Spark.*;
 
-import objects.ThreadedJob;
+import interface_objects.LoginHandler;
+import interface_objects.Parser;
 import spark.template.freemarker.FreeMarkerEngine;
 import spark.ModelAndView;
 import static spark.Spark.get;

@@ -1,10 +1,14 @@
+package interface_objects;
+
+import objects.Parameters;
+
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Handles the login process :
  * <ul>
- * <li> parsing the request </li>
+ * <li> parsing the requestToHandle </li>
  * <li> validating username and password against the database </li>
  * <li> generating authentication key </li>
  * <li> inserts a new entry to the active user list </li>
@@ -14,8 +18,8 @@ public class LoginHandler {
     public static ConcurrentHashMap<String, String> activeUsers = new ConcurrentHashMap<>();
 
     /**
-     * entry point - the method to be called when a new login request is received
-     * @param input the parameters of the received request
+     * entry point - the method to be called when a new login requestToHandle is received
+     * @param input the parameters of the received requestToHandle
      * @return authentication key or error message (starts with "Error")
      */
     public static String checkLogin(String input) {

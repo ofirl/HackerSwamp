@@ -1,1 +1,1 @@
-web: sh target/bin/WebListener
+web: sh target\bin\WebListener
