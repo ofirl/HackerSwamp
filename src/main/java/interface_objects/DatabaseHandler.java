@@ -1,12 +1,28 @@
 package interface_objects;
 
+import database_objects.*;
 import objects.DatabaseQuery;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.ParameterizedType;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.Types;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedTransferQueue;
+import java.util.function.Supplier;
+
+enum Tables {
+    Players, Accounts, Corps, Domains, Inventories, Macros,
+    Autocomplete, Commands,
+    Marketitems, Motherboards, Cpus, Rams, Hdds, Networkcards
+}
 
 public class DatabaseHandler {
+
+    // region sql queries handling
+
     /**
      * queries request queue
      */
@@ -98,24 +114,126 @@ public class DatabaseHandler {
      * @return response for the command
      */
     public static void addQuery(DatabaseQuery query) {
-        responseEnqueue(query);
-        transferQuery(query);
+        if (query.responseNeeded) {
+            responseEnqueue(query);
+            transferQuery(query);
+        }
+        else
+            queryQueue.add(query);
     }
 
+    /**
+     * executes the {@code input} as a sql query
+     * @param input the sql query to execute
+     * @return the result of the query
+     */
+    public static void requestAction(String input) {
+        // validity check
+        if (input == null || input.equals(""))
+            return;
+
+        int queryKey = getNextQueryId();
+        DatabaseQuery c = new DatabaseQuery(input, queryKey, false);
+
+        addQuery(c);
+    }
+
+    /**
+     * executes the {@code input} as a sql query and returns the result
+     * @param input the sql query to execute
+     * @return the result of the query
+     */
     public static ResultSet requestResponse(String input) {
         // validity check
         if (input == null || input.equals(""))
             return null;
 
         int queryKey = getNextQueryId();
-        DatabaseQuery c = new DatabaseQuery(input, queryKey);
+        DatabaseQuery c = new DatabaseQuery(input, queryKey, true);
 
         addQuery(c);
         return waitForResponse(queryKey);
     }
 
+    /**
+     * gets the next query id
+     * @return the next query id
+     */
     public static int getNextQueryId() {
-        currentId++;
-        return currentId - 1;
+        return currentId++;
     }
+
+    // endregion
+
+    // region table handling
+
+    public static HashMap<Tables, Class> elementTypes = new HashMap<>();
+    static {
+        elementTypes.put(Tables.Accounts, AccountsTableRow.class);
+        elementTypes.put(Tables.Autocomplete, AutocompleteTableRow.class);
+        elementTypes.put(Tables.Commands, CommandsTableRow.class);
+        elementTypes.put(Tables.Corps, CorpsTableRow.class);
+        elementTypes.put(Tables.Cpus, CpusTableRow.class);
+        elementTypes.put(Tables.Domains, DomainsTableRow.class);
+        elementTypes.put(Tables.Hdds, HddsTableRow.class);
+        elementTypes.put(Tables.Inventories, InventoriesTableRow.class);
+        elementTypes.put(Tables.Macros, MacrosTableRow.class);
+        elementTypes.put(Tables.Marketitems, MarketitemsTableRow.class);
+        elementTypes.put(Tables.Motherboards, MotherboardsTableRow.class);
+        elementTypes.put(Tables.Networkcards, NetworkcardsTableRow.class);
+        elementTypes.put(Tables.Players, PlayersTableRow.class);
+        elementTypes.put(Tables.Rams, RamsTableRow.class);
+    }
+
+    public static <T> T test(Class<T> tst) {
+        try {
+            return tst.newInstance();
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    // hate to do this... but i have to...
+    @SuppressWarnings("unchecked")
+    public static <T> List<T> getTableElements(Tables table) {
+        ResultSet rs = requestResponse("SELECT * FROM " + table.name());
+        HashMap<String, Integer> columns = getResultSetColumns(rs);
+        if (columns == null)
+            return null;
+
+        List<T> elements = new ArrayList<>();
+        try {
+            while (rs.next()) {
+                T ele = ((Class<T>)elementTypes.get(table)).newInstance();
+                for (String columnName :
+                        columns.keySet()) {
+                    ele.getClass().getDeclaredField(columnName).set(ele, rs.getObject(columnName));
+                }
+                elements.add(ele);
+            }
+
+            return elements;
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static HashMap<String, Integer> getResultSetColumns(ResultSet rs) {
+        HashMap<String, Integer> columns = new HashMap<>();
+        try {
+            ResultSetMetaData meta = rs.getMetaData();
+            for (int i = 0; i < meta.getColumnCount(); i++) {
+                columns.put(meta.getColumnName(i), meta.getColumnType(i));
+            }
+
+            return columns;
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    // endregion
 }

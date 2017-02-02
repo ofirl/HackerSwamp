@@ -1,9 +1,13 @@
 package interface_objects;
 
+import database_objects.PlayersTableRow;
 import objects.Parameters;
 
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static interface_objects.Tables.Players;
 
 /**
  * Handles the login process :
@@ -50,8 +54,9 @@ public class LoginHandler {
         }
 
         // check against the db
-        // TODO : add db check
-        boolean isValid = true;
+        // TODO : add overloading for getTableElements with filters and select options
+        List<PlayersTableRow> players = DatabaseHandler.getTableElements(Players);
+        boolean isValid = players != null && players.size() > 0;
 
         // returns if invalid
         if (!isValid)

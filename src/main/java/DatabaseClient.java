@@ -68,6 +68,12 @@ public class DatabaseClient {
         return rs;
     }
 
+    /**
+     * gets a database connection
+     * @return a database connection
+     * @throws URISyntaxException syntax exception
+     * @throws SQLException sql exception
+     */
     private static Connection getConnection() throws URISyntaxException, SQLException {
         URI dbUri = new URI(System.getenv("DATABASE_URL"));
         int port = dbUri.getPort();
