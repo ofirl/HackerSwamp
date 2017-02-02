@@ -4,9 +4,12 @@ import objects.DatabaseQuery;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
-import java.util.ArrayList;
 
 public class DatabaseClient {
+    /**
+     * entry point of the database client process
+     * @param args
+     */
     public static void main(String[] args) {
         DatabaseQuery query;
         while (true) {
@@ -19,24 +22,50 @@ public class DatabaseClient {
         }
     }
 
-    public static void executeQuery(DatabaseQuery query) {
+    /**
+     * executed the given {@code dbQuery}
+     * @param dbQuery the query to execute
+     * @return
+     * <p>
+     * {@link ResultSet} if query is a select, null otherwise.
+     * </p>
+     * <p>
+     * will not return the error if one occurred,
+     * to check for errors check the {@code dbQuery} field {@link DatabaseQuery#error}
+     * </p>
+     */
+    public static ResultSet executeQuery(DatabaseQuery dbQuery) {
+        ResultSet rs = null;
+
         Connection connection = null;
-
         try {
-
+            connection = getConnection();
             Statement stmt = connection.createStatement();
-            //stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
-            //stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
-            ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
+            if (dbQuery.query.startsWith("SELECT"))
+                rs = stmt.executeQuery(dbQuery.query);
+            else
+                stmt.executeUpdate(dbQuery.query);
+        }
+        catch (Exception e) {
+            dbQuery.error = e.getMessage();
+        }
+        finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                }
+                catch (SQLException e) {
+                    if (dbQuery.error == null)
+                        dbQuery.error = "";
+                    else
+                        dbQuery.error += "\n";
 
-            ArrayList<String> output = new ArrayList<String>();
-            while (rs.next()) {
-                output.add("Read from DB: " + rs.getTimestamp("tick"));
+                    dbQuery.error += e.getMessage();
+                }
             }
         }
-        catch (Exception e) { }
 
-
+        return rs;
     }
 
     private static Connection getConnection() throws URISyntaxException, SQLException {

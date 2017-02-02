@@ -6,6 +6,7 @@ public class DatabaseQuery {
     public String query;
     public int id;
     public ResultSet result;
+    public String error;
 
     public DatabaseQuery(String query, int id) {
         this.query = query;

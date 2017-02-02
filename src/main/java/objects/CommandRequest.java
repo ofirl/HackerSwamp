@@ -8,9 +8,11 @@ public class CommandRequest {
     public String username;
     public String command;
     public String response;
+    public CommandContext context;
 
-    public CommandRequest (String username, String command) {
+    public CommandRequest (String username, String command, CommandContext context) {
         this.username = username;
         this.command = command;
+        this.context = context;
     }
 }
