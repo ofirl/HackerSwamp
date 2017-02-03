@@ -13,12 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedTransferQueue;
 import java.util.function.Supplier;
 
-enum Tables {
-    Players, Accounts, Corps, Domains, Inventories, Macros,
-    Autocomplete, Commands,
-    Marketitems, Motherboards, Cpus, Rams, Hdds, Networkcards
-}
-
 public class DatabaseHandler {
 
     // region sql queries handling
@@ -170,23 +164,23 @@ public class DatabaseHandler {
     /**
      * static field to save a mapping between types and their classes (for instantiation)
      */
-    public static HashMap<Tables, Class> elementTypes = new HashMap<>();
+    public static HashMap<DatabaseTables, Class> elementTypes = new HashMap<>();
     // elementTypes initialization
     static {
-        elementTypes.put(Tables.Accounts, AccountsTableRow.class);
-        elementTypes.put(Tables.Autocomplete, AutocompleteTableRow.class);
-        elementTypes.put(Tables.Commands, CommandsTableRow.class);
-        elementTypes.put(Tables.Corps, CorpsTableRow.class);
-        elementTypes.put(Tables.Cpus, CpusTableRow.class);
-        elementTypes.put(Tables.Domains, DomainsTableRow.class);
-        elementTypes.put(Tables.Hdds, HddsTableRow.class);
-        elementTypes.put(Tables.Inventories, InventoriesTableRow.class);
-        elementTypes.put(Tables.Macros, MacrosTableRow.class);
-        elementTypes.put(Tables.Marketitems, MarketitemsTableRow.class);
-        elementTypes.put(Tables.Motherboards, MotherboardsTableRow.class);
-        elementTypes.put(Tables.Networkcards, NetworkcardsTableRow.class);
-        elementTypes.put(Tables.Players, PlayersTableRow.class);
-        elementTypes.put(Tables.Rams, RamsTableRow.class);
+        elementTypes.put(DatabaseTables.Accounts, AccountsTableRow.class);
+        elementTypes.put(DatabaseTables.Autocomplete, AutocompleteTableRow.class);
+        elementTypes.put(DatabaseTables.Commands, CommandsTableRow.class);
+        elementTypes.put(DatabaseTables.Corps, CorpsTableRow.class);
+        elementTypes.put(DatabaseTables.Cpus, CpusTableRow.class);
+        elementTypes.put(DatabaseTables.Domains, DomainsTableRow.class);
+        elementTypes.put(DatabaseTables.Hdds, HddsTableRow.class);
+        elementTypes.put(DatabaseTables.Inventories, InventoriesTableRow.class);
+        elementTypes.put(DatabaseTables.Macros, MacrosTableRow.class);
+        elementTypes.put(DatabaseTables.Marketitems, MarketitemsTableRow.class);
+        elementTypes.put(DatabaseTables.Motherboards, MotherboardsTableRow.class);
+        elementTypes.put(DatabaseTables.Networkcards, NetworkcardsTableRow.class);
+        elementTypes.put(DatabaseTables.Players, PlayersTableRow.class);
+        elementTypes.put(DatabaseTables.Rams, RamsTableRow.class);
     }
 
     /**
@@ -232,24 +226,24 @@ public class DatabaseHandler {
 
     /**
      * gets all table elements,
-     * same as {@link #getTableElements(Tables, String, String)} with null as columns and filters
+     * same as {@link #getTableElements(DatabaseTables, String, String)} with null as columns and filters
      * @param table the table to select from
      * @param <T> the element type to cast to (and return)
      * @return the elements in the table assigned as {@code T}
      */
-    public static <T> List<T> getTableElements(Tables table) {
+    public static <T> List<T> getTableElements(DatabaseTables table) {
         return getTableElements(table, null);
     }
 
     /**
      * gets the table elements, selecting only certain columns
-     * same as {@link #getTableElements(Tables, String, String)} with null as filters
+     * same as {@link #getTableElements(DatabaseTables, String, String)} with null as filters
      * @param table the table to select from
      * @param columns the columns to select
      * @param <T> the element type to cast to (and return)
      * @return the elements in the table assigned as {@code T}
      */
-    public static <T> List<T> getTableElements(Tables table, String columns) {
+    public static <T> List<T> getTableElements(DatabaseTables table, String columns) {
         return getTableElements(table, columns, null);
     }
 
@@ -262,7 +256,7 @@ public class DatabaseHandler {
      * @param <T> the element type to cast to (and return)
      * @return the elements in the table assigned as {@code T}
      */
-    public static <T> List<T> getTableElements(Tables table, String columns, String[] filters, String[] relations) {
+    public static <T> List<T> getTableElements(DatabaseTables table, String columns, String[] filters, String[] relations) {
         return getTableElements(table, columns, formatFilters(filters, relations));
     }
 
@@ -276,7 +270,7 @@ public class DatabaseHandler {
      */
     // hate to do this... but i have to...
     @SuppressWarnings("unchecked")
-    public static <T> List<T> getTableElements(Tables table, String columns, String filter) {
+    public static <T> List<T> getTableElements(DatabaseTables table, String columns, String filter) {
         // build the query
         String query = "SELECT ";
         query += columns != null ? columns : '*';
@@ -315,7 +309,7 @@ public class DatabaseHandler {
      * @param <T> the element type to check for
      * @return whether an element exists or not, returns false on error
      */
-    public static <T> boolean checkElementsExistence(Tables table, String filter) {
+    public static <T> boolean checkElementsExistence(DatabaseTables table, String filter) {
         List<T> elements = getTableElements(table, null, filter);
         return elements != null && elements.size() > 0;
     }

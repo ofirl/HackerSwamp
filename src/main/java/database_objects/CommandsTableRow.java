@@ -2,8 +2,8 @@ package database_objects;
 
 public class CommandsTableRow {
     public int id;
+    public String owner;
     public String name;
-    public int parent;
     public String arguments;
     public String access;
 
