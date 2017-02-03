@@ -55,7 +55,7 @@ public class Worker {
         // add command to commandList (if needed) and allCommands
         for (CommandsTableRow c :
                 dbCommands) {
-            // TODO : get the correct callable
+            // TODO : get the correct callable instead of null
             Command command = new Command(c.id, c.name, null, CommandAccess.valueOf(c.access));
 
             String[] argsArray = c.arguments.split(",");
@@ -69,7 +69,7 @@ public class Worker {
 
             // add to commandList and allCommands
             if (!commandList.containsKey(c.owner)) {
-                // TODO : get the correct callable
+                // TODO : get the correct callable instead of null
                 commandList.put(c.owner, new Command(0, c.owner, null, CommandAccess.valueOf(c.access)));
                 allCommands.put(c.owner, commandList.get(c.owner));
             }
@@ -93,7 +93,6 @@ public class Worker {
      * @param args arguments for the worker thread
      */
     public void workerStart(Object... args) {
-        // TODO : work on worker logic
         // parse the input and populate commands and arguments
         if (!checkSyntax(request.command)) {
             if (error != "")
@@ -111,7 +110,7 @@ public class Worker {
             return;
         }
 
-        // TODO : search also in the domains
+        // TODO : search also in the domains and location specific commands
 
         //Parser.addResponse(request.getKey(), request.getKey());
     }
