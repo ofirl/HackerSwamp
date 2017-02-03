@@ -101,5 +101,25 @@ public class Parameters {
      */
     public static int maxWorkerThreads = 5;
 
+    /**
+     * error for arguments list parenthesis mismatch '{' and '}'
+     */
+    public static String SyntaxErrorArgumentsParenthesisMismatch = "Error : syntax error, '{' and '}' mismatch";
+
+    /**
+     * error for invalid argument syntax
+     */
+    public static String SyntaxErrorInvalidArgumentSyntax = "Error : syntax error, could not parse arguments";
+
+    /**
+     * error could not find a command prefix (while going over the command list)
+     */
+    public static String ErrorCommandDoesNotExistsPrefix = "Error : could not find command ";
+
+    /**
+     * error could not find a command prefix (while going over the command list)
+     */
+    public static String ErrorCommandDoesNotExists = "Error : command does not exists";
+
     // endregion
 }

@@ -5,18 +5,16 @@ package objects;
  * {} the command that was received by the {@code webListener} process
  */
 public class CommandRequest {
-    public String username;
     public String command;
     public String response;
     public CommandContext context;
 
-    public CommandRequest (String username, String command, CommandContext context) {
-        this.username = username;
+    public CommandRequest (String command, CommandContext context) {
         this.command = command;
         this.context = context;
     }
 
     public String getKey() {
-        return username + "-" + command;
+        return context.username + "-" + command;
     }
 }

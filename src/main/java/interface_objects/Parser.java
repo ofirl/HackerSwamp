@@ -7,19 +7,19 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedTransferQueue;
 
 /**
- * general class for communication between the {@code WebListener} and {@code worker} dyno
+ * general class for communication between the {@code processes.WebListener} and {@code worker} dyno
  * handles the {@link #parseQueue} and {@link #responseHashMap}
  */
 public class Parser {
     // parsing queue
     /**
-     * concurrent queue for transferring received commands from {@code WebListener} to workers
+     * concurrent queue for transferring received commands from {@code processes.WebListener} to workers
      */
     private static LinkedTransferQueue<CommandRequest> parseQueue = new LinkedTransferQueue<>();
 
     // response queue
     /**
-     * concurrent hash map for transferring responses back to the {@code WebListener}
+     * concurrent hash map for transferring responses back to the {@code processes.WebListener}
      */
     private static ConcurrentHashMap<String, CommandRequest> responseHashMap = new ConcurrentHashMap<>();
 
@@ -53,7 +53,7 @@ public class Parser {
      * @param c the element to enqueue
      */
     public static void responseEnqueue(CommandRequest c) {
-        responseHashMap.put(c.username + "-" + c.command ,c);
+        responseHashMap.put(c.getKey() ,c);
     }
 
     /**
@@ -123,7 +123,7 @@ public class Parser {
 
         ActiveUser activeUser = LoginHandler.getActiveUserByKey(args.get("authKey"));
         CommandContext context = new CommandContext(activeUser.username, activeUser.playerId, activeUser.location);
-        CommandRequest c = new CommandRequest(args.get("username"), args.get("command"), context);
+        CommandRequest c = new CommandRequest(args.get("command"), context);
 
         addCommand(c);
         return waitForResponse(c.getKey());

@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static interface_objects.Tables.Players;
-
 /**
  * Handles the login process :
  * <ul>
@@ -26,7 +24,7 @@ public class LoginHandler {
     public static ConcurrentHashMap<String, ActiveUser> activeUsers = new ConcurrentHashMap<>();
 
     /**
-     * entry point - the method to be called when a new login requestToHandle is received
+     * entry point - the entry to be called when a new login requestToHandle is received
      * @param input the parameters of the received requestToHandle
      * @return authentication key or error message (starts with "Error")
      */
@@ -80,13 +78,13 @@ public class LoginHandler {
     private static String addActiveUser(String username, int id) {
         String error = null;
         String authKey = generateAuthKey();
+        if (authKey == null)
+            return Parameters.loginErrorAuthKeyGeneration;
 
         activeUsers.put(authKey, new ActiveUser(authKey, username, id, "localhost"));
 
         if (error != null)
             return "Error :" + error;
-        else if (authKey == null)
-            return Parameters.loginErrorAuthKeyGeneration;
 
         return authKey;
     }
@@ -107,7 +105,7 @@ public class LoginHandler {
         }
         while (getUsernameByKey(authKey) != null && attempts < Parameters.authKeyGenerationMaxAttempts);
 
-        return authKey;
+        return attempts == Parameters.authKeyGenerationMaxAttempts ? null : authKey;
     }
 
     /**
@@ -135,7 +133,7 @@ public class LoginHandler {
      * @return boolean whether the user exists, false if there was an error
      */
     public static PlayersTableRow authenticateUser(String username, String password) {
-        List<PlayersTableRow> rows = DatabaseHandler.getTableElements(Players, "username=" + username + " AND password=" + password);
+        List<PlayersTableRow> rows = DatabaseHandler.getTableElements(DatabaseTables.Players, "username=" + username + " AND password=" + password);
         if (rows == null || rows.size() == 0)
             return null;
 

@@ -56,16 +56,16 @@
               <generateRepository>true</generateRepository>
               <programs>
                 <program>
-                  <mainClass>WebListener</mainClass>
-                  <name>WebListener</name>
+                  <mainClass>processes.WebListener</mainClass>
+                  <name>processes.WebListener</name>
                 </program>
                 <program>
-                  <mainClass>Worker</mainClass>
-                  <name>Worker</name>
+                  <mainClass>processes.Worker</mainClass>
+                  <name>processes.Worker</name>
                 </program>
                 <program>
-                  <mainClass>DatabaseClient</mainClass>
-                  <name>DatabaseClient</name>
+                  <mainClass>processes.DatabaseClient</mainClass>
+                  <name>processes.DatabaseClient</name>
                 </program>
               </programs>
             </configuration>

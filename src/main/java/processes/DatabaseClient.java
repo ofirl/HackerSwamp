@@ -1,3 +1,5 @@
+package processes;
+
 import interface_objects.DatabaseHandler;
 import objects.DatabaseQuery;
 

@@ -12,7 +12,7 @@ public class ThreadedJob extends Thread {
 
     /**
      *
-     * @param entryPoint the entry point method of the thread
+     * @param entryPoint the entry point entry of the thread
      * @param args
      * @param name
      * @param onFinish
@@ -29,7 +29,6 @@ public class ThreadedJob extends Thread {
 
     public void start () {
         thread.start();
-        threadOnFinished.onFinish();
     }
 
     public void run () {
@@ -49,6 +48,8 @@ public class ThreadedJob extends Thread {
             if (errorOutput != null)
                 errorOutput.response = "Error running the requestToHandle : " + errorOutput.command;
         }
+
+        threadOnFinished.onFinish();
 
         if (error != null)
             System.err.println("Error : exception caught on thread : " + thread.getName() + " - " + error);
