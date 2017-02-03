@@ -35,8 +35,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>2.5.1</version>
         <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
+          <source>1.8</source>
+          <target>1.8</target>
           <optimize>true</optimize>
           <debug>true</debug>
         </configuration>
@@ -52,14 +52,6 @@
                     <mainClass>WebListener</mainClass>
                     <name>WebListener</name>
                 </program>
-              <program>
-                <mainClass>Worker</mainClass>
-                <name>Worker</name>
-              </program>
-              <program>
-                <mainClass>DatabaseClient</mainClass>
-                <name>DatabaseClient</name>
-              </program>
             </programs>
           </configuration>
           <executions>
