@@ -43,30 +43,34 @@
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
-          <artifactId>appassembler-maven-plugin</artifactId>
-          <version>1.1.1</version>
-          <configuration>
-            <assembleDirectory>target</assembleDirectory>
-            <programs>
+        <artifactId>appassembler-maven-plugin</artifactId>
+        <version>1.1.1</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>assemble</goal>
+            </goals>
+            <configuration>
+              <assembleDirectory>target</assembleDirectory>
+              <generateRepository>true</generateRepository>
+              <programs>
                 <program>
-                    <mainClass>WebListener</mainClass>
-                    <name>WebListener</name>
+                  <mainClass>WebListener</mainClass>
+                  <name>WebListener</name>
                 </program>
-              <program>
-                <mainClass>Worker</mainClass>
-                <name>Worker</name>
-              </program>
-              <program>
-                <mainClass>DatabaseClient</mainClass>
-                <name>DatabaseClient</name>
-              </program>
-            </programs>
-          </configuration>
-          <executions>
-              <execution>
-                  <phase>package</phase><goals><goal>assemble</goal></goals>
-              </execution>
-          </executions>
+                <program>
+                  <mainClass>Worker</mainClass>
+                  <name>Worker</name>
+                </program>
+                <program>
+                  <mainClass>DatabaseClient</mainClass>
+                  <name>DatabaseClient</name>
+                </program>
+              </programs>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
