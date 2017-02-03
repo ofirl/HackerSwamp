@@ -1,6 +1,7 @@
 package interface_objects;
 
 import database_objects.PlayersTableRow;
+import objects.ActiveUser;
 import objects.Parameters;
 
 import java.util.List;
@@ -19,7 +20,10 @@ import static interface_objects.Tables.Players;
  * </ul>
  */
 public class LoginHandler {
-    public static ConcurrentHashMap<String, String> activeUsers = new ConcurrentHashMap<>();
+    /**
+     * a static field containing all the currently active users
+     */
+    public static ConcurrentHashMap<String, ActiveUser> activeUsers = new ConcurrentHashMap<>();
 
     /**
      * entry point - the method to be called when a new login requestToHandle is received
@@ -54,16 +58,14 @@ public class LoginHandler {
         }
 
         // check against the db
-        // TODO : add overloading for getTableElements with filters and select options
-        List<PlayersTableRow> players = DatabaseHandler.getTableElements(Players);
-        boolean isValid = players != null && players.size() > 0;
+        PlayersTableRow dbRow = authenticateUser(username, password);
 
         // returns if invalid
-        if (!isValid)
+        if (dbRow == null)
             return Parameters.loginErrorInvalidCredentials;
 
         // generating authentication key
-        String authKey = addActiveUser(username);
+        String authKey = addActiveUser(username, dbRow.id);
         if (authKey.startsWith("Error :"))
             return authKey;
 
@@ -75,11 +77,11 @@ public class LoginHandler {
      * @param username the username to add to the active users list
      * @return authentication key or error message (starts with "Error")
      */
-    private static String addActiveUser(String username) {
+    private static String addActiveUser(String username, int id) {
         String error = null;
         String authKey = generateAuthKey();
 
-        activeUsers.put(authKey, username);
+        activeUsers.put(authKey, new ActiveUser(authKey, username, id, "localhost"));
 
         if (error != null)
             return "Error :" + error;
@@ -96,22 +98,47 @@ public class LoginHandler {
     private static String generateAuthKey() {
         Random rand = new Random();
         String authKey;
+        int attempts = 0;
         do {
             authKey = "";
+            attempts++;
             for (int i = 0; i < Parameters.authKeyLength; i++)
                 authKey += Parameters.authKeyChars.charAt(rand.nextInt(Parameters.authKeyChars.length()));
         }
-        while (getUsernameByKey(authKey) != null);
+        while (getUsernameByKey(authKey) != null && attempts < Parameters.authKeyGenerationMaxAttempts);
 
         return authKey;
     }
 
     /**
-     * returns the username matches the {@code authKey} supplied, null if there isn't one
+     * gets the username matches the {@code authKey} supplied, null if there isn't one
      * @param authKey the authentication key to check
      * @return username or null
      */
     public static String getUsernameByKey(String authKey) {
+        return activeUsers.get(authKey).username;
+    }
+
+    /**
+     * gets the {@code ActiveUser} matches the {@code authKey} supplied, null if there isn't one
+     * @param authKey the authentication key to check
+     * @return ActiveUser object or null
+     */
+    public static ActiveUser getActiveUserByKey(String authKey) {
         return activeUsers.get(authKey);
+    }
+
+    /**
+     * checks whether a user with the provided {@code username} and {@code password} exists
+     * @param username username to check
+     * @param password password to check
+     * @return boolean whether the user exists, false if there was an error
+     */
+    public static PlayersTableRow authenticateUser(String username, String password) {
+        List<PlayersTableRow> rows = DatabaseHandler.getTableElements(Players, "username=" + username + " AND password=" + password);
+        if (rows == null || rows.size() == 0)
+            return null;
+
+        return rows.get(0);
     }
 }

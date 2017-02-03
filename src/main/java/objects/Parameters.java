@@ -7,6 +7,7 @@ package objects;
  *          <ul>
  *              <li> {@link #authKeyChars} </li>
  *              <li> {@link #authKeyLength} </li>
+ *              <li> {@link #authKeyGenerationMaxAttempts} </li>
  *          </ul>
  *      </li>
  *      <li> login error messages
@@ -37,6 +38,11 @@ public class Parameters {
      * length of generated authentication key
      */
     public static int authKeyLength = 32;
+
+    /**
+     * maximum attempts for authentication key generation
+     */
+    public static int authKeyGenerationMaxAttempts = 10;
 
     // endregion
 

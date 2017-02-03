@@ -19,11 +19,17 @@ public class Worker {
         }
     }
 
+    /**
+     * constructor
+     * @param r the request to handle
+     */
     public Worker(CommandRequest r) {
         request = r;
     }
 
     public void workerStart(Object... args) {
         // TODO : work on worker logic
+
+        Parser.addResponse(request.getKey(), request.getKey());
     }
 }

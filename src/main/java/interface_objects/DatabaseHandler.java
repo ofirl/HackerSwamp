@@ -167,7 +167,11 @@ public class DatabaseHandler {
 
     // region table handling
 
+    /**
+     * static field to save a mapping between types and their classes (for instantiation)
+     */
     public static HashMap<Tables, Class> elementTypes = new HashMap<>();
+    // elementTypes initialization
     static {
         elementTypes.put(Tables.Accounts, AccountsTableRow.class);
         elementTypes.put(Tables.Autocomplete, AutocompleteTableRow.class);
@@ -185,41 +189,12 @@ public class DatabaseHandler {
         elementTypes.put(Tables.Rams, RamsTableRow.class);
     }
 
-    public static <T> T test(Class<T> tst) {
-        try {
-            return tst.newInstance();
-        }
-        catch (Exception e) {
-            return null;
-        }
-    }
-
-    // hate to do this... but i have to...
-    @SuppressWarnings("unchecked")
-    public static <T> List<T> getTableElements(Tables table) {
-        ResultSet rs = requestResponse("SELECT * FROM " + table.name());
-        HashMap<String, Integer> columns = getResultSetColumns(rs);
-        if (columns == null)
-            return null;
-
-        List<T> elements = new ArrayList<>();
-        try {
-            while (rs.next()) {
-                T ele = ((Class<T>)elementTypes.get(table)).newInstance();
-                for (String columnName :
-                        columns.keySet()) {
-                    ele.getClass().getDeclaredField(columnName).set(ele, rs.getObject(columnName));
-                }
-                elements.add(ele);
-            }
-
-            return elements;
-        }
-        catch (Exception e) {
-            return null;
-        }
-    }
-
+    /**
+     * gets the columns of the result set provided
+     * @param rs the result set to get the columns for
+     * @return a {@link HashMap} of the form {@code HashMap<columnName, columnType>}
+     * when {@code columnType} is a number from java.sql.Types
+     */
     public static HashMap<String, Integer> getResultSetColumns(ResultSet rs) {
         HashMap<String, Integer> columns = new HashMap<>();
         try {
@@ -233,6 +208,116 @@ public class DatabaseHandler {
         catch (Exception e) {
             return null;
         }
+    }
+
+    /**
+     * formats the filter array provided to SQL friendly format
+     * @param filters the filters array to format
+     * @param relations the relations between the filters
+     * @return the {@code filters} & {@code relations} formatted
+     */
+    public static String formatFilters(String[] filters, String[] relations) {
+        // sanity check
+        if (filters.length != relations.length + 1)
+            return null;
+
+        String filtersFormatted = "";
+        for (int i = 0; i < relations.length; i++)
+            filtersFormatted += filters[i] + relations[i];
+
+        filtersFormatted += filters[filters.length - 1];
+
+        return filtersFormatted;
+    }
+
+    /**
+     * gets all table elements,
+     * same as {@link #getTableElements(Tables, String, String)} with null as columns and filters
+     * @param table the table to select from
+     * @param <T> the element type to cast to (and return)
+     * @return the elements in the table assigned as {@code T}
+     */
+    public static <T> List<T> getTableElements(Tables table) {
+        return getTableElements(table, null);
+    }
+
+    /**
+     * gets the table elements, selecting only certain columns
+     * same as {@link #getTableElements(Tables, String, String)} with null as filters
+     * @param table the table to select from
+     * @param columns the columns to select
+     * @param <T> the element type to cast to (and return)
+     * @return the elements in the table assigned as {@code T}
+     */
+    public static <T> List<T> getTableElements(Tables table, String columns) {
+        return getTableElements(table, columns, null);
+    }
+
+    /**
+     * gets the table elements
+     * @param table the table to select from
+     * @param columns the columns to select
+     * @param filters filters to apply
+     * @param relations relations (AND, OR) between the filters
+     * @param <T> the element type to cast to (and return)
+     * @return the elements in the table assigned as {@code T}
+     */
+    public static <T> List<T> getTableElements(Tables table, String columns, String[] filters, String[] relations) {
+        return getTableElements(table, columns, formatFilters(filters, relations));
+    }
+
+    /**
+     * gets the table elements
+     * @param table the table to select from
+     * @param columns the columns to select
+     * @param filter filters to apply
+     * @param <T> the element type to cast to (and return)
+     * @return the elements in the table assigned as {@code T}
+     */
+    // hate to do this... but i have to...
+    @SuppressWarnings("unchecked")
+    public static <T> List<T> getTableElements(Tables table, String columns, String filter) {
+        // build the query
+        String query = "SELECT ";
+        query += columns != null ? columns : '*';
+        query += " FROM " + table.name();
+        query += filter != null ? " WHERE " + filter : "";
+
+        ResultSet rs = requestResponse(query);
+        HashMap<String, Integer> rsColumns = getResultSetColumns(rs);
+        if (rsColumns == null)
+            return null;
+
+        List<T> elements = new ArrayList<>();
+        try {
+            while (rs.next()) {
+                // unchecked warning suppressed
+                //T te = (T)elementTypes.get(table).newInstance();
+                T ele = ((Class<T>)elementTypes.get(table)).newInstance();
+                for (String columnName :
+                        rsColumns.keySet()) {
+                    ele.getClass().getDeclaredField(columnName).set(ele, rs.getObject(columnName));
+                }
+                elements.add(ele);
+            }
+
+            return elements;
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * checks whether an element exists
+     * @param table the table to select from
+     * @param filter filters to apply
+     * @param <T> the element type to check for
+     * @return whether an element exists or not, returns false on error
+     */
+    public static <T> boolean checkElementsExistence(Tables table, String filter) {
+        List<T> elements = getTableElements(table, null, filter);
+        return elements != null && elements.size() > 0;
     }
 
     // endregion

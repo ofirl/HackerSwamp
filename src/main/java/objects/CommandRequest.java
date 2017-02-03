@@ -15,4 +15,8 @@ public class CommandRequest {
         this.command = command;
         this.context = context;
     }
+
+    public String getKey() {
+        return username + "-" + command;
+    }
 }

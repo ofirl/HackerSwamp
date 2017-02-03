@@ -52,6 +52,14 @@
                     <mainClass>WebListener</mainClass>
                     <name>WebListener</name>
                 </program>
+              <program>
+                <mainClass>Worker</mainClass>
+                <name>Worker</name>
+              </program>
+              <program>
+                <mainClass>DatabaseClient</mainClass>
+                <name>DatabaseClient</name>
+              </program>
             </programs>
           </configuration>
           <executions>

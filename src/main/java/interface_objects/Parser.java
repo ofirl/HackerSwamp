@@ -106,6 +106,11 @@ public class Parser {
         transferCommand(c);
     }
 
+    /**
+     * requests and waits for response to {@code input}
+     * @param input the request received
+     * @return a response
+     */
     public static String requestResponse(String input) {
         HashMap<String,String> args = decodeArgumentsList(input);
         // validity check
@@ -116,10 +121,12 @@ public class Parser {
         if (!args.containsKey("command") || !args.containsKey("username"))
             return Parameters.parserErrorInvalidArguments;
 
-        CommandRequest c = new CommandRequest(args.get("username"), args.get("command"));
+        ActiveUser activeUser = LoginHandler.getActiveUserByKey(args.get("authKey"));
+        CommandContext context = new CommandContext(activeUser.username, activeUser.playerId, activeUser.location);
+        CommandRequest c = new CommandRequest(args.get("username"), args.get("command"), context);
 
         addCommand(c);
-        return waitForResponse(c.username + "-" + c.command);
+        return waitForResponse(c.getKey());
     }
 
     /**
@@ -156,7 +163,7 @@ public class Parser {
     /**
      * decodes received parameters (in the requestToHandle body)
      * received parameters are of the form : key1(length)=value1&key2(length)=value2
-     * @param args arguments string to decode
+     * @param args arguments string to decode-
      * @return {@link HashMap} of the keys and values extracted
      */
     public static HashMap<String, String> decodeArgumentsList(String args) {
