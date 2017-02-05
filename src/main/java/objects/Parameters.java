@@ -121,6 +121,19 @@ public class Parameters {
      */
     public static String ErrorCommandDoesNotExists = "Error : command does not exists";
 
+    /**
+     * the init command template, command of this kind is special and will be received bon initialization of client
+     */
+    public static String InitCommandTemplate = "init:true";
+
+    public static String InitCommandAutoCompleteList = "autocomplete";
+
+    public static String InitCommandSystemSpec = "systemspec";
+
+    public static String InitCommandAccountBalance = "accountbalance";
+
+    public static String InitCommandSystemStatus = "systemstatus";
+
     // endregion
 
     // region commands name

@@ -23,6 +23,7 @@ public class Worker {
     public String error;
     public List<String> commands;
     public List<Argument> arguments;
+    public boolean initCommand = false;
     // endregion
 
     // static initializer (all system commands)
@@ -99,10 +100,41 @@ public class Worker {
     public void workerStart(Object... args) {
         // parse the input and populate commands and arguments
         if (!checkSyntax(request.command)) {
-            if (error != "")
+            if (error.equals(""))
                 Parser.addResponse(request.getKey(), error);
 
             return;
+        }
+
+        if (initCommand) {
+            HashMap<String, Argument> argsMap = new HashMap<>();
+            arguments.forEach((a) -> argsMap.put(a.name, a));
+            if (argsMap.get(Parameters.InitCommandAutoCompleteList) != null) {
+                // TODO : change to autocomplete only and not all commands
+                // get auto complete
+                HashMap<String, Command> result = getAllAccessibleCommands(request.context);
+
+                // parse the auto complete list
+                String response = "";
+                for (String c :
+                        result.keySet())
+                    response += c + ",";
+
+                // delete the last ',' if needed
+                if (response.endsWith(","))
+                    response = response.substring(0, response.length() - 1);
+
+                Parser.addResponse(request.getKey(), Parser.encodeArgument("response", response));
+            }
+            else if (argsMap.get(Parameters.InitCommandSystemSpec) != null) {
+                // TODO : write the init code
+            }
+            else if (argsMap.get(Parameters.InitCommandAccountBalance) != null) {
+                // TODO : write the init code
+            }
+            else if (argsMap.get(Parameters.InitCommandSystemStatus) != null) {
+                // TODO : write the init code
+            }
         }
 
         Command commandToRun = parseCommand();
@@ -110,7 +142,7 @@ public class Worker {
             // run command and add response
             String response = commandToRun.execute(request.context, commandToRun.name, arguments);
 
-            Parser.addResponse(request.getKey(), response);
+            Parser.addResponse(request.getKey(), Parser.encodeArgument("response", response));
             return;
         }
 
@@ -118,6 +150,8 @@ public class Worker {
 
         //Parser.addResponse(request.getKey(), request.getKey());
     }
+
+
 
     /**
      * gets all the available commands for the current {@link CommandRequest}
@@ -226,6 +260,10 @@ public class Worker {
                     error = Parameters.SyntaxErrorInvalidArgumentSyntax;
                     return false;
                 }
+
+                if (arg.equals(Parameters.InitCommandTemplate))
+                    initCommand = true;
+
                 // add argument to list
                 String type;
                 if (argParts[1].contains("\""))
