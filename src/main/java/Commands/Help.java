@@ -4,9 +4,17 @@ import objects.*;
 import processes.Worker;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class Help extends BaseCommand {
 
+    /**
+     * accepted arguments for the help command :
+     * filter : "commands"
+     */
+    static {
+        acceptedArguments.add(new Argument("filter", String.class));
+    }
 
     /**
      * empty constructor for the
@@ -21,7 +29,8 @@ public class Help extends BaseCommand {
      */
     public Help(CommandContext context) {
         super(context);
-        mainName = "help";
+        mainName = Parameters.CommandNameHelp;
+        superCommand = Worker.allCommands.get(mainName);
     }
 
     /**
@@ -46,7 +55,19 @@ public class Help extends BaseCommand {
      * @return list of commands
      */
     public String commands() {
-        HashMap<String, Command> commands = Worker.getAccessibleCommands(context);
+        HashMap<String, Command> commands = null;
+        Argument filter = args.get("filter");
+        if (filter != null) {
+            if (filter.value.equals("commands"))
+                commands = Worker.getAccessibleCommands(context);
+            else if (filter.value.equals("scripts"))
+                commands = Worker.getAccessiblePlayerScripts(context);
+            else
+                commands = Worker.getAllAccessibleCommands(context);
+        }
+
+        if (commands == null)
+            return "";
 
         String output = "";
         for (String sub :

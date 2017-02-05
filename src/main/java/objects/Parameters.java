@@ -122,4 +122,18 @@ public class Parameters {
     public static String ErrorCommandDoesNotExists = "Error : command does not exists";
 
     // endregion
+
+    // region commands name
+
+    /**
+     * help
+     */
+    public static String CommandNameHelp = "help";
+
+    /**
+     * help.commands
+     */
+    public static String CommandNameHelpCommands = "commands";
+
+    // endregion
 }

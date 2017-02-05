@@ -2,9 +2,11 @@ package processes;
 
 import Commands.Help;
 import database_objects.CommandsTableRow;
+import database_objects.PlayersTableRow;
 import objects.*;
 import interface_objects.*;
 
+import javax.swing.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -25,7 +27,9 @@ public class Worker {
 
     // static initializer (all system commands)
     static {
-        Command help = new Command(0, "help", new Help(), CommandAccess.System);
+        Command help = new Command(0, Parameters.CommandNameHelp, new Help(), CommandAccess.System);
+        commandList.put(help.name, help);
+        allCommands.put(help.name, help);
     }
 
     /**
@@ -104,7 +108,7 @@ public class Worker {
         Command commandToRun = parseCommand();
         if (commandToRun != null) {
             // run command and add response
-            String response = commandToRun.entry.execute(request.context, commandToRun.name);
+            String response = commandToRun.execute(request.context, commandToRun.name, arguments);
 
             Parser.addResponse(request.getKey(), response);
             return;
@@ -124,14 +128,41 @@ public class Worker {
     }
 
     /**
-     * gets all the available commands for the supplied {@link CommandRequest}
-     * @param cr the {@link CommandRequest} to check with
-     * @return all the available commands
+     * gets all the available commands for the supplied {@link CommandContext}
+     * @param context the {@link CommandContext} to check with
+     * @return all the accessible commands
      */
-    public static HashMap<String, Command> getAccessibleCommands(CommandContext cr) {
+    public static HashMap<String, Command> getAccessibleCommands(CommandContext context) {
         HashMap<String, Command> accessibleCommands = new HashMap<>(commandList);
 
-        // TODO : add all the other accessible commands (player scripts from db, etc.) using request.context
+        // TODO : filter accessible commands only (based on context)
+
+        return accessibleCommands;
+    }
+
+    /**
+     * gets all the available player scripts for the supplied {@link CommandContext}
+     * @param context the {@link CommandContext} to check with
+     * @return all the accessible commands
+     */
+    public static HashMap<String, Command> getAccessiblePlayerScripts(CommandContext context) {
+        HashMap<String, Command> accessibleScripts = new HashMap<>();
+
+        // TODO : add all the other accessible commands (player scripts from db, etc.) using context
+
+        return accessibleScripts;
+    }
+
+    /**
+     * gets all the available commands and player scripts for the supplied {@link CommandContext}
+     * @param context the {@link CommandContext} to check with
+     * @return all the accessible commands and player scripts
+     */
+    public static HashMap<String, Command> getAllAccessibleCommands(CommandContext context) {
+        HashMap<String, Command> accessibleCommands = getAccessibleCommands(context);
+        accessibleCommands.putAll(getAccessiblePlayerScripts(context));
+
+        // TODO : add all the other accessible commands (player scripts from db, etc.) using context
 
         return accessibleCommands;
     }
@@ -197,7 +228,7 @@ public class Worker {
                 }
                 // add argument to list
                 String type;
-                if (argParts[1].contains("'"))
+                if (argParts[1].contains("\""))
                     type = "String";
                 else if (argParts[1].contains("."))
                     type = "float";

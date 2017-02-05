@@ -20,4 +20,8 @@ public class Command {
         this.entry = entry;
         this.access = access;
     }
+
+    public String execute(CommandContext context, String subCommand, List<Argument> args) {
+        return entry.execute(context, subCommand, args);
+    }
 }

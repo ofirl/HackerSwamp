@@ -1,6 +1,12 @@
 package processes;
 
+import objects.Command;
+
+import java.util.HashMap;
+
 import static org.junit.Assert.*;
+
+// TODO : add tests for everything
 
 public class WorkerTest {
     @org.junit.Before
@@ -30,12 +36,13 @@ public class WorkerTest {
 
     @org.junit.Test
     public void getAccessibleCommands() throws Exception {
-        if (Worker.allCommands.size() != 1) throw new AssertionError("test");
+
     }
 
     @org.junit.Test
     public void getAccessibleCommands1() throws Exception {
-
+        HashMap<String, Command> test = Worker.getAllAccessibleCommands(null);
+        if (test.size() != 1) throw new AssertionError("test");
     }
 
     @org.junit.Test
