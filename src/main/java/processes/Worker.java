@@ -2,6 +2,8 @@ package processes;
 
 import Commands.BaseCommand;
 import Commands.Help;
+import Domains.Bank;
+import Domains.BaseDomain;
 import database_objects.AutocompleteTableRow;
 import database_objects.CommandsTableRow;
 import database_objects.PlayersTableRow;
@@ -18,6 +20,9 @@ public class Worker {
     public static ThreadedJobFactory threadFactory = new ThreadedJobFactory(Parameters.maxWorkerThreads);
     public static ConcurrentHashMap<String, Command> commandList = new ConcurrentHashMap<>();
     public static ConcurrentHashMap<String, Command> allCommands = new ConcurrentHashMap<>();
+    public static ConcurrentHashMap<String, BaseDomain> allDomains = new ConcurrentHashMap<>();
+    public static ConcurrentHashMap<String, Bank> bankDomains = new ConcurrentHashMap<>();
+    // TODO : add domain manager and command manager, worker is not responsible for them
     // endregion
 
     // region public variables
@@ -28,13 +33,18 @@ public class Worker {
     public boolean initCommand = false;
     // endregion
 
-    // static initializer (all system commands)
+    // system commands initializer
     static {
         // help
         addSystemCommand(Parameters.CommandNameHelp, new Help(), true);
         // help.commands
         addSystemCommand(Parameters.CommandNameHelpCommands, new Help(), false);
         // TODO : add implementation for the commands
+    }
+
+    // domains initializer
+    static {
+
     }
 
     /**
