@@ -126,14 +126,29 @@ public class Parameters {
      */
     public static String InitCommandTemplate = "init:true";
 
+    /**
+     * name of the init parameter for requesting the auto complete list
+     */
     public static String InitCommandAutoCompleteList = "autocomplete";
 
+    /**
+     * name of the init parameter for requesting the system specs
+     */
     public static String InitCommandSystemSpec = "systemspec";
 
+    /**
+     * name of the init parameter for requesting the account balance information
+     */
     public static String InitCommandAccountBalance = "accountbalance";
 
+    /**
+     * name of the init parameter for requesting the system status
+     */
     public static String InitCommandSystemStatus = "systemstatus";
 
+    /**
+     * name of the init parameter for requesting the macros list
+     */
     public static String InitCommandMacros = "macros";
 
     // endregion
@@ -149,6 +164,25 @@ public class Parameters {
      * help.commands
      */
     public static String CommandNameHelpCommands = "commands";
+
+    // endregion
+
+    // region bank parameters
+
+    /**
+     * prefix for account not found error
+     */
+    public static String BankErrorCannotFindAccountPrefix = "Error : cannot find account ";
+
+    /**
+     * withdraw account is null error
+     */
+    public static String BankErrorWithdrawAccountNull = "Error : account to withdraw from is null";
+
+    /**
+     * transfer account is null error
+     */
+    public static String BankErrorTransferAccountNull = "Error : account to transfer to is null";
 
     // endregion
 }

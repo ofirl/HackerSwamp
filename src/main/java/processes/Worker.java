@@ -1,5 +1,6 @@
 package processes;
 
+import Commands.BaseCommand;
 import Commands.Help;
 import database_objects.AutocompleteTableRow;
 import database_objects.CommandsTableRow;
@@ -29,9 +30,23 @@ public class Worker {
 
     // static initializer (all system commands)
     static {
-        Command help = new Command(0, Parameters.CommandNameHelp, new Help(), CommandAccess.System);
-        commandList.put(help.name, help);
-        allCommands.put(help.name, help);
+        // help
+        addSystemCommand(Parameters.CommandNameHelp, new Help(), true);
+        // help.commands
+        addSystemCommand(Parameters.CommandNameHelpCommands, new Help(), false);
+        // TODO : add implementation for the commands
+    }
+
+    /**
+     * created and adds a system command to the lists
+     * @param name the name of hte ocmmamd
+     * @param baseCommand the class that implements the command
+     */
+    public static void addSystemCommand(String name, BaseCommand baseCommand, boolean mainCommand) {
+        Command cmd = new Command(0, name, baseCommand, CommandAccess.System);
+        allCommands.put(cmd.name, cmd);
+        if (mainCommand)
+            commandList.put(cmd.name, cmd);
     }
 
     /**
