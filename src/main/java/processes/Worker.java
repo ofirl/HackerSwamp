@@ -1,6 +1,7 @@
 package processes;
 
 import Commands.Help;
+import database_objects.AutocompleteTableRow;
 import database_objects.CommandsTableRow;
 import database_objects.PlayersTableRow;
 import objects.*;
@@ -109,10 +110,10 @@ public class Worker {
         if (initCommand) {
             HashMap<String, Argument> argsMap = new HashMap<>();
             arguments.forEach((a) -> argsMap.put(a.name, a));
+            // asked for auto complete list
             if (argsMap.get(Parameters.InitCommandAutoCompleteList) != null) {
-                // TODO : change to autocomplete only and not all commands
                 // get auto complete
-                HashMap<String, Command> result = getAllAccessibleCommands(request.context);
+                HashMap<String, Command> result = getAutocompleteCommands(request.context);
 
                 // parse the auto complete list
                 String response = "";
@@ -126,13 +127,20 @@ public class Worker {
 
                 Parser.addResponse(request.getKey(), Parser.encodeArgument("response", response));
             }
+            // asked for system spec
             else if (argsMap.get(Parameters.InitCommandSystemSpec) != null) {
                 // TODO : write the init code
             }
+            // asked for account balance
             else if (argsMap.get(Parameters.InitCommandAccountBalance) != null) {
                 // TODO : write the init code
             }
+            // asked for system status
             else if (argsMap.get(Parameters.InitCommandSystemStatus) != null) {
+                // TODO : write the init code
+            }
+            // asked for macros
+            else if (argsMap.get(Parameters.InitCommandMacros) != null) {
                 // TODO : write the init code
             }
         }
@@ -199,6 +207,31 @@ public class Worker {
         // TODO : add all the other accessible commands (player scripts from db, etc.) using context
 
         return accessibleCommands;
+    }
+
+    /**
+     * gets only the commands available to auto complete
+     * @param context the context in which to check
+     * @return the auto completable commands
+     */
+    public HashMap<String, Command> getAutocompleteCommands(CommandContext context) {
+        // TODO : add database view for selecting the excludes with their names and change accordingly
+        // get all accessible
+        HashMap<String, Command> accessible = getAllAccessibleCommands(context);
+
+        // get excludes
+        String filter = "username='" + context.username + "' AND " + "action='exclude'";
+        List<AutocompleteTableRow> excludes = DatabaseHandler.getTableElements(DatabaseTables.Autocomplete, null, filter);
+
+        if (excludes != null) {
+            // remove excludes from accessible list
+            for (AutocompleteTableRow a :
+                    excludes) {
+                accessible.remove("see to do");
+            }
+        }
+
+        return accessible;
     }
 
     /**

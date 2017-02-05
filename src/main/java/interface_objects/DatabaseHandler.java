@@ -264,7 +264,7 @@ public class DatabaseHandler {
      * gets the table elements
      * @param table the table to select from
      * @param columns the columns to select
-     * @param filter filters to apply
+     * @param filter filters to apply, of the form column=value
      * @param <T> the element type to cast to (and return)
      * @return the elements in the table assigned as {@code T}
      */

@@ -134,6 +134,8 @@ public class Parameters {
 
     public static String InitCommandSystemStatus = "systemstatus";
 
+    public static String InitCommandMacros = "macros";
+
     // endregion
 
     // region commands name
