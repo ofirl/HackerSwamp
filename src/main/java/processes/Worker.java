@@ -1,16 +1,15 @@
 package processes;
 
 import Commands.BaseCommand;
+import Commands.CommandManager;
 import Commands.Help;
 import Domains.Bank;
 import Domains.BaseDomain;
 import database_objects.AutocompleteTableRow;
 import database_objects.CommandsTableRow;
-import database_objects.PlayersTableRow;
 import objects.*;
 import interface_objects.*;
 
-import javax.swing.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -18,10 +17,7 @@ public class Worker {
     // region static variables
     public static CommandRequest requestToHandle;
     public static ThreadedJobFactory threadFactory = new ThreadedJobFactory(Parameters.maxWorkerThreads);
-    public static ConcurrentHashMap<String, Command> commandList = new ConcurrentHashMap<>();
-    public static ConcurrentHashMap<String, Command> allCommands = new ConcurrentHashMap<>();
-    public static ConcurrentHashMap<String, BaseDomain> allDomains = new ConcurrentHashMap<>();
-    public static ConcurrentHashMap<String, Bank> bankDomains = new ConcurrentHashMap<>();
+
     // TODO : add domain manager and command manager, worker is not responsible for them
     // endregion
 
@@ -32,32 +28,6 @@ public class Worker {
     public List<Argument> arguments;
     public boolean initCommand = false;
     // endregion
-
-    // system commands initializer
-    static {
-        // help
-        addSystemCommand(Parameters.CommandNameHelp, new Help(), true);
-        // help.commands
-        addSystemCommand(Parameters.CommandNameHelpCommands, new Help(), false);
-        // TODO : add implementation for the commands
-    }
-
-    // domains initializer
-    static {
-
-    }
-
-    /**
-     * created and adds a system command to the lists
-     * @param name the name of hte ocmmamd
-     * @param baseCommand the class that implements the command
-     */
-    public static void addSystemCommand(String name, BaseCommand baseCommand, boolean mainCommand) {
-        Command cmd = new Command(0, name, baseCommand, CommandAccess.System);
-        allCommands.put(cmd.name, cmd);
-        if (mainCommand)
-            commandList.put(cmd.name, cmd);
-    }
 
     /**
      * entry point for worker process
@@ -99,15 +69,15 @@ public class Worker {
             command.arguments = argsList;
 
             // add to commandList and allCommands
-            if (!commandList.containsKey(c.owner)) {
+            if (!CommandManager.commandList.containsKey(c.owner)) {
                 // TODO : get the correct callable instead of null
-                commandList.put(c.owner, new Command(0, c.owner, null, CommandAccess.valueOf(c.access)));
-                allCommands.put(c.owner, commandList.get(c.owner));
+                CommandManager.commandList.put(c.owner, new Command(0, c.owner, null, CommandAccess.valueOf(c.access)));
+                CommandManager.allCommands.put(c.owner, CommandManager.commandList.get(c.owner));
             }
 
-            commandList.get(c.owner).subCommands.put(c.name, command);
+            CommandManager.commandList.get(c.owner).subCommands.put(c.name, command);
 
-            allCommands.put(c.name, command);
+            CommandManager.allCommands.put(c.name, command);
         }
     }
 
@@ -200,7 +170,7 @@ public class Worker {
      * @return all the accessible commands
      */
     public static HashMap<String, Command> getAccessibleCommands(CommandContext context) {
-        HashMap<String, Command> accessibleCommands = new HashMap<>(commandList);
+        HashMap<String, Command> accessibleCommands = new HashMap<>(CommandManager.commandList);
 
         // TODO : filter accessible commands only (based on context)
 
