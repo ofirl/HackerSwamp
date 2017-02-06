@@ -31,6 +31,7 @@ public class Worker {
      * @param args
      */
     public static void main(String[] args) {
+        CommandManager.init();
         initializeCommands();
 
         while (true) {

@@ -44,6 +44,11 @@ public class Connect extends BaseCommand{
      */
     public String main() {
         // TODO : implement
+        Argument domain = args.get("domain");
+        if (domain != null) {
+            // TODO : change context via context manager
+        }
+
         return getSubCommands();
     }
 }

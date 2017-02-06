@@ -6,6 +6,7 @@ public class CommandsTableRow {
     public String name;
     public String arguments;
     public String access;
+    public String location;
 
     public String[] args;
 
