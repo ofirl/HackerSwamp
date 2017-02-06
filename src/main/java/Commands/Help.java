@@ -30,7 +30,7 @@ public class Help extends BaseCommand {
     public Help(CommandContext context) {
         super(context);
         mainName = Parameters.CommandNameHelp;
-        superCommand = Worker.allCommands.get(mainName);
+        superCommand = CommandManager.allCommands.get(mainName);
     }
 
     /**

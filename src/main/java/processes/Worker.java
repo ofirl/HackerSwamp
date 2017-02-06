@@ -1,17 +1,14 @@
 package processes;
 
-import Commands.BaseCommand;
 import Commands.CommandManager;
-import Commands.Help;
-import Domains.Bank;
 import Domains.BaseDomain;
+import Domains.DomainsManager;
 import database_objects.AutocompleteTableRow;
 import database_objects.CommandsTableRow;
 import objects.*;
 import interface_objects.*;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class Worker {
     // region static variables
@@ -106,55 +103,104 @@ public class Worker {
             HashMap<String, Argument> argsMap = new HashMap<>();
             arguments.forEach((a) -> argsMap.put(a.name, a));
             // asked for auto complete list
-            if (argsMap.get(Parameters.InitCommandAutoCompleteList) != null) {
-                // get auto complete
-                HashMap<String, Command> result = getAutocompleteCommands(request.context);
-
-                // parse the auto complete list
-                String response = "";
-                for (String c :
-                        result.keySet())
-                    response += c + ",";
-
-                // delete the last ',' if needed
-                if (response.endsWith(","))
-                    response = response.substring(0, response.length() - 1);
-
-                Parser.addResponse(request.getKey(), Parser.encodeArgument("response", response));
-            }
+            if (argsMap.get(Parameters.InitCommandAutoCompleteList) != null)
+                executeInitCommandAutoCompleteList();
             // asked for system spec
-            else if (argsMap.get(Parameters.InitCommandSystemSpec) != null) {
-                // TODO : write the init code
-            }
+            else if (argsMap.get(Parameters.InitCommandSystemSpec) != null)
+                executeInitCommandSystemSpec();
             // asked for account balance
-            else if (argsMap.get(Parameters.InitCommandAccountBalance) != null) {
-                // TODO : write the init code
-            }
+            else if (argsMap.get(Parameters.InitCommandAccountBalance) != null)
+                executeInitCommandAccountBalance();
             // asked for system status
-            else if (argsMap.get(Parameters.InitCommandSystemStatus) != null) {
-                // TODO : write the init code
-            }
+            else if (argsMap.get(Parameters.InitCommandSystemStatus) != null)
+                executeInitCommandSystemStatus();
             // asked for macros
-            else if (argsMap.get(Parameters.InitCommandMacros) != null) {
-                // TODO : write the init code
-            }
+            else if (argsMap.get(Parameters.InitCommandMacros) != null)
+                executeInitCommandMacros();
         }
 
-        Command commandToRun = parseCommand();
-        if (commandToRun != null) {
-            // run command and add response
-            String response = commandToRun.execute(request.context, commandToRun.name, arguments);
+        String response = null;
 
-            Parser.addResponse(request.getKey(), Parser.encodeArgument("response", response));
-            return;
-        }
+        // search in domain specific commands (based on current location)
+        BaseDomain location = DomainsManager.getDomainByName(request.context.location);
+        Command commandToRun = parseCommand(location.commands);
+        if (commandToRun != null)
+            response = location.executeCommand(commandToRun.name);
 
-        // TODO : search also in the domains and location specific commands
+        // search in all accessible commands
+        commandToRun = parseCommand();
+        if (commandToRun != null)
+            response = commandToRun.execute(request.context, commandToRun.name, arguments);
 
-        //Parser.addResponse(request.getKey(), request.getKey());
+        // default fall back, did not find a matching command
+        if (response == null)
+            response = Parameters.ErrorCommandDoesNotExists;
+
+        // add a response
+        Parser.addResponse(request.getKey(), Parser.encodeArgument("response", response));
     }
 
+    /**
+     * executes init command for requesting macros
+     */
+    public void executeInitCommandMacros() {
+        // TODO : write the init code
+    }
 
+    /**
+     * executes init command for requesting system status
+     */
+    public void executeInitCommandSystemStatus() {
+        // TODO : write the init code
+    }
+
+    /**
+     * executes init command for requesting system spec
+     */
+    public void executeInitCommandSystemSpec() {
+        // TODO : write the init code
+    }
+
+    /**
+     * executes init command for requesting account balance
+     */
+    public void executeInitCommandAccountBalance() {
+        // get all the accounts
+        List<Account> accounts = DomainsManager.getBankAccountByUsername(request.context.username);
+
+        // parse the account list
+        String response = "";
+        for (Account a :
+                accounts) {
+            response += a.bank.name + ":" + a.balance + ",";
+        }
+
+        // delete the last ',' if needed
+        if (response.endsWith(","))
+            response = response.substring(0, response.length() - 1);
+
+        Parser.addResponse(request.getKey(), Parser.encodeArgument("response", response));
+    }
+
+    /**
+     * executes init command for requesting auto complete list
+     */
+    public void executeInitCommandAutoCompleteList() {
+        // get auto complete
+        HashMap<String, Command> result = getAutocompleteCommands(request.context);
+
+        // parse the auto complete list
+        String response = "";
+        for (String c :
+                result.keySet())
+            response += c + ",";
+
+        // delete the last ',' if needed
+        if (response.endsWith(","))
+            response = response.substring(0, response.length() - 1);
+
+        Parser.addResponse(request.getKey(), Parser.encodeArgument("response", response));
+    }
 
     /**
      * gets all the available commands for the current {@link CommandRequest}
@@ -235,6 +281,16 @@ public class Worker {
      */
     public Command parseCommand() {
         HashMap<String, Command> commandsToSearch = getAccessibleCommands();
+        return parseCommand(commandsToSearch);
+    }
+
+    /**
+     * searches for a command from a given starting hash map of commands
+     * @param startingPoint the starting hash map for the search
+     * @return the command to actually run
+     */
+    public Command parseCommand(HashMap<String, Command> startingPoint) {
+        HashMap<String, Command> commandsToSearch = startingPoint;
         Command commandFound = null;
         for (String c :
                 commandsToSearch.keySet()) {

@@ -165,6 +165,11 @@ public class Parameters {
      */
     public static String CommandNameHelpCommands = "commands";
 
+    /**
+     * connect
+     */
+    public static String CommandNameConnect = "connect";
+
     // endregion
 
     // region bank parameters

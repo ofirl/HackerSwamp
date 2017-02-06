@@ -31,6 +31,12 @@ public abstract class BaseCommand {
     public abstract BaseCommand createInstance(CommandContext context);
 
     /**
+     * the main command to run
+     * @return a response
+     */
+    public abstract String main();
+
+    /**
      * calling the appropriate function, defined by {@code subCommand}
      * @param subCommand the function to call
      * @return the command result

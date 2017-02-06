@@ -4,7 +4,7 @@ import objects.Command;
 
 import java.util.*;
 
-public class BaseDomain {
+public abstract class BaseDomain {
     public String name;
     public String domain;
     public String ip;
@@ -26,4 +26,6 @@ public class BaseDomain {
         this.commands = commands;
         this.type = type;
     }
+
+    public abstract String executeCommand(String command);
 }

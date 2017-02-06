@@ -16,6 +16,8 @@ public class CommandManager {
         // help.commands
         addSystemCommand(Parameters.CommandNameHelpCommands, new Help(), false);
         // TODO : add implementation for the commands
+        // connect
+        addSystemCommand(Parameters.CommandNameConnect, null, true);
     }
 
     /**
