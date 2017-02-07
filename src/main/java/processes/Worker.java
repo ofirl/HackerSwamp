@@ -15,7 +15,7 @@ public class Worker {
     public static CommandRequest requestToHandle;
     public static ThreadedJobFactory threadFactory = new ThreadedJobFactory(Parameters.maxWorkerThreads);
 
-    // TODO : add domain manager and command manager, worker is not responsible for them
+    // TODO : add domain manager and command manager, worker is not responsible for them - change the calls
     // endregion
 
     // region public variables

@@ -2,6 +2,7 @@ package Domains;
 
 import objects.*;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 public class Bank extends BaseDomain{
@@ -38,16 +39,6 @@ public class Bank extends BaseDomain{
         super(name, domain, ip, commands, type);
 
         // TODO : pull accounts data from db and add them
-    }
-
-    /**
-     * executes the provided {@code command}
-     * @param command the command to execute
-     * @return error or null if everything is ok
-     */
-    public String executeCommand(CommandContext context, String command, List<Argument> args) {
-        // TODO : write the code for the executeCommand function
-        return null;
     }
 
     /**

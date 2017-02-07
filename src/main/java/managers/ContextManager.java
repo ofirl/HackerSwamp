@@ -4,6 +4,7 @@ import objects.PlayerContext;
 
 import java.util.HashMap;
 
+// TODO : really need it?
 public class ContextManager {
     // static variables
     public static HashMap<String, PlayerContext> contexts = new HashMap<>();

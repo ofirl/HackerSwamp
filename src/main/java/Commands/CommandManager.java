@@ -20,9 +20,9 @@ public class CommandManager {
         addInitCommands(Parameters.CommandNameHelp, new Help(), true);
         // help.commands
         addInitCommands(Parameters.CommandNameHelpCommands, new Help(), false);
-        // TODO : add implementation for the commands
         // connect
         addInitCommands(Parameters.CommandNameConnect, new Connect(), true);
+        // TODO : add implementation for the commands
     }
 
     /**

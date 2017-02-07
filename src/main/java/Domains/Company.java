@@ -14,13 +14,4 @@ public class Company extends BaseDomain{
         super(name, domain, ip, commands, type);
     }
 
-    /**
-     * executes the provided {@code command}
-     * @param command the command to execute
-     * @return error or null if everything is ok
-     */
-    public String executeCommand(CommandContext context, String command, List<Argument> args) {
-        // TODO : write the code for the executeCommand function
-        return null;
-    }
 }

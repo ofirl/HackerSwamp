@@ -5,6 +5,7 @@ import objects.*;
 import obstacles.Obstacle;
 import obstacles.ObstacleState;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 public abstract class BaseDomain {
@@ -31,6 +32,10 @@ public abstract class BaseDomain {
         this.type = type;
     }
 
+    public void addCommand(Command command) {
+        commands.put(command.name, command);
+    }
+
     public void addObstacle(Obstacle obstacle) {
         obstacles.add(obstacle);
     }
@@ -44,7 +49,6 @@ public abstract class BaseDomain {
         }
 
         // change active user location
-        // TODO : change context location for the user
         ActiveUser a = LoginHandler.getActiveUserByUsername(context.username);
         if ( a == null)
             return Parameters.ErrorActiveUserNotFound;
@@ -55,5 +59,18 @@ public abstract class BaseDomain {
         return Parameters.DomainConnectedSuccessfully;
     }
 
-    public abstract String executeCommand(CommandContext context, String command, List<Argument> args);
+    /**
+     * executes the provided {@code command}
+     * @param command the command to execute
+     * @return error or null if everything is ok
+     */
+    public String executeCommand(CommandContext context, String command, List<Argument> args) {
+        try {
+            Method method = getClass().getDeclaredMethod(command);
+            return (String)method.invoke(this);
+        }
+        catch (Exception e) {
+            return "Error : could not find command " + command + " in " + domain;
+        }
+    }
 }
