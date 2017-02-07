@@ -34,7 +34,9 @@ public abstract class BaseCommand {
      * the main command to run
      * @return a response
      */
-    public abstract String main();
+    public String main() {
+        return getHelp();
+    }
 
     /**
      * calling the appropriate function, defined by {@code subCommand}
@@ -88,5 +90,9 @@ public abstract class BaseCommand {
     public void parseArguments(List<Argument> arguments) {
         args = new HashMap<>();
         arguments.forEach((a) -> args.put(a.name, a));
+    }
+
+    public String getHelp() {
+        return getSubCommands();
     }
 }

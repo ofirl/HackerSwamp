@@ -1,11 +1,11 @@
 package Domains;
 
 import Commands.BaseCommand;
-import objects.Account;
-import objects.Command;
-import objects.CommandAccess;
+import objects.*;
+import obstacles.Firewall;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,10 +17,15 @@ public class DomainsManager {
     public static ConcurrentHashMap<String, Company> companyDomains = new ConcurrentHashMap<>();
     public static ConcurrentHashMap<String, Organization> organizationDomains = new ConcurrentHashMap<>();
 
-    // domains initializer
-    static {
+    /**
+     * domains initializer
+     */
+    public static void init() {
         // banks
-        addBank("First Bank", "first.bank.cash", null);
+        // TODO : pull domains from db and add them
+        // TODO : add obstacles table to db
+        Bank b = addBank("First Bank", "first.bank.cash", null);
+        b.addObstacle(new Firewall("firewall 1", 9));
 
         // companies
 
@@ -33,10 +38,11 @@ public class DomainsManager {
      * @param domain the domain of the bank
      * @param ip the ip of the bank
      */
-    public static void addBank(String name, String domain, String ip) {
+    public static Bank addBank(String name, String domain, String ip) {
         Bank b = new Bank(name, domain, ip, DomainType.Bank);
         allDomains.put(name, b);
         bankDomains.put(name, b);
+        return b;
     }
 
     /**
@@ -120,5 +126,18 @@ public class DomainsManager {
      */
     public static BaseDomain getDomainByName(String name) {
         return allDomains.get(name);
+    }
+
+    /**
+     * tries to connect to the provided {@code domain}
+     * @param domain the domain to connect to
+     * @return error message or null if succeeded
+     */
+    public static String connectToDomain(String domain, CommandContext context, HashMap<String, Argument> args) {
+        BaseDomain d = allDomains.get(domain);
+        if (d != null)
+            return d.connect(context, args);
+
+        return Parameters.ErrorDomainNotFoundPrefix + domain;
     }
 }

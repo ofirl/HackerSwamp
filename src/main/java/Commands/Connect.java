@@ -1,5 +1,6 @@
 package Commands;
 
+import Domains.DomainsManager;
 import objects.*;
 
 public class Connect extends BaseCommand{
@@ -43,11 +44,9 @@ public class Connect extends BaseCommand{
      * @return general help
      */
     public String main() {
-        // TODO : implement
         Argument domain = args.get("domain");
-        if (domain != null) {
-            // TODO : change context via context manager
-        }
+        if (domain != null)
+            return DomainsManager.connectToDomain(domain.value, context, args);
 
         return getSubCommands();
     }

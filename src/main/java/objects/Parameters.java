@@ -190,4 +190,52 @@ public class Parameters {
     public static String BankErrorTransferAccountNull = "Error : account to transfer to is null";
 
     // endregion
+
+    // region location names
+
+    /**
+     * localhost location name
+     */
+    public static String LocationNameLocalHost = "localhost";
+
+    // endregion
+
+    // region domain parameters
+
+    /**
+     * suffix for public area of domain
+     */
+    public static String DomainPublicSuffix = "public";
+
+    /**
+     * suffix for members area of domain
+     */
+    public static String DomainMemeberSuffix = "members";
+
+    /**
+     * suffix for private area of domain
+     */
+    public static String DomainPrivateSuffix = "private";
+
+    /**
+     * suffix for admin area of domain
+     */
+    public static String DomainAdminSuffix = "admin";
+
+    /**
+     * error prefix for domain not found
+     */
+    public static String ErrorDomainNotFoundPrefix = "Error: cannot find domain ";
+
+    /**
+     * message for successfully connecting to a domain
+     */
+    public static String DomainConnectedSuccessfully = "Connected successfully";
+
+    /**
+     * error for non existing active user
+     */
+    public static String ErrorActiveUserNotFound = "Error : active user can't be found";
+
+    // endregion
 }

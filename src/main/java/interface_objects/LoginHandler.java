@@ -81,7 +81,7 @@ public class LoginHandler {
         if (authKey == null)
             return Parameters.loginErrorAuthKeyGeneration;
 
-        activeUsers.put(authKey, new ActiveUser(authKey, username, id, "localhost"));
+        activeUsers.put(authKey, new ActiveUser(authKey, username, id, Parameters.LocationNameLocalHost));
 
         if (error != null)
             return "Error :" + error;
@@ -124,6 +124,21 @@ public class LoginHandler {
      */
     public static ActiveUser getActiveUserByKey(String authKey) {
         return activeUsers.get(authKey);
+    }
+
+    /**
+     * gets the {@code ActiveUser} matches the {@code username} supplied, null if there isn't one
+     * @param username the username to check
+     * @return ActiveUser object or null
+     */
+    public static ActiveUser getActiveUserByUsername(String username) {
+        for (ActiveUser a :
+                activeUsers.values()) {
+            if (a.username == username)
+                return a;
+        }
+
+        return null;
     }
 
     /**

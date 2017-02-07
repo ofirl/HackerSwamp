@@ -121,12 +121,15 @@ public class Worker {
         }
 
         String response = null;
+        Command commandToRun;
 
         // search in domain specific commands (based on current location)
         BaseDomain location = DomainsManager.getDomainByName(request.context.location);
-        Command commandToRun = parseCommand(location.commands);
-        if (commandToRun != null)
-            response = location.executeCommand(commandToRun.name);
+        if (location != null) {
+            commandToRun = parseCommand(location.commands);
+            if (commandToRun != null)
+                response = location.executeCommand(request.context, commandToRun.name, arguments);
+        }
 
         // search in all accessible commands
         commandToRun = parseCommand();
