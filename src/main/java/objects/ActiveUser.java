@@ -4,10 +4,10 @@ import java.util.*;
 
 public class ActiveUser {
     // public variables
-    public String authKey;
-    public String username;
-    public int playerId;
-    public PlayerContext context;
+    public final String authKey;
+    public final String username;
+    public final int playerId;
+    public final PlayerContext context;
 
     /**
      * constructor
@@ -25,5 +25,9 @@ public class ActiveUser {
 
     public HashMap<String, Command> getAvailableCommands() {
         return context.availableCommands;
+    }
+
+    public String getLocation() {
+        return context.location;
     }
 }

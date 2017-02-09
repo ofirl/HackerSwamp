@@ -3,15 +3,11 @@ package interface_objects;
 import database_objects.*;
 import objects.DatabaseQuery;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.ParameterizedType;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.sql.Types;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedTransferQueue;
-import java.util.function.Supplier;
 
 public class DatabaseHandler {
 

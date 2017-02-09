@@ -14,7 +14,6 @@ import interface_objects.LoginHandler;
 import interface_objects.Parser;
 import spark.template.freemarker.FreeMarkerEngine;
 import spark.ModelAndView;
-import static spark.Spark.get;
 
 public class WebListener {
 
@@ -67,7 +66,7 @@ public class WebListener {
                 stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
                 ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
 
-                ArrayList<String> output = new ArrayList<String>();
+                ArrayList<String> output = new ArrayList<>();
                 while (rs.next()) {
                     output.add( "Read from DB: " + rs.getTimestamp("tick"));
                 }

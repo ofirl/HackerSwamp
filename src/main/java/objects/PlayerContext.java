@@ -46,7 +46,7 @@ public class PlayerContext {
         if (playerCorps != null && playerCorps.size() != 1 && playerCorps.get(0).corp != 0)
             corp = playerCorps.get(0).corp;
 
-        List<OrganizationCommandsTableRow> organizationCommands = DatabaseHandler.getTableElements(DatabaseTables.Organization_Commands, "name", "organization=" + username);
+        List<OrganizationCommandsTableRow> organizationCommands = DatabaseHandler.getTableElements(DatabaseTables.Organization_Commands, "name", "organization=" + corp);
         if (organizationCommands != null) {
             for (OrganizationCommandsTableRow o :
                     organizationCommands)

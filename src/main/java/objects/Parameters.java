@@ -210,7 +210,7 @@ public class Parameters {
     /**
      * suffix for members area of domain
      */
-    public static String DomainMemeberSuffix = "members";
+    public static String DomainMemberSuffix = "members";
 
     /**
      * suffix for private area of domain

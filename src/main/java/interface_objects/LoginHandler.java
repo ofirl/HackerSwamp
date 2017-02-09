@@ -134,7 +134,7 @@ public class LoginHandler {
     public static ActiveUser getActiveUserByUsername(String username) {
         for (ActiveUser a :
                 activeUsers.values()) {
-            if (a.username == username)
+            if (a.username.equals(username))
                 return a;
         }
 

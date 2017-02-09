@@ -4,8 +4,6 @@ import objects.Command;
 
 import java.util.HashMap;
 
-import static org.junit.Assert.*;
-
 // TODO : add tests for everything
 
 public class WorkerTest {

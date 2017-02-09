@@ -10,7 +10,7 @@ public class Argument {
     public Class type;
     public String value = null;
 
-    public static List<String> primitiveTypeList = new ArrayList<>();
+    public static final List<String> primitiveTypeList = new ArrayList<>();
     static {
         // TODO : make sure this is everything
         primitiveTypeList.add("int");

@@ -28,8 +28,9 @@ public class Worker {
 
     /**
      * entry point for worker process
-     * @param args
+     * @param args main program arguments
      */
+    @SuppressWarnings("InfiniteLoopStatement")
     public static void main(String[] args) {
         CommandManager.init();
         initializeCommands();
@@ -41,7 +42,8 @@ public class Worker {
                 requestToHandle = Parser.receiveCommand();
 
             // create a thread and handle the requestToHandle
-            threadFactory.newThread(new Worker(requestToHandle)::workerStart, null, "workerThread");
+            ThreadedJob thread = threadFactory.newThread(new Worker(requestToHandle)::workerStart, null, "workerThread");
+            thread.start();
         }
     }
 
@@ -263,6 +265,9 @@ public class Worker {
      * @return all the accessible commands and player scripts
      */
     public static HashMap<String, Command> getAllAccessibleCommands(CommandContext context) {
+        if (context == null)
+            return null;
+
         ActiveUser user = LoginHandler.getActiveUserByUsername(context.username);
         if (user == null)
             return null;

@@ -83,24 +83,24 @@ public class Parser {
      * @return a response matching the key
      */
     public static String waitForResponse(String key) {
-        synchronized (responseHashMap.get(key)) {
-            CommandRequest responseCommandRequest = responseHashMap.get(key);
-            try {
-                while (responseCommandRequest.response == null)
-                    responseCommandRequest.wait();
+            synchronized (responseHashMap.get(key)) {
+                CommandRequest responseCommandRequest = responseHashMap.get(key);
+                try {
+                    while (responseCommandRequest.response == null)
+                        responseCommandRequest.wait();
+                }
+                catch (Exception e) { }
+
+                responseHashMap.remove(key);
+                return responseCommandRequest.response;
             }
-            catch (Exception e) { }
-
-            responseHashMap.remove(key);
-            return responseCommandRequest.response;
         }
-    }
 
-    /**
-     * transfers a command to a worker
-     * @param c the command to run
-     * @return response for the command
-     */
+        /**
+         * transfers a command to a worker
+         * @param c the command to run
+         * @return response for the command
+         */
     public static void addCommand(CommandRequest c) {
         responseEnqueue(c);
         transferCommand(c);
@@ -122,7 +122,7 @@ public class Parser {
             return Parameters.parserErrorInvalidArguments;
 
         ActiveUser activeUser = LoginHandler.getActiveUserByKey(args.get("authKey"));
-        CommandContext context = new CommandContext(activeUser.username, activeUser.playerId, activeUser.location);
+        CommandContext context = new CommandContext(activeUser.username, activeUser.playerId, activeUser.getLocation());
         CommandRequest c = new CommandRequest(args.get("command"), context);
 
         addCommand(c);
@@ -154,7 +154,7 @@ public class Parser {
             output += key + "(" + value.length() + ")=" + value + "&"; // key(length)=value&
         }
 
-        if (output != "")
+        if (!output.equals(""))
             output = output.substring(0, output.length() - 1);
 
         return output;

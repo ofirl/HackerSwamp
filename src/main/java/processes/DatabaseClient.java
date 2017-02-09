@@ -12,6 +12,7 @@ public class DatabaseClient {
      * entry point of the database client process
      * @param args
      */
+    @SuppressWarnings("InfiniteLoopStatement")
     public static void main(String[] args) {
         DatabaseQuery query;
         while (true) {

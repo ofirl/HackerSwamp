@@ -3,10 +3,10 @@ package objects;
 import Domains.Bank;
 
 public class Account {
-    public String owner;
-    public String accountId;
+    public final String owner;
+    public final String accountId;
     public float balance;
-    public Bank bank;
+    public final Bank bank;
 
     public Account(String owner, String accountId, Bank bank) {
         this(owner, accountId, 0, bank);

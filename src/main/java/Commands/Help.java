@@ -3,15 +3,14 @@ package Commands;
 import objects.*;
 import processes.Worker;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
+/**
+ * accepted arguments for the help command :
+ * filter : "commands"
+ */
 public class Help extends BaseCommand {
 
-    /**
-     * accepted arguments for the help command :
-     * filter : "commands"
-     */
     static {
         acceptedArguments.add(new Argument("filter", String.class));
     }
@@ -58,12 +57,17 @@ public class Help extends BaseCommand {
         HashMap<String, Command> commands = null;
         Argument filter = args.get("filter");
         if (filter != null) {
-            if (filter.value.equals("commands"))
-                commands = Worker.getAccessibleCommands(context);
-            else if (filter.value.equals("scripts"))
-                commands = Worker.getAccessiblePlayerScripts(context);
-            else
-                commands = Worker.getAllAccessibleCommands(context);
+            switch (filter.value) {
+                case "commands":
+                    commands = Worker.getAccessibleCommands(context);
+                    break;
+                case "scripts":
+                    commands = Worker.getAccessiblePlayerScripts(context);
+                    break;
+                default:
+                    commands = Worker.getAllAccessibleCommands(context);
+                    break;
+            }
         }
 
         if (commands == null)

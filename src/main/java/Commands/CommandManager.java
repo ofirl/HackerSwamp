@@ -28,7 +28,7 @@ public class CommandManager {
     /**
      * used to add commands during init
      * @param name the name of the command
-     * @param baseCommand the {@code baseCommand} of the commnad
+     * @param baseCommand the {@code baseCommand} of the command
      * @param mainCommand whether this command is a main command
      */
     public static void addInitCommands(String name, BaseCommand baseCommand, boolean mainCommand) {
@@ -39,7 +39,7 @@ public class CommandManager {
 
     /**
      * created and adds a system command to the lists
-     * @param name the name of hte ocmmamd
+     * @param name the name of hte command
      * @param baseCommand the class that implements the command
      */
     public static void addSystemCommand(int id, String name, BaseCommand baseCommand, boolean mainCommand) {
@@ -48,7 +48,7 @@ public class CommandManager {
 
     /**
      * created and adds a system command to the lists
-     * @param name the name of hte ocmmamd
+     * @param name the name of hte command
      * @param baseCommand the class that implements the command
      * @param access the command access type
      */

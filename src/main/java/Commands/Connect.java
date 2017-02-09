@@ -3,14 +3,14 @@ package Commands;
 import Domains.DomainsManager;
 import objects.*;
 
+/**
+ * accepted arguments for the connect command :
+ * filter : "commands"
+ */
 public class Connect extends BaseCommand{
 
-    /**
-     * accepted arguments for the connect command :
-     * filter : "commands"
-     */
     static {
-        //acceptedArguments.add(new Argument("filter", String.class));
+        acceptedArguments.add(new Argument("filter", String.class));
     }
 
     /**
