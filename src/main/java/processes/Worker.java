@@ -49,6 +49,7 @@ public class Worker {
      * initializing command lists from database
      */
     public static void initializeCommands() {
+        // TODO : fix...
         // get command list from db
         List<CommandsTableRow> dbCommands = DatabaseHandler.getTableElements(DatabaseTables.Commands);
         // add command to commandList (if needed) and allCommands
@@ -73,7 +74,7 @@ public class Worker {
                 CommandManager.allCommands.put(c.owner, CommandManager.commandList.get(c.owner));
             }
 
-            CommandManager.commandList.get(c.owner).subCommands.put(c.name, command);
+            CommandManager.getCommandByName(c.owner).subCommands.put(c.name, command);
 
             CommandManager.allCommands.put(c.name, command);
         }
@@ -222,7 +223,15 @@ public class Worker {
     public static HashMap<String, Command> getAccessibleCommands(CommandContext context) {
         HashMap<String, Command> accessibleCommands = new HashMap<>(CommandManager.commandList);
 
-        // TODO : filter accessible commands only (based on context)
+        ActiveUser user = LoginHandler.getActiveUserByUsername(context.username);
+        if (user == null)
+            return null;
+        HashMap<String, Command> allCommands = user.getAvailableCommands();
+        for (Command c :
+                allCommands.values()) {
+            if (c.access == CommandAccess.System)
+                accessibleCommands.put(c.name, c);
+        }
 
         return accessibleCommands;
     }
@@ -235,7 +244,15 @@ public class Worker {
     public static HashMap<String, Command> getAccessiblePlayerScripts(CommandContext context) {
         HashMap<String, Command> accessibleScripts = new HashMap<>();
 
-        // TODO : add all the other accessible commands (player scripts from db, etc.) using context
+        ActiveUser user = LoginHandler.getActiveUserByUsername(context.username);
+        if (user == null)
+            return null;
+        HashMap<String, Command> allCommands = user.getAvailableCommands();
+        for (Command c :
+                allCommands.values()) {
+            if (c.access != CommandAccess.System)
+                accessibleScripts.put(c.name, c);
+        }
 
         return accessibleScripts;
     }
@@ -246,12 +263,11 @@ public class Worker {
      * @return all the accessible commands and player scripts
      */
     public static HashMap<String, Command> getAllAccessibleCommands(CommandContext context) {
-        HashMap<String, Command> accessibleCommands = getAccessibleCommands(context);
-        accessibleCommands.putAll(getAccessiblePlayerScripts(context));
+        ActiveUser user = LoginHandler.getActiveUserByUsername(context.username);
+        if (user == null)
+            return null;
 
-        // TODO : add all the other accessible commands (player scripts from db, etc.) using context
-
-        return accessibleCommands;
+        return user.getAvailableCommands();
     }
 
     /**

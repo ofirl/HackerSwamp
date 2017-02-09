@@ -58,4 +58,13 @@ public class CommandManager {
         if (mainCommand)
             commandList.put(cmd.name, cmd);
     }
+
+    /**
+     * gets the command with the provided {@code name}
+     * @param name the name to search for
+     * @return the command or null if not found
+     */
+    public static Command getCommandByName(String name) {
+        return allCommands.get(name);
+    }
 }

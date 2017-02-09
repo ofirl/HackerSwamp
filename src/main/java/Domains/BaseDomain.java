@@ -54,7 +54,7 @@ public abstract class BaseDomain {
             return Parameters.ErrorActiveUserNotFound;
 
         // TODO : domain? or name? need to make sure
-        a.location = domain;
+        a.context.changeLocation(domain);
 
         return Parameters.DomainConnectedSuccessfully;
     }
