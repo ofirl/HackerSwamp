@@ -1,6 +1,7 @@
 package objects;
 
-import Commands.BaseCommand;
+import commands.BaseCommand;
+import commands.CommandAccess;
 
 import java.util.HashMap;
 import java.util.List;

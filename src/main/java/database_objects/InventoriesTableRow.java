@@ -5,4 +5,5 @@ public class InventoriesTableRow {
     public String owner;
     public int item;
     public String location;
+    public boolean equipped;
 }

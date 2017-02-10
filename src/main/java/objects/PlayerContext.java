@@ -1,9 +1,7 @@
 package objects;
 
-import Commands.CommandManager;
-import database_objects.FriendsCommandsTableRow;
-import database_objects.OrganizationCommandsTableRow;
-import database_objects.PlayersTableRow;
+import commands.CommandManager;
+import database_objects.CommandsViewTableRow;
 import interface_objects.DatabaseHandler;
 import interface_objects.DatabaseTables;
 
@@ -14,6 +12,7 @@ public class PlayerContext {
     public String username;
     public String location;
     public HashMap<String, Command> availableCommands;
+    public HashMap<String, Command> autoCompleteCommands;
 
     /**
      * constructor
@@ -21,8 +20,9 @@ public class PlayerContext {
      */
     public PlayerContext(String username) {
         this.username = username;
-        this.location = "localhost";
+        this.location = Parameters.DefaultLocation;
         this.availableCommands = getAvailableCommands(username);
+        this.autoCompleteCommands = getAutoCompleteCommands(username);
     }
 
     /**
@@ -33,29 +33,38 @@ public class PlayerContext {
     public HashMap<String, Command> getAvailableCommands(String username) {
         HashMap<String, Command> commands = new HashMap<>();
 
-        List<FriendsCommandsTableRow> friendsCommands = DatabaseHandler.getTableElements(DatabaseTables.Friends_Commands, "name", "username='" + username + "'");
-        if (friendsCommands != null) {
-            for (FriendsCommandsTableRow f :
-                    friendsCommands)
+        List<CommandsViewTableRow> accessibleCommands = DatabaseHandler.getTableElements(DatabaseTables.Accessible_Commands, "name", "username='" + username + "'");
+        if (accessibleCommands != null) {
+            for (CommandsViewTableRow f :
+                    accessibleCommands)
                 availableCommands.put(f.name, CommandManager.getCommandByName(f.name));
-        }
-
-        List<PlayersTableRow> playerCorps = DatabaseHandler.getTableElements(DatabaseTables.Players, "corp", "username='" + username + "'");
-        int corp = 0;
-        // TODO : check that 0 is correct here (default value and not null), if so the last condition is redundant - just assign the corp variable...
-        if (playerCorps != null && playerCorps.size() != 1 && playerCorps.get(0).corp != 0)
-            corp = playerCorps.get(0).corp;
-
-        List<OrganizationCommandsTableRow> organizationCommands = DatabaseHandler.getTableElements(DatabaseTables.Organization_Commands, "name", "organization=" + corp);
-        if (organizationCommands != null) {
-            for (OrganizationCommandsTableRow o :
-                    organizationCommands)
-                availableCommands.put(o.name, CommandManager.getCommandByName(o.name));
         }
 
         return commands;
     }
 
+    /**
+     * gets all the available commands for autocomplete of {@code username}
+     * @param username the username to filter for
+     * @return all the available commands for auto complete
+     */
+    public HashMap<String, Command> getAutoCompleteCommands(String username) {
+        HashMap<String, Command> commands = new HashMap<>();
+
+        List<CommandsViewTableRow> accessibleCommands = DatabaseHandler.getTableElements(DatabaseTables.Autocomplete_Commands, "name", "username='" + username + "'");
+        if (accessibleCommands != null) {
+            for (CommandsViewTableRow f :
+                    accessibleCommands)
+                availableCommands.put(f.name, CommandManager.getCommandByName(f.name));
+        }
+
+        return commands;
+    }
+
+    /**
+     * changes the location
+     * @param location the new location
+     */
     public void changeLocation(String location) {
         this.location = location;
     }

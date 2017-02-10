@@ -1,4 +1,4 @@
-package Commands;
+package commands;
 
 import database_objects.CommandsTableRow;
 import interface_objects.DatabaseHandler;

@@ -1,6 +1,6 @@
 package objects;
 
-import Domains.Bank;
+import domains.Bank;
 
 public class Account {
     public final String owner;

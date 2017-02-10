@@ -1,4 +1,4 @@
-package Domains;
+package domains;
 
 import objects.*;
 

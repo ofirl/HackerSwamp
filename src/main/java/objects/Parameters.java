@@ -238,4 +238,13 @@ public class Parameters {
     public static String ErrorActiveUserNotFound = "Error : active user can't be found";
 
     // endregion
+
+    // region player context parameters
+
+    /**
+     * default location for player context
+     */
+    public static String DefaultLocation = "localhost";
+
+    // endregion
 }

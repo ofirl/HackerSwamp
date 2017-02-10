@@ -1,6 +1,6 @@
 package database_objects;
 
-public class CommandsTableRow {
+public class CommandsViewTableRow {
     public int id;
     public String owner;
     public String name;
@@ -8,11 +8,5 @@ public class CommandsTableRow {
     public String access;
     public String location;
     public String security_rating;
-
-    public String[] args;
-
-    public void parseArguments() {
-        if (arguments != null)
-            args = arguments.split(",");
-    }
+    public String username;
 }

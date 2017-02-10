@@ -1,8 +1,9 @@
 package processes;
 
-import Commands.CommandManager;
-import Domains.BaseDomain;
-import Domains.DomainsManager;
+import commands.CommandAccess;
+import commands.CommandManager;
+import domains.BaseDomain;
+import domains.DomainsManager;
 import database_objects.AutocompleteTableRow;
 import database_objects.CommandsTableRow;
 import objects.*;

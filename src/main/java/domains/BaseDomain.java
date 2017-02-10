@@ -1,4 +1,4 @@
-package Domains;
+package domains;
 
 import interface_objects.LoginHandler;
 import objects.*;

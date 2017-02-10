@@ -1,4 +1,4 @@
-package objects;
+package commands;
 
 public enum CommandAccess {
     /**

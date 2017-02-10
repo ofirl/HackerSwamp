@@ -81,7 +81,7 @@ public class LoginHandler {
         if (authKey == null)
             return Parameters.loginErrorAuthKeyGeneration;
 
-        activeUsers.put(authKey, new ActiveUser(authKey, username, id, Parameters.LocationNameLocalHost));
+        activeUsers.put(authKey, new ActiveUser(authKey, username, id));
 
         if (error != null)
             return "Error :" + error;

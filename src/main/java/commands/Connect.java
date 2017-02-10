@@ -1,6 +1,6 @@
-package Commands;
+package commands;
 
-import Domains.DomainsManager;
+import domains.DomainsManager;
 import objects.*;
 
 /**
