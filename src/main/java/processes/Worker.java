@@ -6,6 +6,7 @@ import domains.BaseDomain;
 import domains.DomainsManager;
 import database_objects.AutocompleteTableRow;
 import database_objects.CommandsTableRow;
+import managers.ItemManager;
 import objects.*;
 import interface_objects.*;
 
@@ -33,8 +34,11 @@ public class Worker {
      */
     @SuppressWarnings("InfiniteLoopStatement")
     public static void main(String[] args) {
+        // TODO : add all the initializations and maybe move it somewhere else?
         CommandManager.init();
         initializeCommands();
+        DomainsManager.init();
+        ItemManager.init();
 
         while (true) {
             requestToHandle = null;

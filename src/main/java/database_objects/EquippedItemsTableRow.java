@@ -1,11 +1,14 @@
 package database_objects;
 
-public class InventoriesTableRow {
+public class EquippedItemsTableRow {
+    // public variables
     public int id;
     public String owner;
-    public int item;
     public String location;
     public boolean equipped;
+    public String type;
+    public int itemid;
+    public String name;
     public String state;
     public int health;
 }

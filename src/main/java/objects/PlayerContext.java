@@ -13,6 +13,7 @@ public class PlayerContext {
     public String location;
     public HashMap<String, Command> availableCommands;
     public HashMap<String, Command> autoCompleteCommands;
+    public SystemSpec systemSpec;
 
     /**
      * constructor
@@ -23,6 +24,7 @@ public class PlayerContext {
         this.location = Parameters.DefaultLocation;
         this.availableCommands = getAvailableCommands(username);
         this.autoCompleteCommands = getAutoCompleteCommands(username);
+        this.systemSpec = SystemSpec.getUserSystemSpecs(username);
     }
 
     /**
