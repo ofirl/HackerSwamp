@@ -7,6 +7,7 @@ import items.*;
 import managers.ItemManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -69,5 +70,36 @@ public class SystemSpec {
         }
 
         return new SystemSpec(motherboard, cpus, rams, hdds, networkCard);
+    }
+
+    /**
+     * gets the system spec as arguments to send
+     * @return the system spec as arguments
+     */
+    public HashMap<String, String> getSpecAsArguments() {
+        HashMap<String, String> spec = new HashMap<>();
+
+        // motherboard
+        spec.putAll(motherboard.getSpecAsArguments());
+
+        // network card
+        spec.putAll(networkCard.getSpecAsArguments());
+
+        // cpu
+        for (Cpu c :
+                cpus)
+            spec.putAll(c.getSpecAsArguments());
+
+        // ram
+        for (Ram r :
+                rams)
+            spec.putAll(r.getSpecAsArguments());
+
+        // hdd
+        for (Hdd h :
+                hdds)
+            spec.putAll(h.getSpecAsArguments());
+
+        return spec;
     }
 }

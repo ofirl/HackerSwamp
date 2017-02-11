@@ -1,5 +1,7 @@
 package items;
 
+import java.util.HashMap;
+
 public class NetworkCard extends  BaseItem{
     // public variables
     public int downloadLimit;
@@ -12,5 +14,20 @@ public class NetworkCard extends  BaseItem{
         super(id, name);
         this.downloadLimit = downloadLimit;
         this.uploadLimit = uploadLimit;
+    }
+
+    /**
+     * gets the network card as arguments to send
+     * @return the network card as arguments
+     */
+    public HashMap<String, String> getSpecAsArguments() {
+        HashMap<String, String> networkCard = new HashMap<>();
+
+        networkCard.put("network_card_id", String.valueOf(id));
+        networkCard.put("network_card_name", name);
+        networkCard.put("network_card_download", String.valueOf(downloadLimit));
+        networkCard.put("network_card_upload", String.valueOf(uploadLimit));
+
+        return networkCard;
     }
 }

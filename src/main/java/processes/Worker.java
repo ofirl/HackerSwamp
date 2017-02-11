@@ -36,12 +36,10 @@ public class Worker {
      */
     @SuppressWarnings("InfiniteLoopStatement")
     public static void main(String[] args) {
-        // TODO : add all the initializations and maybe move it somewhere else?
-        CommandManager.init();
-        initializeCommands();
-        DomainsManager.init();
-        ItemManager.init();
+        // init the entire system
+        initSystem();
 
+        // main loop
         while (true) {
             requestToHandle = null;
             // make sure we have a requestToHandle
@@ -55,10 +53,22 @@ public class Worker {
     }
 
     /**
+     * main init method for the entire system
+     */
+    public static void initSystem() {
+        // TODO : add all the initializations and maybe move it somewhere else?
+        CommandManager.init();
+        DomainsManager.init();
+        ItemManager.init();
+        // TODO : move...
+        //initializeCommands();
+    }
+
+    /**
      * initializing command lists from database
      */
     public static void initializeCommands() {
-        // TODO : fix...
+        // TODO : fix... and move to commandManger.initPlayerScripts
         // get command list from db
         List<CommandsTableRow> dbCommands = DatabaseHandler.getTableElements(DatabaseTables.Commands);
         // add command to commandList (if needed) and allCommands
@@ -200,7 +210,13 @@ public class Worker {
      * executes init command for requesting system status
      */
     public void executeInitCommandSystemStatus() {
-        // TODO : write the init code
+        ActiveUser activeUser = LoginHandler.getActiveUserByUsername(request.context.username);
+        if (activeUser == null) {
+            Parser.addResponse(request.getKey(), Parser.encodeArgument("response", Parameters.ErrorActiveUserNotFound));
+            return;
+        }
+
+        Parser.addResponse(request.getKey(), Parser.encodeArgumentList(activeUser.getSystemStatusAsArguments()));
     }
 
     /**
@@ -235,11 +251,7 @@ public class Worker {
         }
 
         // parse response
-        HashMap<String, String> responseArgs = new HashMap<>();
-
-        // TODO : decide what needs to be returned (name? stats? both?) and put it in responseArgs
-
-        Parser.addResponse(request.getKey(), Parser.encodeArgumentList(responseArgs));
+        Parser.addResponse(request.getKey(), Parser.encodeArgumentList(spec.getSpecAsArguments()));
     }
 
     /**

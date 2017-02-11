@@ -82,4 +82,12 @@ public class ActiveUser {
     public boolean isInstallingObstacle() {
         return context.isInstallingObstacle();
     }
+
+    /**
+     * gets the system status as arguments to send
+     * @return the system status as arguments to send
+     */
+    public HashMap<String, String> getSystemStatusAsArguments() {
+        return context.getSystemStatusAsArguments();
+    }
 }

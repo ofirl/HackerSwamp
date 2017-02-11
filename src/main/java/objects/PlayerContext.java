@@ -131,4 +131,12 @@ public class PlayerContext {
     public boolean isInstallingObstacle() {
         return systemStatus.installingObstacle != 0;
     }
+
+    /**
+     * gets the system specs as arguments to send
+     * @return the system spec as arguments to send
+     */
+    public HashMap<String, String> getSystemStatusAsArguments() {
+        return systemStatus.getStatusAsArguments();
+    }
 }

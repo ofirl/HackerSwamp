@@ -9,6 +9,7 @@ import interface_objects.DatabaseHandler;
 import interface_objects.DatabaseTables;
 import objects.*;
 
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CommandManager {
@@ -20,6 +21,14 @@ public class CommandManager {
      * system commands initializer
      */
     public static void init() {
+        initSystemCommands();
+        initPlayerScripts();
+    }
+
+    /**
+     * init for system commands
+     */
+    public static void initSystemCommands() {
         // help
         addInitCommands(Parameters.CommandNameHelp, new Help(), true);
         // help.commands
@@ -30,6 +39,13 @@ public class CommandManager {
     }
 
     /**
+     * init for player scripts
+     */
+    public static void initPlayerScripts(){
+        // TODO : implement
+    }
+
+    /**
      * used to add commands during init
      * @param name the name of the command
      * @param baseCommand the {@code baseCommand} of the command
@@ -37,8 +53,9 @@ public class CommandManager {
      */
     public static void addInitCommands(String name, BaseCommand baseCommand, boolean mainCommand) {
         String filter = "owner='system' AND name='" + name + "'";
-        CommandsTableRow row = DatabaseHandler.<CommandsTableRow>getTableElements(DatabaseTables.Commands, null, filter).get(0);
-        addSystemCommand(row.id, name, baseCommand, mainCommand);
+        List<CommandsTableRow> row = DatabaseHandler.getTableElements(DatabaseTables.Commands, null, filter);
+        if (row != null && row.size() == 0)
+            addSystemCommand(row.get(0).id, name, baseCommand, mainCommand);
     }
 
     /**
