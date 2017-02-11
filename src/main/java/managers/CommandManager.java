@@ -1,5 +1,9 @@
-package commands;
+package managers;
 
+import commands.BaseCommand;
+import commands.CommandAccess;
+import commands.Connect;
+import commands.Help;
 import database_objects.CommandsTableRow;
 import interface_objects.DatabaseHandler;
 import interface_objects.DatabaseTables;

@@ -1,9 +1,11 @@
 package processes;
 
 import commands.CommandAccess;
-import commands.CommandManager;
+import database_objects.MacrosTableRow;
+import javafx.util.Pair;
+import managers.CommandManager;
 import domains.BaseDomain;
-import domains.DomainsManager;
+import managers.DomainsManager;
 import database_objects.AutocompleteTableRow;
 import database_objects.CommandsTableRow;
 import managers.ItemManager;
@@ -126,10 +128,31 @@ public class Worker {
             // asked for macros
             else if (argsMap.get(Parameters.InitCommandMacros) != null)
                 executeInitCommandMacros();
+
+            return;
         }
 
         String response = null;
         Command commandToRun;
+
+        // TODO : check the macros
+        if (request.command.startsWith("/")) {
+             ActiveUser activeUser = LoginHandler.getActiveUserByUsername(request.context.username);
+             if (activeUser == null) {
+                 Parser.addResponse(request.getKey(), Parser.encodeArgument("response", Parameters.ErrorActiveUserNotFound));
+                 return;
+             }
+             HashMap<String, String> macros = activeUser.getMacros();
+             if (macros != null) {
+                String commandReplacement = macros.get(request.command.substring(1));
+                if (commandReplacement == null) {
+                    Parser.addResponse(request.getKey(), Parser.encodeArgument("response", Parameters.ErrorMacroNotFound));
+                    return;
+                }
+
+                request.command = commandReplacement;
+             }
+        }
 
         // search in domain specific commands (based on current location)
         BaseDomain location = DomainsManager.getDomainByName(request.context.location);
@@ -139,16 +162,23 @@ public class Worker {
                 response = location.executeCommand(request.context, commandToRun.name, arguments);
         }
 
+        if (response != null) {
+            Parser.addResponse(request.getKey(), Parser.encodeArgument("response", response));
+            return;
+        }
+
         // search in all accessible commands
         commandToRun = parseCommand();
         if (commandToRun != null)
             response = commandToRun.execute(request.context, commandToRun.name, arguments);
 
-        // default fall back, did not find a matching command
-        if (response == null)
-            response = Parameters.ErrorCommandDoesNotExists;
+        if (response != null) {
+            Parser.addResponse(request.getKey(), Parser.encodeArgument("response", response));
+            return;
+        }
 
-        // add a response
+        // default fall back, did not find a matching command
+        response = Parameters.ErrorCommandDoesNotExists;
         Parser.addResponse(request.getKey(), Parser.encodeArgument("response", response));
     }
 
@@ -156,7 +186,14 @@ public class Worker {
      * executes init command for requesting macros
      */
     public void executeInitCommandMacros() {
-        // TODO : write the init code
+        ActiveUser activeUser = LoginHandler.getActiveUserByUsername(request.context.username);
+        if (activeUser == null) {
+            Parser.addResponse(request.getKey(), Parser.encodeArgument("response", Parameters.ErrorActiveUserNotFound));
+            return;
+        }
+
+        HashMap<String, String> macros = activeUser.getMacros();
+        Parser.addResponse(request.getKey(), Parser.encodeArgumentList(macros));
     }
 
     /**
@@ -170,7 +207,39 @@ public class Worker {
      * executes init command for requesting system spec
      */
     public void executeInitCommandSystemSpec() {
-        // TODO : write the init code
+        // get the system specs
+        SystemSpec spec =  SystemSpec.getUserSystemSpecs(request.context.username);
+        // sanity checks
+        if (spec == null) {
+            Parser.addResponse(request.getKey(), Parser.encodeArgument("response", Parameters.ErrorSystemSpecsNotFound));
+            return;
+        }
+
+        // more sanity checks
+        String error = null;
+        if (spec.motherboard == null)
+            error = Parameters.ErrorSystemSpecMotherboardNotFound;
+        else if (spec.cpus == null)
+            error = Parameters.ErrorSystemSpecCpuNotFound;
+        else if (spec.rams == null)
+            error = Parameters.ErrorSystemSpecRamNotFound;
+        else if (spec.hdds == null)
+            error = Parameters.ErrorSystemSpecHddNotFound;
+        else if (spec.networkCard == null)
+            error = Parameters.ErrorSystemSpecNetworkCardNotFound;
+
+        // return if there is an error
+        if (error != null) {
+            Parser.addResponse(request.getKey(), Parser.encodeArgument("response", error));
+            return;
+        }
+
+        // parse response
+        HashMap<String, String> responseArgs = new HashMap<>();
+
+        // TODO : decide what needs to be returned (name? stats? both?) and put it in responseArgs
+
+        Parser.addResponse(request.getKey(), Parser.encodeArgumentList(responseArgs));
     }
 
     /**
@@ -286,23 +355,14 @@ public class Worker {
      * @return the auto completable commands
      */
     public HashMap<String, Command> getAutocompleteCommands(CommandContext context) {
-        // TODO : add database view for selecting the excludes with their names and change accordingly
-        // get all accessible
-        HashMap<String, Command> accessible = getAllAccessibleCommands(context);
+        if (context == null)
+            return null;
 
-        // get excludes
-        String filter = "username='" + context.username + "' AND " + "action='exclude'";
-        List<AutocompleteTableRow> excludes = DatabaseHandler.getTableElements(DatabaseTables.Autocomplete, null, filter);
+        ActiveUser user = LoginHandler.getActiveUserByUsername(context.username);
+        if (user == null)
+            return null;
 
-        if (excludes != null) {
-            // remove excludes from accessible list
-            for (AutocompleteTableRow a :
-                    excludes) {
-                accessible.remove("see to do");
-            }
-        }
-
-        return accessible;
+        return user.getAutoCompleteCommands();
     }
 
     /**
@@ -310,7 +370,7 @@ public class Worker {
      * @return the command to actually run
      */
     public Command parseCommand() {
-        HashMap<String, Command> commandsToSearch = getAccessibleCommands();
+        HashMap<String, Command> commandsToSearch = getAllAccessibleCommands(request.context);
         return parseCommand(commandsToSearch);
     }
 
@@ -375,8 +435,10 @@ public class Worker {
                     return false;
                 }
 
-                if (arg.equals(Parameters.InitCommandTemplate))
+                if (arg.equals(Parameters.InitCommandTemplate)) {
                     initCommand = true;
+                    continue;
+                }
 
                 // add argument to list
                 String type;

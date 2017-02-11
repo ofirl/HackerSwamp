@@ -1,5 +1,6 @@
 package commands;
 
+import managers.CommandManager;
 import objects.*;
 import processes.Worker;
 

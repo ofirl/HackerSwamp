@@ -39,10 +39,47 @@ public class ActiveUser {
     }
 
     /**
+     * gets the defined macros
+     * @return the defined macros
+     */
+    public HashMap<String, String> getMacros() {
+        return context.macros;
+    }
+
+    /**
      * gets the location of the user
      * @return the location of the user
      */
     public String getLocation() {
         return context.location;
+    }
+
+    /**
+     * returns whether or not the system is being hacked
+     */
+    public boolean isBeingHacked() {
+        return context.isBeingHacked();
+    }
+
+    /**
+     * returns whether or not the system is hacked (someone is already in)
+     */
+    // TODO : change the name from hacked to something more intuitive
+    public boolean isHacked() {
+        return context.isHacked();
+    }
+
+    /**
+     * returns whether or not the system is installing new hardware
+     */
+    public boolean isInstallingHardware() {
+        return context.isInstallingHardware();
+    }
+
+    /**
+     * returns whether or not the system is installing new obstacle
+     */
+    public boolean isInstallingObstacle() {
+        return context.isInstallingObstacle();
     }
 }

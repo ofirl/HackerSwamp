@@ -27,7 +27,9 @@ package objects;
  * </ul>
  */
 public class Parameters {
-    // region login parameters
+    // region login
+
+        // region login parameters
 
     /**
      * authentication key will be generated from this characters
@@ -46,7 +48,7 @@ public class Parameters {
 
     // endregion
 
-    // region login error messages
+        // region login error messages
 
     /**
      * error for invalid arguments count (not 2 arguments)
@@ -75,7 +77,11 @@ public class Parameters {
 
     // endregion
 
-    // region parser error messages
+    // endregion
+
+    // region parser
+
+        // region error messages
 
     /**
      * error for invalid arguments
@@ -94,7 +100,11 @@ public class Parameters {
 
     // endregion
 
-    // region worker parameters
+    // endregion
+
+    // region worker
+
+        // region error messages
 
     /**
      * max worker threads allowed simultaneously
@@ -120,6 +130,45 @@ public class Parameters {
      * error could not find a command prefix (while going over the command list)
      */
     public static String ErrorCommandDoesNotExists = "Error : command does not exists";
+
+    /**
+     * error could not find the macro
+     */
+    public static String ErrorMacroNotFound = "Error : macro is not defined";
+
+    /**
+     * error for system specs not found
+     */
+    public static String ErrorSystemSpecsNotFound = "Error : could not find system specs";
+
+    /**
+     * error for motherboard not found in system specs
+     */
+    public static String ErrorSystemSpecMotherboardNotFound = "Error : could not find a motherboard in system specs";
+
+    /**
+     * error for cpu not found in system specs
+     */
+    public static String ErrorSystemSpecCpuNotFound = "Error : could not find a cpu in system specs";
+
+    /**
+     * error for ram not found in system specs
+     */
+    public static String ErrorSystemSpecRamNotFound = "Error : could not find a ram in system specs";
+
+    /**
+     * error for hdd not found in system specs
+     */
+    public static String ErrorSystemSpecHddNotFound = "Error : could not find a hdd in system specs";
+
+    /**
+     * error for network card not found in system specs
+     */
+    public static String ErrorSystemSpecNetworkCardNotFound = "Error : could not find a network card in system specs";
+
+    // endregion
+
+        // region init commands
 
     /**
      * the init command template, command of this kind is special and will be received bon initialization of client
@@ -153,6 +202,8 @@ public class Parameters {
 
     // endregion
 
+    // endregion
+
     // region commands name
 
     /**
@@ -172,7 +223,7 @@ public class Parameters {
 
     // endregion
 
-    // region bank parameters
+    // region bank
 
     /**
      * prefix for account not found error
@@ -200,7 +251,7 @@ public class Parameters {
 
     // endregion
 
-    // region domain parameters
+    // region domain
 
     /**
      * suffix for public area of domain
@@ -239,7 +290,7 @@ public class Parameters {
 
     // endregion
 
-    // region player context parameters
+    // region player context
 
     /**
      * default location for player context

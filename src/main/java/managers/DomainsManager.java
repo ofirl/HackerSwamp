@@ -1,6 +1,7 @@
-package domains;
+package managers;
 
 import commands.CommandAccess;
+import domains.*;
 import objects.*;
 import obstacles.Firewall;
 

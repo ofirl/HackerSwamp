@@ -1,6 +1,7 @@
 package commands;
 
-import domains.DomainsManager;
+import managers.CommandManager;
+import managers.DomainsManager;
 import objects.*;
 
 /**

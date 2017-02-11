@@ -11,13 +11,11 @@ import java.util.concurrent.LinkedTransferQueue;
  * handles the {@link #parseQueue} and {@link #responseHashMap}
  */
 public class Parser {
-    // parsing queue
     /**
      * concurrent queue for transferring received commands from {@code processes.WebListener} to workers
      */
     private static LinkedTransferQueue<CommandRequest> parseQueue = new LinkedTransferQueue<>();
 
-    // response queue
     /**
      * concurrent hash map for transferring responses back to the {@code processes.WebListener}
      */
@@ -96,11 +94,11 @@ public class Parser {
             }
         }
 
-        /**
-         * transfers a command to a worker
-         * @param c the command to run
-         * @return response for the command
-         */
+    /**
+     * transfers a command to a worker
+     * @param c the command to run
+     * @return response for the command
+     */
     public static void addCommand(CommandRequest c) {
         responseEnqueue(c);
         transferCommand(c);
@@ -151,7 +149,7 @@ public class Parser {
         for (String key :
                 args.keySet()) {
             String value = args.get(key);
-            output += key + "(" + value.length() + ")=" + value + "&"; // key(length)=value&
+            output += key.length() + ":" + value.length() + " " + key + ":" + value + "&"; // key_length:value_length key:value&
         }
 
         if (!output.equals(""))
@@ -162,7 +160,7 @@ public class Parser {
 
     /**
      * decodes received parameters (in the requestToHandle body)
-     * received parameters are of the form : key1(length)=value1&key2(length)=value2
+     * received parameters are of the form : key_length:value_length key:value&...
      * @param args arguments string to decode-
      * @return {@link HashMap} of the keys and values extracted
      */
@@ -172,14 +170,17 @@ public class Parser {
         int nameStart = 0;
 
         while (nameStart < args.length()) {
-            int lengthStart = args.indexOf('(', nameStart);
-            String name = args.substring(nameStart, lengthStart);
-            int lengthEnd = args.indexOf(')', lengthStart);
-            int lengthValue = Integer.parseInt(args.substring(lengthStart + 1, lengthEnd));
-            String value = args.substring(lengthStart + 2, lengthStart + 2 + lengthValue);
-            nameStart = lengthStart + 2 + lengthValue + 1;
+            int keyValueStart = args.indexOf(' ', nameStart);
+            String[] lengths = args.substring(nameStart, keyValueStart).split(":"); // key_length:value_length
+            int keyLength = Integer.parseInt(lengths[0]);
+            int valueLength = Integer.parseInt(lengths[1]);
+            String key = args.substring(keyValueStart + 1, keyValueStart + 1 + keyLength);
+            int valueStartIndex = keyValueStart + 2 + keyLength;
+            String value = args.substring(valueStartIndex, valueStartIndex + valueLength);
 
-            output.put(name, value);
+            output.put(key, value);
+
+            nameStart = valueStartIndex + valueLength + 1;
         }
 
         return  output;
