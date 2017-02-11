@@ -12,6 +12,9 @@ import java.util.*;
  */
 public class Help extends BaseCommand {
 
+    public static Command superCommand;
+    public static List<Argument> acceptedArguments = new ArrayList<>();
+
     static {
         acceptedArguments.add(new Argument("filter", String.class));
     }
@@ -28,8 +31,7 @@ public class Help extends BaseCommand {
      * @param context the context to run in
      */
     public Help(CommandContext context) {
-        super(context);
-        mainName = Parameters.CommandNameHelp;
+        super(context, Parameters.CommandNameHelp);
         superCommand = CommandManager.allCommands.get(mainName);
     }
 
@@ -47,7 +49,7 @@ public class Help extends BaseCommand {
      * @return general help
      */
     public String main() {
-        return getSubCommands();
+        return getSubCommands(superCommand);
     }
 
     /**

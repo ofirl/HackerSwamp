@@ -9,6 +9,8 @@ import interface_objects.DatabaseHandler;
 import interface_objects.DatabaseTables;
 import objects.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -29,12 +31,32 @@ public class CommandManager {
      * init for system commands
      */
     public static void initSystemCommands() {
+        String filter = "owner='system'";
+        List<CommandsTableRow> rows = DatabaseHandler.getTableElements(DatabaseTables.Commands, "id, name", filter);
+
+        // sanity checks
+        //TODO : throw error?
+        if (rows == null)
+            return;
+
+        HashMap<String, Integer> commandIds = new HashMap<>();
+
+        // parse system commands
+        for (CommandsTableRow c :
+                rows)
+            commandIds.put(c.name, c.id);
+
+        String name;
+
         // help
-        addInitCommands(Parameters.CommandNameHelp, new Help(), true);
+        name = Parameters.CommandNameHelp;
+        addSystemCommand(commandIds.get(name), name, new Help(), true);
         // help.commands
-        addInitCommands(Parameters.CommandNameHelpCommands, new Help(), false);
+        name = Parameters.CommandNameHelpCommands;
+        addSystemCommand(commandIds.get(name), name, new Help(), false);
         // connect
-        addInitCommands(Parameters.CommandNameConnect, new Connect(), true);
+        name = Parameters.CommandNameConnect;
+        addSystemCommand(commandIds.get(name), name, new Connect(), true);
         // TODO : add implementation for the commands
     }
 
@@ -42,20 +64,44 @@ public class CommandManager {
      * init for player scripts
      */
     public static void initPlayerScripts(){
-        // TODO : implement
-    }
+        // get command list from db
+        String filter = "owner!='system'";
+        List<CommandsTableRow> dbCommands = DatabaseHandler.getTableElements(DatabaseTables.Commands, null, filter);
+        if (dbCommands == null)
+            return;
 
-    /**
-     * used to add commands during init
-     * @param name the name of the command
-     * @param baseCommand the {@code baseCommand} of the command
-     * @param mainCommand whether this command is a main command
-     */
-    public static void addInitCommands(String name, BaseCommand baseCommand, boolean mainCommand) {
-        String filter = "owner='system' AND name='" + name + "'";
-        List<CommandsTableRow> row = DatabaseHandler.getTableElements(DatabaseTables.Commands, null, filter);
-        if (row != null && row.size() == 0)
-            addSystemCommand(row.get(0).id, name, baseCommand, mainCommand);
+        HashMap<Command, String> parents = new HashMap<>();
+
+        // add command to commandList (if needed) and allCommands
+        for (CommandsTableRow c :
+                dbCommands) {
+            // TODO : get the correct callable instead of null
+            Command command = new Command(c.id, c.name, null, CommandAccess.valueOf(c.access));
+
+            // parse arguments
+            String[] argsArray = c.arguments.split(",");
+            List<Argument> argsList = new ArrayList<>();
+            for (String a :
+                    argsArray) {
+                String[] aParts = a.split(":");
+                argsList.add(new Argument(aParts[0], aParts[1]));
+            }
+            command.arguments = argsList;
+
+            // add to commandsList and allCommands
+            allCommands.put(c.name, command);
+            if (c.owner.equals("system"))
+                commandList.put(c.name, command);
+            else
+                parents.put(command, c.owner);
+        }
+
+        // add commands to their parents sub commands list
+        for (Command c :
+                parents.keySet()) {
+            if (!parents.get(c).equals("system"))
+                allCommands.get(parents.get(c)).subCommands.put(c.name, c);
+        }
     }
 
     /**

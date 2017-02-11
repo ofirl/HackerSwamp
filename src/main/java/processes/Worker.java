@@ -60,43 +60,6 @@ public class Worker {
         CommandManager.init();
         DomainsManager.init();
         ItemManager.init();
-        // TODO : move...
-        //initializeCommands();
-    }
-
-    /**
-     * initializing command lists from database
-     */
-    public static void initializeCommands() {
-        // TODO : fix... and move to commandManger.initPlayerScripts
-        // get command list from db
-        List<CommandsTableRow> dbCommands = DatabaseHandler.getTableElements(DatabaseTables.Commands);
-        // add command to commandList (if needed) and allCommands
-        for (CommandsTableRow c :
-                dbCommands) {
-            // TODO : get the correct callable instead of null
-            Command command = new Command(c.id, c.name, null, CommandAccess.valueOf(c.access));
-
-            String[] argsArray = c.arguments.split(",");
-            List<Argument> argsList = new ArrayList<>();
-            for (String a :
-                    argsArray) {
-                String[] aParts = a.split(":");
-                argsList.add(new Argument(aParts[0], aParts[1]));
-            }
-            command.arguments = argsList;
-
-            // add to commandList and allCommands
-            if (!CommandManager.commandList.containsKey(c.owner)) {
-                // TODO : get the correct callable instead of null
-                CommandManager.commandList.put(c.owner, new Command(0, c.owner, null, CommandAccess.valueOf(c.access)));
-                CommandManager.allCommands.put(c.owner, CommandManager.commandList.get(c.owner));
-            }
-
-            CommandManager.getCommandByName(c.owner).subCommands.put(c.name, command);
-
-            CommandManager.allCommands.put(c.name, command);
-        }
     }
 
     /**

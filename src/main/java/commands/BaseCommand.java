@@ -11,15 +11,14 @@ public abstract class BaseCommand {
     public CommandContext context;
     public String mainName;
     public HashMap<String, Argument> args;
-    public static Command superCommand;
-    public static List<Argument> acceptedArguments = new ArrayList<>();
 
     /**
      * constructor
      * @param context the context in which to run
      */
-    public BaseCommand(CommandContext context) {
+    public BaseCommand(CommandContext context, String mainName) {
         this.context = context;
+        this.mainName = mainName;
     }
 
     /**
@@ -33,8 +32,8 @@ public abstract class BaseCommand {
      * the main command to run
      * @return a response
      */
-    public String main() {
-        return getHelp();
+    public String main(Command mainCommand) {
+        return getHelp(mainCommand);
     }
 
     /**
@@ -70,14 +69,14 @@ public abstract class BaseCommand {
      * gets a list of all the sub commands formatted in a string
      * @return a list of sub commands formatted in a string
      */
-    public String getSubCommands() {
-        if (superCommand == null)
+    public String getSubCommands(Command mainCommand) {
+        if (mainCommand == null)
             return "";
 
         String output = "";
         for (String sub :
-                superCommand.subCommands.keySet())
-            output += superCommand.name + "." + sub + "\n";
+                mainCommand.subCommands.keySet())
+            output += mainCommand.name + "." + sub + "\n";
 
         return output;
     }
@@ -91,7 +90,12 @@ public abstract class BaseCommand {
         arguments.forEach((a) -> args.put(a.name, a));
     }
 
-    public String getHelp() {
-        return getSubCommands();
+    /**
+     * default help method
+     * @param mainCommand the main command
+     * @return a default help response
+     */
+    public String getHelp(Command mainCommand) {
+        return getSubCommands(mainCommand);
     }
 }
