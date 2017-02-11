@@ -33,6 +33,7 @@ public class PlayerScript extends BaseCommand{
         script = new File(root, "player_scripts/TestScript.class");
     }
 
+    // TODO : check SecurityManager
     @Override
     public String execute(CommandContext context, String subCommand, List<Argument> args) {
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
