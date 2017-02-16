@@ -90,4 +90,20 @@ public class ActiveUser {
     public HashMap<String, String> getSystemStatusAsArguments() {
         return context.getSystemStatusAsArguments();
     }
+
+    /**
+     * gets the system spec as arguments to send
+     * @return the system spec as arguments to send
+     */
+    public HashMap<String, String> getSystemSpecAsArguments() {
+        return context.getSystemSpecAsArguments();
+    }
+
+    /**
+     * gets the system spec object
+     * @return systemSpec object
+     */
+    public SystemSpec getSystemSpec() {
+        return context.getSystemSpec();
+    }
 }

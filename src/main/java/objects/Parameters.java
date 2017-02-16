@@ -204,7 +204,7 @@ public class Parameters {
 
     // endregion
 
-    // region commands name
+    // region command names
 
     /**
      * help
@@ -220,6 +220,16 @@ public class Parameters {
      * connect
      */
     public static String CommandNameConnect = "connect";
+
+    /**
+     * system
+     */
+    public static String CommandNameSystem = "system";
+
+    /**
+     * system.spec
+     */
+    public static String CommandNameSystemSpec = "spec";
 
     // endregion
 

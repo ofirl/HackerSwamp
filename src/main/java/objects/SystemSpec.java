@@ -102,4 +102,13 @@ public class SystemSpec {
 
         return spec;
     }
+
+    /**
+     * gets a detailed and pretty print of the system spec object
+     * @return a detailed print
+     */
+    public String getDetailedPrint() {
+        // TODO : implement
+        return "implement!";
+    }
 }

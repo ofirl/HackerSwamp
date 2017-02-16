@@ -1,9 +1,7 @@
 package managers;
 
-import commands.BaseCommand;
-import commands.CommandAccess;
-import commands.Connect;
-import commands.Help;
+import commands.*;
+import commands.System;
 import database_objects.CommandsTableRow;
 import interface_objects.DatabaseHandler;
 import interface_objects.DatabaseTables;
@@ -15,12 +13,12 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CommandManager {
-
+    // public variables
     public static ConcurrentHashMap<String, Command> commandList = new ConcurrentHashMap<>();
     public static ConcurrentHashMap<String, Command> allCommands = new ConcurrentHashMap<>();
 
     /**
-     * system commands initializer
+     * commands initializer
      */
     public static void init() {
         initSystemCommands();
@@ -34,7 +32,7 @@ public class CommandManager {
         String filter = "owner='system'";
         List<CommandsTableRow> rows = DatabaseHandler.getTableElements(DatabaseTables.Commands, "id, name", filter);
 
-        // sanity checks
+        // sanity check
         //TODO : throw error?
         if (rows == null)
             return;
@@ -47,16 +45,25 @@ public class CommandManager {
             commandIds.put(c.name, c.id);
 
         String name;
+        Command cmd, subCmd;
 
         // help
         name = Parameters.CommandNameHelp;
-        addSystemCommand(commandIds.get(name), name, new Help(), true);
+        cmd = addSystemCommand(commandIds.get(name), name, new Help(), true);
         // help.commands
         name = Parameters.CommandNameHelpCommands;
-        addSystemCommand(commandIds.get(name), name, new Help(), false);
+        subCmd = addSystemCommand(commandIds.get(name), name, new Help(), false);
+        addSubCommand(cmd, subCmd);
         // connect
         name = Parameters.CommandNameConnect;
-        addSystemCommand(commandIds.get(name), name, new Connect(), true);
+        cmd = addSystemCommand(commandIds.get(name), name, new Connect(), true);
+        // system
+        name = Parameters.CommandNameSystem;
+        cmd = addSystemCommand(commandIds.get(name), name, new System(), true);
+        // spec
+        name = Parameters.CommandNameSystemSpec;
+        subCmd = addSystemCommand(commandIds.get(name), name, new System(), false);
+        addSubCommand(cmd, subCmd);
         // TODO : add implementation for the commands
     }
 
@@ -65,7 +72,7 @@ public class CommandManager {
      */
     public static void initPlayerScripts(){
         // get command list from db
-        String filter = "owner!='system'";
+        String filter = "owner!='system' AND access!='system'";
         List<CommandsTableRow> dbCommands = DatabaseHandler.getTableElements(DatabaseTables.Commands, null, filter);
         if (dbCommands == null)
             return;
@@ -100,8 +107,17 @@ public class CommandManager {
         for (Command c :
                 parents.keySet()) {
             if (!parents.get(c).equals("system"))
-                allCommands.get(parents.get(c)).subCommands.put(c.name, c);
+                addSubCommand(allCommands.get(parents.get(c)), c);
         }
+    }
+
+    /**
+     * adds a {@code sub} as a sub command to {@code main}
+     * @param main the main command
+     * @param sub the sub command
+     */
+    public static void addSubCommand(Command main, Command sub) {
+        main.subCommands.put(sub.name, sub);
     }
 
     /**
@@ -109,8 +125,8 @@ public class CommandManager {
      * @param name the name of hte command
      * @param baseCommand the class that implements the command
      */
-    public static void addSystemCommand(int id, String name, BaseCommand baseCommand, boolean mainCommand) {
-        addCommand(id, name, baseCommand, mainCommand, CommandAccess.System);
+    public static Command addSystemCommand(int id, String name, BaseCommand baseCommand, boolean mainCommand) {
+        return addCommand(id, name, baseCommand, mainCommand, CommandAccess.System);
     }
 
     /**
@@ -119,11 +135,13 @@ public class CommandManager {
      * @param baseCommand the class that implements the command
      * @param access the command access type
      */
-    public static void addCommand(int id, String name, BaseCommand baseCommand, boolean mainCommand, CommandAccess access) {
+    public static Command addCommand(int id, String name, BaseCommand baseCommand, boolean mainCommand, CommandAccess access) {
         Command cmd = new Command(id, name, baseCommand, access);
         allCommands.put(cmd.name, cmd);
         if (mainCommand)
             commandList.put(cmd.name, cmd);
+
+        return cmd;
     }
 
     /**

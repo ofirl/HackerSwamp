@@ -25,7 +25,7 @@ public class PlayerContext {
 
     /**
      * constructor
-     * @param username
+     * @param username the username to create context for
      */
     public PlayerContext(String username) {
         this.username = username;
@@ -133,10 +133,26 @@ public class PlayerContext {
     }
 
     /**
-     * gets the system specs as arguments to send
-     * @return the system spec as arguments to send
+     * gets the system status as arguments to send
+     * @return the system status as arguments to send
      */
     public HashMap<String, String> getSystemStatusAsArguments() {
         return systemStatus.getStatusAsArguments();
+    }
+
+    /**
+     * gets the system specs as arguments to send
+     * @return the system spec as arguments to send
+     */
+    public HashMap<String, String> getSystemSpecAsArguments() {
+        return systemSpec.getSpecAsArguments();
+    }
+
+    /**
+     * get the system spec object
+     * @return systemSpec object
+     */
+    public SystemSpec getSystemSpec() {
+        return systemSpec;
     }
 }

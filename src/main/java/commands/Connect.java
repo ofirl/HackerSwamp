@@ -17,11 +17,12 @@ public class Connect extends BaseCommand{
     public static List<Argument> acceptedArguments = new ArrayList<>();
 
     static {
+        superCommand = CommandManager.allCommands.get(Parameters.CommandNameConnect);
         acceptedArguments.add(new Argument("filter", String.class));
     }
 
     /**
-     * empty constructor for the
+     * empty constructor
      */
     public Connect() {
         this(null);
@@ -33,7 +34,6 @@ public class Connect extends BaseCommand{
      */
     public Connect(CommandContext context) {
         super(context, Parameters.CommandNameConnect);
-        superCommand = CommandManager.allCommands.get(mainName);
     }
 
     /**
