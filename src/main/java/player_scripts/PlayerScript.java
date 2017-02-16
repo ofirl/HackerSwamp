@@ -30,23 +30,34 @@ public class PlayerScript extends BaseCommand{
 
     public void loadFile(String name) {
         root = new File("/target/classes");
-        script = new File(root, "player_scripts/TestScript.class");
+        script = new File(root, "player_scripts.untrusted.TestScript.class");
+
+        //JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        //compiler.run(null, null, null, script.getPath());
     }
 
     // TODO : check SecurityManager
+
+    /**
+     * executes a player made script by instancing it and calling it's {@code run()} function
+     * @param context the context in which to run the command
+     * @param subCommand the sub command to run (or the name of the class to run the main function)
+     * @param args arguments for the command
+     * @return a response
+     */
     @Override
     public String execute(CommandContext context, String subCommand, List<Argument> args) {
-        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-        compiler.run(null, null, null, script.getPath());
+        // TODO : run in a different thread, enforce a time limit
 
         try {
             URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{root.toURI().toURL()});
-            Class<?> cls = Class.forName("player_scripts.TestScript", true, classLoader); // Should print "hello".
-            Object instance = cls.newInstance(); // Should print "world".
+            Class<?> cls = Class.forName("player_scripts.untrusted.TestScript", true, classLoader); // Should print "hello".
+            Runnable instance = (Runnable) cls.newInstance(); // Should print "world".
+            instance.run();
             System.out.println(instance); // Should print "test.Test@hashcode".
         }
         catch (Exception e) {
-
+            // TODO : send the error message as the response
         }
 
         return null;

@@ -106,6 +106,7 @@ public class Parser {
 
     /**
      * requests and waits for response to {@code input}
+     * {@code input} is similar to : authKey(32):JSD97843HJ0843&command(15):system.help
      * @param input the request received
      * @return a response
      */
@@ -116,7 +117,7 @@ public class Parser {
             return Parameters.parserErrorNoAuthKey;
         if (LoginHandler.getUsernameByKey(args.get("authKey")) == null)
             return Parameters.parserErrorBadAuthKey;
-        if (!args.containsKey("command") || !args.containsKey("username"))
+        if (!args.containsKey("command"))
             return Parameters.parserErrorInvalidArguments;
 
         ActiveUser activeUser = LoginHandler.getActiveUserByKey(args.get("authKey"));

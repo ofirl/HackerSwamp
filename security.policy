@@ -1,0 +1,7 @@
+grant codebase "file:${user.dir}/target/classes/-" {
+  permission java.security.AllPermission;
+  permission security.ToggleSecurityManagerPermission;
+};
+
+grant codebase "file:${user.dir}/target/untrusted/" {
+};

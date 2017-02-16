@@ -57,6 +57,7 @@ public abstract class BaseCommand {
      * executes the {@code subCommand} in the given context
      * @param context the context in which to run the command
      * @param subCommand the sub command to run (or the name of the class to run the main function)
+     * @param args arguments for the command
      * @return the command result
      */
     public String execute(CommandContext context, String subCommand, List<Argument> args) {
