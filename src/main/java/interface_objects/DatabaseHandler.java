@@ -197,6 +197,7 @@ public class DatabaseHandler {
         try {
             ResultSetMetaData meta = rs.getMetaData();
             for (int i = 0; i < meta.getColumnCount(); i++) {
+                Logger.log("DatabaseHandler.getResultSetColumns", meta.getColumnName(i));
                 columns.put(meta.getColumnName(i), meta.getColumnType(i));
             }
 
@@ -285,8 +286,10 @@ public class DatabaseHandler {
 
         ResultSet rs = requestResponse(query);
         HashMap<String, Integer> rsColumns = getResultSetColumns(rs);
-        if (rsColumns == null)
+        if (rsColumns == null) {
+            Logger.log("DatabaseHandler.getTableElements", "query : " + query + " result column set is null");
             return null;
+        }
 
         List<T> elements = new ArrayList<>();
         try {
