@@ -444,7 +444,7 @@ public class Worker {
             Collections.addAll(commands, commandSplat);
         }
         else
-            Collections.addAll(commands, command);
+            commands.add(command);
 
         return true;
     }
