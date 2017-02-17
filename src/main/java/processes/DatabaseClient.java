@@ -86,6 +86,7 @@ public class DatabaseClient {
             java.util.Map<String, Class<?>> map = con.getTypeMap();
             map.put("public.command_access", Class.forName("database_objects.CommandAccessSqlType"));
             con.setTypeMap(map);
+            Logger.log("DatabaseClient.addSqlType", "adding types succeeded");
         }
         catch (Exception e) {
             Logger.log("DatabaseClient.addSqlType", "adding types failed, " + e.getMessage());
