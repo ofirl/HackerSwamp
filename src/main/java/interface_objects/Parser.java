@@ -92,6 +92,7 @@ public class Parser {
                 catch (Exception e) { }
 
                 responseHashMap.remove(key);
+                Logger.log("Parser.waitForResponse", "response for : " + key + "=" + responseCommandRequest.response);
                 return responseCommandRequest.response;
             }
         }
@@ -169,7 +170,7 @@ public class Parser {
 
     /**
      * decodes received parameters (in the requestToHandle body)
-     * received parameters are of the form : key_length:value_length key:value&...
+     * received parameters are of the form : key_length:value_length=key:value&...
      * @param args arguments string to decode-
      * @return {@link HashMap} of the keys and values extracted
      */

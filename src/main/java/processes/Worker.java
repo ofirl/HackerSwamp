@@ -6,6 +6,7 @@ import managers.CommandManager;
 import domains.BaseDomain;
 import managers.DomainsManager;
 import managers.ItemManager;
+import managers.Logger;
 import objects.*;
 import interface_objects.*;
 
@@ -73,6 +74,7 @@ public class Worker {
      */
     public void workerStart(Object... args) {
         // parse the input and populate commands and arguments
+        Logger.log("Worker.workerStart", "got " + request.command);
         if (!checkSyntax(request.command)) {
             if (error.equals(""))
                 Parser.addResponse(request.getKey(), error);
