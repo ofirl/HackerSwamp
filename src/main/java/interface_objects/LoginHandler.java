@@ -77,10 +77,12 @@ public class LoginHandler {
     private static String addActiveUser(String username, int id) {
         String error = null;
         String authKey = generateAuthKey();
+        Logger.log("LoginHandler.addActiveUser", "authKey = " + authKey);
         if (authKey == null)
             return Parameters.loginErrorAuthKeyGeneration;
 
         activeUsers.put(authKey, new ActiveUser(authKey, username, id));
+        Logger.log("LoginHandler.addActiveUser", "active user " + username + " added");
 
         if (error != null)
             return "Error :" + error;

@@ -38,7 +38,7 @@ public class SystemSpec {
      * @return the system spec of the user
      */
     public static SystemSpec getUserSystemSpecs(String username) {
-        List<EquippedItemsTableRow> equippedItems = DatabaseHandler.getTableElements(DatabaseTables.Equipped_Items, "itemid, type", "username=" + username);
+        List<EquippedItemsTableRow> equippedItems = DatabaseHandler.getTableElements(DatabaseTables.Equipped_Items, "itemid, type", "username='" + username + "'");
         if (equippedItems == null)
             return null;
 
