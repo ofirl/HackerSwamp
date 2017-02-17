@@ -23,8 +23,8 @@ public class Worker {
     // region public variables
     public CommandRequest request;
     public String error;
-    public List<String> commands;
-    public List<Argument> arguments;
+    public List<String> commands = new ArrayList<>();
+    public List<Argument> arguments = new ArrayList<>();
     public boolean initCommand = false;
     // endregion
 
