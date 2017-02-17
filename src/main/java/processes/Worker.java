@@ -439,8 +439,12 @@ public class Worker {
 
         // add commands
         String command = input.substring(0, commandEnd);
-        String[] commandSplat = command.split(".");
-        Collections.addAll(commands, commandSplat);
+        if (command.contains(".")) {
+            String[] commandSplat = command.split(".");
+            Collections.addAll(commands, commandSplat);
+        }
+        else
+            Collections.addAll(commands, command);
 
         return true;
     }
