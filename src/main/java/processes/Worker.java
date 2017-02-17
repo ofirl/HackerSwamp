@@ -365,7 +365,7 @@ public class Worker {
         HashMap<String, Command> commandsToSearch = startingPoint;
         Command commandFound = null;
         for (String c :
-                commandsToSearch.keySet()) {
+                commands) {
             // command does not exists in collection
             if (!commandsToSearch.containsKey(c)) {
                 error = Parameters.ErrorCommandDoesNotExistsPrefix + c;
