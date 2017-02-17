@@ -6,6 +6,7 @@ import database_objects.CommandsTableRow;
 import interface_objects.DatabaseHandler;
 import interface_objects.DatabaseTables;
 import objects.*;
+import player_scripts.PlayerScript;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -78,7 +79,7 @@ public class CommandManager {
     public static void initPlayerScripts(){
         // get command list from db
         // TODO : check caps in systemUser
-        String filter = "owner!='systemUser' AND access!='" + CommandAccess.System + "'";
+        String filter = "access!='" + CommandAccess.System + "'";
         List<CommandsTableRow> dbCommands = DatabaseHandler.getTableElements(DatabaseTables.Commands, null, filter);
         if (dbCommands == null)
             return;
@@ -92,14 +93,16 @@ public class CommandManager {
             Command command = new Command(c.id, c.name, null, CommandAccess.valueOf(c.access));
 
             // parse arguments
-            String[] argsArray = c.arguments.split(",");
-            List<Argument> argsList = new ArrayList<>();
-            for (String a :
-                    argsArray) {
-                String[] aParts = a.split(":");
-                argsList.add(new Argument(aParts[0], aParts[1]));
+            if (c.arguments != null && !c.arguments.equals("")) {
+                String[] argsArray = c.arguments.split(",");
+                List<Argument> argsList = new ArrayList<>();
+                for (String a :
+                        argsArray) {
+                    String[] aParts = a.split(":");
+                    argsList.add(new Argument(aParts[0], aParts[1]));
+                }
+                command.arguments = argsList;
             }
-            command.arguments = argsList;
 
             // add to commandsList and allCommands
             allCommands.put(c.name, command);
@@ -109,7 +112,7 @@ public class CommandManager {
         // add commands to their parents sub commands list
         for (Command c :
                 parents.keySet()) {
-                addSubCommand(allCommands.get(parents.get(c)), c);
+            addSubCommand(allCommands.get(parents.get(c)), c);
         }
     }
 
@@ -122,6 +125,7 @@ public class CommandManager {
         Logger.log("DatabaseHandler.addSubCommand", main.name);
         Logger.log("DatabaseHandler.addSubCommand", sub.name);
         main.subCommands.put(sub.name, sub);
+        sub.parent = main;
     }
 
     /**
