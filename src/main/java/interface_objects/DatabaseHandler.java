@@ -292,10 +292,10 @@ public class DatabaseHandler {
         try {
             while (rs.next()) {
                 // unchecked warning suppressed
-                //T te = (T)elementTypes.get(table).newInstance();
-                T ele = ((Class<T>)elementTypes.get(table)).newInstance();
+                T ele = (T)elementTypes.get(table).newInstance();
                 for (String columnName :
                         rsColumns.keySet()) {
+                    Logger.log("DatabaseHandler.getTableElements", columnName + "=" + rs.getObject(columnName));
                     ele.getClass().getDeclaredField(columnName).set(ele, rs.getObject(columnName));
                 }
                 elements.add(ele);
