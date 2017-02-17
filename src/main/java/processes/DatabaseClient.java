@@ -84,10 +84,12 @@ public class DatabaseClient {
     public static void addSqlTypes(Connection con) {
         try {
             java.util.Map map = con.getTypeMap();
-            map.put("public.command_access", Class.forName("CommandAccessSqlType"));
+            map.put("public.command_access", Class.forName("database_object.CommandAccessSqlType"));
             con.setTypeMap(map);
         }
-        catch (Exception e) { }
+        catch (Exception e) {
+            Logger.log("DatabaseClient.addSqlType", "adding types failed, " + e.getMessage());
+        }
     }
 
     /**
