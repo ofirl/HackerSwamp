@@ -204,6 +204,7 @@ public class DatabaseHandler {
             return columns;
         }
         catch (Exception e) {
+            Logger.log("DatabaseHandler.getResultSetColumns", e.getMessage());
             return null;
         }
     }
