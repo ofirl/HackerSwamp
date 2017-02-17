@@ -10,7 +10,7 @@ public class Command {
     public int id;
     public String name;
     public Command parent;
-    public HashMap<String, Command> subCommands;
+    public HashMap<String, Command> subCommands = new HashMap<>();
     public CommandAccess access;
     public List<Argument> arguments;
     public BaseCommand entry;
