@@ -179,7 +179,7 @@ public class Parser {
         int nameStart = 0;
 
         while (nameStart < args.length()) {
-            int keyValueStart = args.indexOf(' ', nameStart);
+            int keyValueStart = args.indexOf('=', nameStart);
             String[] lengths = args.substring(nameStart, keyValueStart).split(":"); // key_length:value_length
             int keyLength = Integer.parseInt(lengths[0]);
             int valueLength = Integer.parseInt(lengths[1]);
