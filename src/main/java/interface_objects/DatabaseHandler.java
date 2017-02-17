@@ -45,6 +45,7 @@ public class DatabaseHandler {
         DatabaseQuery output = null;
         try {
             output = queryQueue.take();
+            Logger.log("DatabaseHandler.receiveQuery", "query = " + output.query);
         }
         catch (Exception e) { }
 
@@ -106,8 +107,10 @@ public class DatabaseHandler {
      */
     public static void addQuery(DatabaseQuery query) {
         if (query.responseNeeded) {
+            Logger.log("DatabaseHandler.addQuery", "query = " + query.query);
             responseEnqueue(query);
             transferQuery(query);
+            Logger.log("DatabaseHandler.getTableElements", "query " + query + " transferred");
         }
         else
             queryQueue.add(query);
@@ -142,6 +145,7 @@ public class DatabaseHandler {
         int queryKey = getNextQueryId();
         DatabaseQuery c = new DatabaseQuery(input, queryKey, true);
 
+        Logger.log("DatabaseHandler.requestResponse", "query = " + c.query);
         addQuery(c);
         return waitForResponse(queryKey);
     }

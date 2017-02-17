@@ -1,6 +1,7 @@
 package processes;
 
 import interface_objects.DatabaseHandler;
+import managers.Logger;
 import objects.DatabaseQuery;
 
 import java.net.URI;
@@ -18,9 +19,11 @@ public class DatabaseClient {
         while (true) {
             // get a query
             query = null;
+            Logger.log("DatabaseClient", "waiting for query");
             while (query == null)
                 query = DatabaseHandler.receiveQuery();
 
+            Logger.log("DatabaseClient", "got query " + query.query);
             executeQuery(query);
         }
     }
