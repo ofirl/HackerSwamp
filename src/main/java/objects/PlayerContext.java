@@ -7,6 +7,7 @@ import database_objects.CommandsViewTableRow;
 import interface_objects.DatabaseHandler;
 import interface_objects.DatabaseTables;
 import managers.DomainsManager;
+import managers.Logger;
 
 import java.util.*;
 
@@ -61,8 +62,10 @@ public class PlayerContext {
         List<CommandsViewTableRow> accessibleCommands = DatabaseHandler.getTableElements(DatabaseTables.Accessible_Commands, "name", "username='" + username + "'");
         if (accessibleCommands != null) {
             for (CommandsViewTableRow f :
-                    accessibleCommands)
+                    accessibleCommands) {
                 availableCommands.put(f.name, CommandManager.getCommandByName(f.name));
+                Logger.log("PlayerContext.getAvailableCommands", "available command added " + f.name);
+            }
         }
 
         return commands;

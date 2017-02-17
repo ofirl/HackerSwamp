@@ -366,6 +366,7 @@ public class Worker {
         Command commandFound = null;
         for (String c :
                 commands) {
+            Logger.log("Worker.parseCommand", "searching for " + c + " in " + commandsToSearch.size() + " commands");
             // command does not exists in collection
             if (!commandsToSearch.containsKey(c)) {
                 error = Parameters.ErrorCommandDoesNotExistsPrefix + c;
