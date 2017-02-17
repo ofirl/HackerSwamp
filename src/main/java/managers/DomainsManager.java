@@ -28,7 +28,7 @@ public class DomainsManager {
         // TODO : add obstacles table to db
         Bank b = addBank("First Bank", "first.bank.cash", null);
         b.addObstacle(new Firewall("firewall 1", 9));
-        b.addCommand(new Command(0, "transfer", null, CommandAccess.System));
+        //b.addCommand(new Command(0, "transfer", null, CommandAccess.System));
 
         // endregion
 
