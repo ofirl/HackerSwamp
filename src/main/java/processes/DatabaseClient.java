@@ -88,8 +88,8 @@ public class DatabaseClient {
             if (map == null)
                 map = new HashMap<>();
 
-            Class<?> test = Class.forName("database_objects.CommandAccessSqlType");
-            Logger.log("DatabaseClient.addSqlType", "class found " + test.getName());
+            //Class<?> test = Class.forName("database_objects.CommandAccessSqlType");
+            //Logger.log("DatabaseClient.addSqlType", "class found " + test.getName());
             map.put("public.command_access", String.class);
             con.setTypeMap(map);
         }

@@ -304,8 +304,15 @@ public class DatabaseHandler {
                         rsColumns) {
                     int columnIndex = rs.findColumn(columnName);
                     Logger.log("DatabaseHandler.getTableElements", "column index " + columnIndex);
-                    Logger.log("DatabaseHandler.getTableElements", columnName + "=" + rs.getObject(columnName));
-                    ele.getClass().getDeclaredField(columnName).set(ele, rs.getObject(columnName));
+                    Object objectValue;
+                    try {
+                        objectValue = rs.getObject(columnName);
+                    }
+                    catch (Exception e) {
+                        objectValue = rs.getString(columnName);
+                    }
+                    Logger.log("DatabaseHandler.getTableElements", columnName + "=" + objectValue);
+                    ele.getClass().getDeclaredField(columnName).set(ele, objectValue);
                 }
                 elements.add(ele);
             }
