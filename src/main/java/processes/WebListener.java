@@ -33,6 +33,9 @@ public class WebListener {
             }
         });
 
+        test1.start();
+        test2.start();
+
         port(Integer.valueOf(System.getenv("PORT")));
         staticFileLocation("/public");
 
