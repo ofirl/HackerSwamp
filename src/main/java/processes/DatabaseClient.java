@@ -48,6 +48,7 @@ public class DatabaseClient {
         Connection connection = null;
         try {
             connection = getConnection();
+            addSqlTypes(connection);
             Statement stmt = connection.createStatement();
             if (dbQuery.query.startsWith("SELECT"))
                 rs = stmt.executeQuery(dbQuery.query);
@@ -74,6 +75,19 @@ public class DatabaseClient {
         }
 
         return rs;
+    }
+
+    /**
+     * adds the custom sql types to the connection
+     * @param con the connection to add sql types to
+     */
+    public static void addSqlTypes(Connection con) {
+        try {
+            java.util.Map map = con.getTypeMap();
+            map.put("public.command_access", Class.forName("CommandAccessSqlType"));
+            con.setTypeMap(map);
+        }
+        catch (Exception e) { }
     }
 
     /**
