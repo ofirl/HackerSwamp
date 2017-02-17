@@ -114,6 +114,10 @@ public class Parser {
      */
     public static String requestResponse(String input) {
         Logger.log("Parser.requestResponse", "got input : " + input);
+        // replace '%3a' with ':'
+        input = input.replaceAll("%3a", ":");
+        Logger.log("Parser.requestResponse", "after replace : " + input);
+
         HashMap<String,String> args = decodeArgumentsList(input);
         // validity check
         if (!args.containsKey("authKey"))
