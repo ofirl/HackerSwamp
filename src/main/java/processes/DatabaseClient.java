@@ -7,6 +7,7 @@ import objects.DatabaseQuery;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
+import java.util.HashMap;
 
 public class DatabaseClient {
     /**
@@ -84,6 +85,9 @@ public class DatabaseClient {
     public static void addSqlTypes(Connection con) {
         try {
             java.util.Map<String, Class<?>> map = con.getTypeMap();
+            if (map == null)
+                map = new HashMap<>();
+
             Class<?> test = Class.forName("database_objects.CommandAccessSqlType");
             map.put("public.command_access", Class.forName("database_objects.CommandAccessSqlType"));
             con.setTypeMap(map);
