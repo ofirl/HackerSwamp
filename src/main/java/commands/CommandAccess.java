@@ -4,7 +4,7 @@ public enum CommandAccess {
     /**
      * system command access - can be accessed by everyone, anywhere
      */
-    system,
+    System,
     /**
      * public command access - can be accessed by everyone, anywhere
      */

@@ -34,7 +34,7 @@ public class CommandManager {
     public static void initSystemCommands() {
         // get command list from db
         // TODO : check caps in systemUser
-        String filter = "access='" + CommandAccess.system + "'";
+        String filter = "access='" + CommandAccess.System + "'";
         List<CommandsTableRow> rows = DatabaseHandler.getTableElements(DatabaseTables.Commands, "id, name", filter);
 
         // sanity check
@@ -78,7 +78,7 @@ public class CommandManager {
     public static void initPlayerScripts(){
         // get command list from db
         // TODO : check caps in systemUser
-        String filter = "owner!='systemUser' AND access!='" + CommandAccess.system + "'";
+        String filter = "owner!='systemUser' AND access!='" + CommandAccess.System + "'";
         List<CommandsTableRow> dbCommands = DatabaseHandler.getTableElements(DatabaseTables.Commands, null, filter);
         if (dbCommands == null)
             return;
@@ -130,7 +130,7 @@ public class CommandManager {
      * @param baseCommand the class that implements the command
      */
     public static Command addSystemCommand(int id, String name, BaseCommand baseCommand, boolean mainCommand) {
-        return addCommand(id, name, baseCommand, mainCommand, CommandAccess.system);
+        return addCommand(id, name, baseCommand, mainCommand, CommandAccess.System);
     }
 
     /**
