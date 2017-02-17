@@ -57,7 +57,7 @@ public class CommandManager {
         cmd = addSystemCommand(commandIds.get(name), name, new Help(), true);
         // help.commands
         name = Parameters.CommandNameHelpCommands;
-        Logger.log("CommandManager.initSystemCommands", commandIds.get(name).toString());
+        Logger.log("CommandManager.initSystemCommands", "command ids is " + commandIds);
         subCmd = addSystemCommand(commandIds.get(name), name, new Help(), false);
         addSubCommand(cmd, subCmd);
         // connect
