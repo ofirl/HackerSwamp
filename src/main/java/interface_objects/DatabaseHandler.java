@@ -315,7 +315,6 @@ public class DatabaseHandler {
         catch (Exception e) {
             Logger.log("DatabaseHandler.getTableElements", "cause " + e.getCause().getMessage());
             Logger.log("DatabaseHandler.getTableElements", "error on query : " + query + ", " + e.getMessage());
-            e.printStackTrace();
             return null;
         }
     }
