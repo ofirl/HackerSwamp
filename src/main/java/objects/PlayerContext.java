@@ -22,9 +22,9 @@ public class PlayerContext {
     public String corpName;
     public int corpId;
     public String location;
-    public HashMap<String, Command> availableCommands;
-    public HashMap<String, Command> autoCompleteCommands;
-    public HashMap<String, String> macros;
+    public HashMap<String, Command> availableCommands = new HashMap<>();
+    public HashMap<String, Command> autoCompleteCommands = new HashMap<>();
+    public HashMap<String, String> macros = new HashMap<>();
     public SystemSpec systemSpec;
     public SystemStatus systemStatus;
     public Account mainAccount;
