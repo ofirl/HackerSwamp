@@ -147,7 +147,7 @@ public class LoginHandler {
      * @return boolean whether the user exists, false if there was an error
      */
     public static PlayersTableRow authenticateUser(String username, String password) {
-        List<PlayersTableRow> rows = DatabaseHandler.getTableElements(DatabaseTables.Players, "username=" + username + " AND password=" + password);
+        List<PlayersTableRow> rows = DatabaseHandler.getTableElements(DatabaseTables.Players, "username='" + username + "' AND password='" + password + "'");
         if (rows == null || rows.size() == 0)
             return null;
 
