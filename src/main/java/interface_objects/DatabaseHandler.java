@@ -45,8 +45,9 @@ public class DatabaseHandler {
     public static DatabaseQuery receiveQuery() {
         DatabaseQuery output = null;
         try {
+            Logger.log("DatabaseHandler.receiveQuery", "taking query");
             output = queryQueue.take();
-            Logger.log("DatabaseHandler.receiveQuery", "query = " + output.query);
+            Logger.log("DatabaseHandler.receiveQuery", "got query = " + output.query);
         }
         catch (Exception e) { }
 
