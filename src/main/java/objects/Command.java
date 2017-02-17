@@ -3,6 +3,7 @@ package objects;
 import commands.BaseCommand;
 import commands.CommandAccess;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class Command {
     public Command parent;
     public HashMap<String, Command> subCommands = new HashMap<>();
     public CommandAccess access;
-    public List<Argument> arguments;
+    public List<Argument> arguments = new ArrayList<>();
     public BaseCommand entry;
 
     public Command(int id, String name, BaseCommand entry, CommandAccess access) {
