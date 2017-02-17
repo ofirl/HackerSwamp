@@ -35,11 +35,11 @@ public class WebListener {
 
 
         post("/db", (req, res) -> {
-            return Parser.requestResponse(req.body());
+            return Parser.requestResponse(req.body().replaceAll("%3a", ":"));
         });
 
         post("/login", (req, res) -> {
-            return LoginHandler.checkLogin(req.body());
+            return LoginHandler.checkLogin(req.body().replaceAll("%3a", ":"));
         });
 
 

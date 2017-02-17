@@ -117,9 +117,6 @@ public class Parser {
      */
     public static String requestResponse(String input) {
         Logger.log("Parser.requestResponse", "got input : " + input);
-        // replace '%3a' with ':'
-        input = input.replaceAll("%3a", ":");
-        Logger.log("Parser.requestResponse", "after replace : " + input);
 
         HashMap<String,String> args = decodeArgumentsList(input);
         // validity check
@@ -177,6 +174,7 @@ public class Parser {
      * @return {@link HashMap} of the keys and values extracted
      */
     public static HashMap<String, String> decodeArgumentsList(String args) {
+        // TODO : add sanity checks, or try/catch
         HashMap<String, String> output = new HashMap<>();
 
         int nameStart = 0;

@@ -1,9 +1,11 @@
 package interface_objects;
 
 import database_objects.PlayersTableRow;
+import managers.Logger;
 import objects.ActiveUser;
 import objects.Parameters;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,30 +32,22 @@ public class LoginHandler {
      */
     public static String checkLogin(String input) {
         // sanity checks
-        String[] args = input.split("&");
-        if (args.length != 2)
-            return Parameters.loginErrorArgumentsCount;
+        // TODO : sanity checks
+//        String[] args = input.split("&");
+//        if (args.length != 2)
+//            return Parameters.loginErrorArgumentsCount;
+//
+//        if (args[0].indexOf('=') == -1 || args[1].indexOf('=') == -1)
+//            return Parameters.loginErrorArgumentsSyntax;
 
-        if (args[0].indexOf('=') == -1 || args[1].indexOf('=') == -1)
-            return Parameters.loginErrorArgumentsSyntax;
+        Logger.log("LoginHandler.checkLogin", "got input : " + input);
 
+        HashMap<String, String> args = Parser.decodeArgumentsList(input);
         // more sanity checks checks
-        String username = "", password = "";
-
-        for (String arg :
-                args) {
-            String[] argParts = arg.split("=");
-            switch (argParts[0]) {
-                case "username" :
-                    username = argParts[1];
-                    break;
-                case "password" :
-                    password = argParts[1];
-                    break;
-                default :
-                    return Parameters.loginErrorInvalidArguments;
-            }
-        }
+        String username = args.get("username");
+        String password = args.get("password");
+        if (args.size() != 2 || username == null || password == null)
+            return Parameters.loginErrorInvalidArguments;
 
         // check against the db
         PlayersTableRow dbRow = authenticateUser(username, password);
@@ -64,6 +58,7 @@ public class LoginHandler {
 
         // generating authentication key
         String authKey = addActiveUser(username, dbRow.id);
+        Logger.log("LoginHandler.checkLogin", username + "=" + authKey);
         if (authKey.startsWith("Error :"))
             return authKey;
 
