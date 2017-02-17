@@ -1,5 +1,6 @@
 package objects;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.*;
 import interfaces.*;
@@ -7,7 +8,7 @@ import interfaces.*;
 public class ThreadedJobFactory{
     // class related
     public int maxThreads;
-    public List<Thread> threads;
+    public List<Thread> threads = new ArrayList<>();
     public ReentrantLock lock = new ReentrantLock();
     public Condition spaceAvailable = lock.newCondition();
 
