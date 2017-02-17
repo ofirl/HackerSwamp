@@ -113,7 +113,10 @@ public class LoginHandler {
      * @return username or null
      */
     public static String getUsernameByKey(String authKey) {
-        return activeUsers.get(authKey).username;
+        ActiveUser a = activeUsers.get(authKey);
+        if (a == null)
+            return null;
+        return a.username;
     }
 
     /**
