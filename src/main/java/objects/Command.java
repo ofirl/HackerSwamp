@@ -13,7 +13,7 @@ public class Command {
     public Command parent;
     public HashMap<String, Command> subCommands = new HashMap<>();
     public CommandAccess access;
-    public List<Argument> arguments = new ArrayList<>();
+    public List<Argument> arguments;
     public BaseCommand entry;
 
     public Command(int id, String name, BaseCommand entry, CommandAccess access) {
