@@ -46,15 +46,19 @@ public class LoginHandler {
         // more sanity checks checks
         String username = args.get("username");
         String password = args.get("password");
-        if (args.size() != 2 || username == null || password == null)
+        if (args.size() != 2 || username == null || password == null) {
+            Logger.log("LoginHandler.checkLogin", "invalid arguments");
             return Parameters.loginErrorInvalidArguments;
+        }
 
         // check against the db
         PlayersTableRow dbRow = authenticateUser(username, password);
 
         // returns if invalid
-        if (dbRow == null)
+        if (dbRow == null) {
+            Logger.log("LoginHandler.checkLogin", "invalid credentials");
             return Parameters.loginErrorInvalidCredentials;
+        }
 
         // generating authentication key
         String authKey = addActiveUser(username, dbRow.id);

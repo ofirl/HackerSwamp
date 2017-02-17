@@ -1,6 +1,7 @@
 package interface_objects;
 
 import database_objects.*;
+import managers.Logger;
 import objects.DatabaseQuery;
 
 import java.sql.ResultSet;
@@ -264,14 +265,17 @@ public class DatabaseHandler {
      * @param <T> the element type to cast to (and return)
      * @return the elements in the table assigned as {@code T}
      */
-    // hate to do this... but i have to...
     @SuppressWarnings("unchecked")
     public static <T> List<T> getTableElements(DatabaseTables table, String columns, String filter) {
+        Logger.log("DatabaseHandler.getTableElements", "building query");
+
         // build the query
         String query = "SELECT ";
         query += columns != null ? columns : '*';
         query += " FROM " + table.name();
         query += filter != null ? " WHERE " + filter : "";
+
+        Logger.log("DatabaseHandler.getTableElements", "query : " + query);
 
         ResultSet rs = requestResponse(query);
         HashMap<String, Integer> rsColumns = getResultSetColumns(rs);
@@ -291,9 +295,11 @@ public class DatabaseHandler {
                 elements.add(ele);
             }
 
+            Logger.log("DatabaseHandler.getTableElements", "query : + " + query + ", result count : " + elements.size());
             return elements;
         }
         catch (Exception e) {
+            Logger.log("DatabaseHandler.getTableElements", "error on query : " + query);
             return null;
         }
     }
