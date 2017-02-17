@@ -182,7 +182,7 @@ public class DatabaseHandler {
         elementTypes.put(DatabaseTables.MarketItems, MarketItemsTableRow.class);
         elementTypes.put(DatabaseTables.Motherboards, MotherboardsTableRow.class);
         elementTypes.put(DatabaseTables.NetworkCards, NetworkcardsTableRow.class);
-        elementTypes.put(DatabaseTables.Players, PlayersTableRow.class);
+        elementTypes.put(DatabaseTables.players, PlayersTableRow.class);
         elementTypes.put(DatabaseTables.Rams, RamsTableRow.class);
     }
 
