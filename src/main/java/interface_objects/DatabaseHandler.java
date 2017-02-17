@@ -196,7 +196,7 @@ public class DatabaseHandler {
         HashMap<String, Integer> columns = new HashMap<>();
         try {
             ResultSetMetaData meta = rs.getMetaData();
-            for (int i = 0; i < meta.getColumnCount(); i++) {
+            for (int i = 1; i <= meta.getColumnCount(); i++) {
                 Logger.log("DatabaseHandler.getResultSetColumns", meta.getColumnName(i));
                 columns.put(meta.getColumnName(i), meta.getColumnType(i));
             }
