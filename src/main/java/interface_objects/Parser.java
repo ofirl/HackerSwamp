@@ -1,7 +1,9 @@
 package interface_objects;
 
+import managers.Logger;
 import objects.*;
 
+import java.io.Console;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedTransferQueue;
@@ -111,6 +113,7 @@ public class Parser {
      * @return a response
      */
     public static String requestResponse(String input) {
+        Logger.log("Parser.requestResponse", "got input : " + input);
         HashMap<String,String> args = decodeArgumentsList(input);
         // validity check
         if (!args.containsKey("authKey"))
@@ -125,6 +128,7 @@ public class Parser {
         CommandRequest c = new CommandRequest(args.get("command"), context);
 
         addCommand(c);
+        Logger.log("Parser.requestResponse", "waiting for response for : " + c.command);
         return waitForResponse(c.getKey());
     }
 
