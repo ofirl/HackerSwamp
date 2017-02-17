@@ -57,7 +57,6 @@ public class CommandManager {
         cmd = addSystemCommand(commandIds.get(name), name, new Help(), true);
         // help.commands
         name = Parameters.CommandNameHelpCommands;
-        Logger.log("CommandManager.initSystemCommands", "command ids is " + commandIds);
         subCmd = addSystemCommand(commandIds.get(name), name, new Help(), false);
         addSubCommand(cmd, subCmd);
         // connect
@@ -120,6 +119,8 @@ public class CommandManager {
      * @param sub the sub command
      */
     public static void addSubCommand(Command main, Command sub) {
+        Logger.log("DatabaseHandler.addSubCommand", main.name);
+        Logger.log("DatabaseHandler.addSubCommand", sub.name);
         main.subCommands.put(sub.name, sub);
     }
 
