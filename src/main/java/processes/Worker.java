@@ -286,7 +286,7 @@ public class Worker {
         HashMap<String, Command> allCommands = user.getAvailableCommands();
         for (Command c :
                 allCommands.values()) {
-            if (c.access == CommandAccess.System)
+            if (c.access == CommandAccess.system)
                 accessibleCommands.put(c.name, c);
         }
 
@@ -307,7 +307,7 @@ public class Worker {
         HashMap<String, Command> allCommands = user.getAvailableCommands();
         for (Command c :
                 allCommands.values()) {
-            if (c.access != CommandAccess.System)
+            if (c.access != CommandAccess.system)
                 accessibleScripts.put(c.name, c);
         }
 
