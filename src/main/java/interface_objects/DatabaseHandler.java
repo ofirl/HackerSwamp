@@ -32,6 +32,7 @@ public class DatabaseHandler {
      */
     public static void transferQuery(DatabaseQuery query) {
         try {
+            Logger.log("DatabaseHandler.transferQuery", "transferring " + query.query);
             queryQueue.transfer(query);
         }
         catch (Exception e) { }
@@ -107,8 +108,8 @@ public class DatabaseHandler {
      */
     public static void addQuery(DatabaseQuery query) {
         if (query.responseNeeded) {
-            Logger.log("DatabaseHandler.addQuery", "query = " + query.query);
             responseEnqueue(query);
+            Logger.log("DatabaseHandler.addQuery", "query = " + query.query);
             transferQuery(query);
             Logger.log("DatabaseHandler.getTableElements", "query " + query + " transferred");
         }
