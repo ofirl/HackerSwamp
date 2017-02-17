@@ -106,7 +106,8 @@ public class CommandManager {
 
             // add to commandsList and allCommands
             allCommands.put(c.name, command);
-            parents.put(command, c.owner);
+            if (!c.owner.equals("systemUser"))
+                parents.put(command, c.owner);
         }
 
         // add commands to their parents sub commands list
