@@ -122,8 +122,8 @@ public class CommandManager {
      * @param sub the sub command
      */
     public static void addSubCommand(Command main, Command sub) {
-        Logger.log("DatabaseHandler.addSubCommand", main.name);
         Logger.log("DatabaseHandler.addSubCommand", sub.name);
+        Logger.log("DatabaseHandler.addSubCommand", main.name);
         main.subCommands.put(sub.name, sub);
         sub.parent = main;
     }
