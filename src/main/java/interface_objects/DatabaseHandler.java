@@ -6,6 +6,7 @@ import objects.DatabaseQuery;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.Types;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedTransferQueue;
@@ -192,13 +193,15 @@ public class DatabaseHandler {
      * @return a {@link HashMap} of the form {@code HashMap<columnName, columnType>}
      * when {@code columnType} is a number from java.sql.Types
      */
-    public static HashMap<String, Integer> getResultSetColumns(ResultSet rs) {
-        HashMap<String, Integer> columns = new HashMap<>();
+    public static List<String> getResultSetColumns(ResultSet rs) {
+        //HashMap<String, Integer> columns = new HashMap<>();
+        List<String> columns = new ArrayList<>();
         try {
             ResultSetMetaData meta = rs.getMetaData();
             for (int i = 1; i <= meta.getColumnCount(); i++) {
                 Logger.log("DatabaseHandler.getResultSetColumns", meta.getColumnName(i));
-                columns.put(meta.getColumnName(i), meta.getColumnType(i));
+                //columns.put(meta.getColumnName(i), meta.getColumnType(i));
+                columns.add(meta.getColumnName(i));
             }
 
             return columns;
@@ -286,7 +289,7 @@ public class DatabaseHandler {
         Logger.log("DatabaseHandler.getTableElements", "query : " + query);
 
         ResultSet rs = requestResponse(query);
-        HashMap<String, Integer> rsColumns = getResultSetColumns(rs);
+        List<String> rsColumns = getResultSetColumns(rs);
         if (rsColumns == null) {
             Logger.log("DatabaseHandler.getTableElements", "query : " + query + " result column set is null");
             return null;
@@ -298,7 +301,7 @@ public class DatabaseHandler {
                 // unchecked warning suppressed
                 T ele = (T)elementTypes.get(table).newInstance();
                 for (String columnName :
-                        rsColumns.keySet()) {
+                        rsColumns) {
                     Logger.log("DatabaseHandler.getTableElements", columnName + "=" + rs.getObject(columnName));
                     ele.getClass().getDeclaredField(columnName).set(ele, rs.getObject(columnName));
                 }
