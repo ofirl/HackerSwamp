@@ -312,7 +312,7 @@ public class DatabaseHandler {
             return elements;
         }
         catch (Exception e) {
-            Logger.log("DatabaseHandler.getTableElements", "error on query : " + query);
+            Logger.log("DatabaseHandler.getTableElements", "error on query : " + query + ", " + e.getMessage());
             return null;
         }
     }
