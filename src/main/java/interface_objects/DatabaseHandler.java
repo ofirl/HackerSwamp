@@ -303,7 +303,6 @@ public class DatabaseHandler {
                 for (String columnName :
                         rsColumns) {
                     int columnIndex = rs.findColumn(columnName);
-                    Logger.log("DatabaseHandler.getTableElements", "column index is " + columnIndex);
                     Logger.log("DatabaseHandler.getTableElements", columnName + "=" + rs.getObject(columnName));
                     ele.getClass().getDeclaredField(columnName).set(ele, rs.getObject(columnName));
                 }
