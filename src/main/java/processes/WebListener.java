@@ -19,6 +19,20 @@ public class WebListener {
 
     public static void main(String[] args) {
 
+        Thread test1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Worker.main(null);
+            }
+        });
+
+        Thread test2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DatabaseClient.main(null);
+            }
+        });
+
         port(Integer.valueOf(System.getenv("PORT")));
         staticFileLocation("/public");
 
