@@ -34,7 +34,7 @@ public class CommandManager {
     public static void initSystemCommands() {
         // get command list from db
         // TODO : check caps in systemUser
-        String filter = "owner='systemUser'";
+        String filter = "access='system'";
         List<CommandsTableRow> rows = DatabaseHandler.getTableElements(DatabaseTables.Commands, "id, name", filter);
 
         // sanity check

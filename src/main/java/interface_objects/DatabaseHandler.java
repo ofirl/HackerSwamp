@@ -305,7 +305,7 @@ public class DatabaseHandler {
                 elements.add(ele);
             }
 
-            Logger.log("DatabaseHandler.getTableElements", "query : + " + query + ", result count : " + elements.size());
+            Logger.log("DatabaseHandler.getTableElements", "query : " + query + ", result count : " + elements.size());
             return elements;
         }
         catch (Exception e) {
