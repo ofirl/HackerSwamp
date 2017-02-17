@@ -200,8 +200,6 @@ public class DatabaseHandler {
             ResultSetMetaData meta = rs.getMetaData();
             for (int i = 1; i <= meta.getColumnCount(); i++) {
                 Logger.log("DatabaseHandler.getResultSetColumns", meta.getColumnName(i));
-                Logger.log("DatabaseHandler.getResultSetColumns", meta.getColumnTypeName(i));
-                Logger.log("DatabaseHandler.getResultSetColumns", "" + meta.getColumnType(i));
                 //columns.put(meta.getColumnName(i), meta.getColumnType(i));
                 columns.add(meta.getColumnName(i));
             }

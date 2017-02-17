@@ -90,7 +90,7 @@ public class DatabaseClient {
 
             Class<?> test = Class.forName("database_objects.CommandAccessSqlType");
             Logger.log("DatabaseClient.addSqlType", "class found " + test.getName());
-            map.put("public.command_access", Class.forName("database_objects.CommandAccessSqlType"));
+            map.put("public.command_access", String.class);
             con.setTypeMap(map);
         }
         catch (Exception e) {
