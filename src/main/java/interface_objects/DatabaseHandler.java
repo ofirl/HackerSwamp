@@ -112,7 +112,7 @@ public class DatabaseHandler {
             responseEnqueue(query);
             Logger.log("DatabaseHandler.addQuery", "query = " + query.query);
             transferQuery(query);
-            Logger.log("DatabaseHandler.getTableElements", "query " + query + " transferred");
+            Logger.log("DatabaseHandler.getTableElements", "query " + query.query + " transferred");
         }
         else
             queryQueue.add(query);
@@ -182,7 +182,7 @@ public class DatabaseHandler {
         elementTypes.put(DatabaseTables.MarketItems, MarketItemsTableRow.class);
         elementTypes.put(DatabaseTables.Motherboards, MotherboardsTableRow.class);
         elementTypes.put(DatabaseTables.NetworkCards, NetworkcardsTableRow.class);
-        elementTypes.put(DatabaseTables.players, PlayersTableRow.class);
+        elementTypes.put(DatabaseTables.Players, PlayersTableRow.class);
         elementTypes.put(DatabaseTables.Rams, RamsTableRow.class);
     }
 

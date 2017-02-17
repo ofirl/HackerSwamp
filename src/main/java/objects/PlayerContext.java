@@ -36,7 +36,7 @@ public class PlayerContext {
         this.username = username;
         this.location = Parameters.DefaultLocation;
 
-        List<PlayersTableRow> player = DatabaseHandler.getTableElements(DatabaseTables.players, null, "username='" + username + "'");
+        List<PlayersTableRow> player = DatabaseHandler.getTableElements(DatabaseTables.Players, null, "username='" + username + "'");
         if (player != null && player.size() > 0) {
             PlayersTableRow playerRow = player.get(0);
             this.playerId = playerRow.id;
