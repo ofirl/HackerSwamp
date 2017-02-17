@@ -106,4 +106,12 @@ public class ActiveUser {
     public SystemSpec getSystemSpec() {
         return context.getSystemSpec();
     }
+
+    /**
+     * gets the main account of the active user
+     * @return account object, or null if there isn't one
+     */
+    public Account getMainAccount() {
+        return context.getMainAccount();
+    }
 }

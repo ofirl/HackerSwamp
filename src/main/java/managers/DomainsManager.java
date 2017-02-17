@@ -22,20 +22,27 @@ public class DomainsManager {
      * domains initializer
      */
     public static void init() {
-        // banks
+        // region banks
+
         // TODO : pull domains from db and add them
         // TODO : add obstacles table to db
         Bank b = addBank("First Bank", "first.bank.cash", null);
         b.addObstacle(new Firewall("firewall 1", 9));
         b.addCommand(new Command(0, "transfer", null, CommandAccess.System));
 
-        // companies
+        // endregion
 
-        // organizations
+        // region companies
+
+        // endregion
+
+        // region organizations
+
+        // endregion
     }
 
     /**
-     * adds n bank
+     * adds a bank
      * @param name the name of the bank
      * @param domain the domain of the bank
      * @param ip the ip of the bank
@@ -108,7 +115,7 @@ public class DomainsManager {
      * @param username the username to search for
      * @return a list of all the accounts of the username
      */
-    public static List<Account> getBankAccountByUsername(String username) {
+    public static List<Account> getBankAccountsByUsername(String username) {
         List<Account> accounts = new ArrayList<>();
 
         for (Bank b :
@@ -119,6 +126,22 @@ public class DomainsManager {
         }
 
         return accounts;
+    }
+
+    /**
+     * gets the main account for the provided {@code username} (the bit coin account)
+     * @param username the username to search for
+     * @return the main account of the {@code username}, or null if there isn't one
+     */
+    public static Account getMainAccountByUsername(String username) {
+        List<Account> accounts = getBankAccountsByUsername(username);
+        for (Account a :
+                accounts) {
+            if (a.bank.name.equals(Parameters.MainBankName))
+                return a;
+        }
+
+        return null;
     }
 
     /**

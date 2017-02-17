@@ -7,10 +7,19 @@ public abstract class BaseItem {
     public int id;
     public String name;
 
+    /**
+     * constructor
+     * @param id id of the item
+     * @param name name of the item
+     */
     public BaseItem(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
+    /**
+     * gets the item as arguments to send
+     * @return the item as arguments
+     */
     public abstract HashMap<String, String> getSpecAsArguments();
 }

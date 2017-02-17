@@ -12,6 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * manager class for commands
+ */
 public class CommandManager {
     // public variables
     public static ConcurrentHashMap<String, Command> commandList = new ConcurrentHashMap<>();

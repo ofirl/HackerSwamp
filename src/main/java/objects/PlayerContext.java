@@ -6,9 +6,13 @@ import managers.CommandManager;
 import database_objects.CommandsViewTableRow;
 import interface_objects.DatabaseHandler;
 import interface_objects.DatabaseTables;
+import managers.DomainsManager;
 
 import java.util.*;
 
+/**
+ * player context object
+ */
 public class PlayerContext {
     // public variables
     public String username;
@@ -22,6 +26,7 @@ public class PlayerContext {
     public HashMap<String, String> macros;
     public SystemSpec systemSpec;
     public SystemStatus systemStatus;
+    public Account mainAccount;
 
     /**
      * constructor
@@ -42,6 +47,7 @@ public class PlayerContext {
         this.autoCompleteCommands = getAutoCompleteCommands(username);
         this.macros = getMacros(username);
         this.systemSpec = SystemSpec.getUserSystemSpecs(username);
+        this.mainAccount = DomainsManager.getMainAccountByUsername(username);
     }
 
     /**
@@ -154,5 +160,13 @@ public class PlayerContext {
      */
     public SystemSpec getSystemSpec() {
         return systemSpec;
+    }
+
+    /**
+     * gets the main account
+     * @return account object, or null if there isn't one
+     */
+    public Account getMainAccount() {
+        return mainAccount;
     }
 }

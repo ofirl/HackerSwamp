@@ -1,13 +1,10 @@
 package processes;
 
 import commands.CommandAccess;
-import database_objects.MacrosTableRow;
-import javafx.util.Pair;
+import items.MarketScript;
 import managers.CommandManager;
 import domains.BaseDomain;
 import managers.DomainsManager;
-import database_objects.AutocompleteTableRow;
-import database_objects.CommandsTableRow;
 import managers.ItemManager;
 import objects.*;
 import interface_objects.*;
@@ -131,21 +128,26 @@ public class Worker {
         BaseDomain location = DomainsManager.getDomainByName(request.context.location);
         if (location != null) {
             commandToRun = parseCommand(location.commands);
-            if (commandToRun != null)
+            if (commandToRun != null) {
                 response = location.executeCommand(request.context, commandToRun.name, arguments);
-        }
-
-        if (response != null) {
-            Parser.addResponse(request.getKey(), Parser.encodeArgument("response", response));
-            return;
+                Parser.addResponse(request.getKey(), Parser.encodeArgument("response", response));
+                return;
+            }
         }
 
         // search in all accessible commands
         commandToRun = parseCommand();
-        if (commandToRun != null)
+        if (commandToRun != null) {
             response = commandToRun.execute(request.context, commandToRun.name, arguments);
+            Parser.addResponse(request.getKey(), Parser.encodeArgument("response", response));
+            return;
+        }
 
-        if (response != null) {
+        // search in market scripts
+        MarketScript script = ItemManager.getMarketScriptByName(commands);
+        if (script != null) {
+            commandToRun = script.command;
+            response = commandToRun.execute(request.context, commandToRun.name, arguments);
             Parser.addResponse(request.getKey(), Parser.encodeArgument("response", response));
             return;
         }
@@ -222,7 +224,7 @@ public class Worker {
      */
     public void executeInitCommandAccountBalance() {
         // get all the accounts
-        List<Account> accounts = DomainsManager.getBankAccountByUsername(request.context.username);
+        List<Account> accounts = DomainsManager.getBankAccountsByUsername(request.context.username);
 
         // parse the account list
         String response = "";
@@ -355,6 +357,7 @@ public class Worker {
      * @return the command to actually run
      */
     public Command parseCommand(HashMap<String, Command> startingPoint) {
+        // TODO : fix
         HashMap<String, Command> commandsToSearch = startingPoint;
         Command commandFound = null;
         for (String c :

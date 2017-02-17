@@ -1,6 +1,6 @@
 package database_objects;
 
-public class MarketitemsTableRow {
+public class MarketItemsTableRow {
     public int id;
     public String name;
 }

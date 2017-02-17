@@ -298,6 +298,12 @@ public class Parameters {
      */
     public static String ErrorActiveUserNotFound = "Error : active user can't be found";
 
+    /**
+     * main bank name
+     */
+    // TODO : change to the right value
+    public static String MainBankName = "";
+
     // endregion
 
     // region player context
@@ -306,6 +312,29 @@ public class Parameters {
      * default location for player context
      */
     public static String DefaultLocation = "localhost";
+
+    // endregion
+
+    // region item manager
+
+    // region error messages
+
+    /**
+     * script not found error
+     */
+    public static String ErrorScriptNotFound = "Error : script not found in market scripts";
+
+    /**
+     * main account not found error
+     */
+    public static String ErrorMainAccountNotFound = "Error : could not find main account";
+
+    /**
+     * insufficient funds error
+     */
+    public static String ErrorInsufficientFunds = "Error : insufficient funds";
+
+    // endregion
 
     // endregion
 }
