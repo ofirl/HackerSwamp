@@ -1,5 +1,6 @@
 package processes;
 
+import database_objects.*;
 import interface_objects.DatabaseHandler;
 import managers.Logger;
 import objects.DatabaseQuery;
@@ -84,7 +85,7 @@ public class DatabaseClient {
     public static void addSqlTypes(Connection con) {
         try {
             java.util.Map map = con.getTypeMap();
-            map.put("public.command_access", Class.forName("database_object.CommandAccessSqlType"));
+            map.put("public.command_access", Class.forName("database_objects.CommandAccessSqlType"));
             con.setTypeMap(map);
         }
         catch (Exception e) {
