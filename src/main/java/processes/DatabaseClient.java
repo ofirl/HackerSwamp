@@ -25,6 +25,7 @@ public class DatabaseClient {
 
             Logger.log("DatabaseClient", "got query " + query.query);
             ResultSet rs = executeQuery(query);
+            Logger.log("DatabaseClient", "query " + query.query + " got " + rs);
             DatabaseHandler.addResponse(query.id, rs);
         }
     }
