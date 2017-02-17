@@ -41,9 +41,11 @@ public class Worker {
         while (true) {
             requestToHandle = null;
             // make sure we have a requestToHandle
+            Logger.log("Worker.main", "waiting for a command");
             while (requestToHandle == null)
                 requestToHandle = Parser.receiveCommand();
 
+            Logger.log("Worker.main", "got " + requestToHandle.command);
             // create a thread and handle the requestToHandle
             ThreadedJob thread = threadFactory.newThread(new Worker(requestToHandle)::workerStart, null, "workerThread");
             thread.start();

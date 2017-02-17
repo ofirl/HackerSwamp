@@ -29,7 +29,9 @@ public class Parser {
      */
     public static void transferCommand(CommandRequest c) {
         try {
+            Logger.log("Parser.transferCommand", "transferring " + c.command);
             parseQueue.transfer(c);
+            Logger.log("Parser.transferCommand", "worker received " + c.command);
         }
         catch (Exception e) { }
     }
