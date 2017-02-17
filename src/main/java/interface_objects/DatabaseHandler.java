@@ -171,6 +171,7 @@ public class DatabaseHandler {
     public static HashMap<DatabaseTables, Class> elementTypes = new HashMap<>();
     // elementTypes initialization
     static {
+        // TODO : add all tables
         elementTypes.put(DatabaseTables.Accounts, AccountsTableRow.class);
         elementTypes.put(DatabaseTables.Autocomplete, AutocompleteTableRow.class);
         elementTypes.put(DatabaseTables.Commands, CommandsTableRow.class);
@@ -185,6 +186,9 @@ public class DatabaseHandler {
         elementTypes.put(DatabaseTables.NetworkCards, NetworkcardsTableRow.class);
         elementTypes.put(DatabaseTables.players, PlayersTableRow.class);
         elementTypes.put(DatabaseTables.Rams, RamsTableRow.class);
+        elementTypes.put(DatabaseTables.Equipped_Items, EquippedItemsTableRow.class);
+        elementTypes.put(DatabaseTables.Accessible_Commands, CommandsViewTableRow.class);
+        elementTypes.put(DatabaseTables.Autocomplete_Commands, CommandsViewTableRow.class);
     }
 
     /**

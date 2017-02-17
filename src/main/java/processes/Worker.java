@@ -362,7 +362,7 @@ public class Worker {
      */
     public Command parseCommand(HashMap<String, Command> startingPoint) {
         // TODO : fix
-        Logger.log("Worker.workerStart", "commands length is " + commands.size());
+        Logger.log("Worker.parseCommand", "commands length is " + commands.size());
 
         HashMap<String, Command> commandsToSearch = startingPoint;
         Command commandFound = null;
