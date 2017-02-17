@@ -32,7 +32,9 @@ public class CommandManager {
      * init for system commands
      */
     public static void initSystemCommands() {
-        String filter = "owner='system'";
+        // get command list from db
+        // TODO : check caps in systemUser
+        String filter = "owner='systemUser'";
         List<CommandsTableRow> rows = DatabaseHandler.getTableElements(DatabaseTables.Commands, "id, name", filter);
 
         // sanity check
@@ -75,7 +77,8 @@ public class CommandManager {
      */
     public static void initPlayerScripts(){
         // get command list from db
-        String filter = "owner!='system' AND access!='system'";
+        // TODO : check caps in systemUser
+        String filter = "owner!='systemUser' AND access!='system'";
         List<CommandsTableRow> dbCommands = DatabaseHandler.getTableElements(DatabaseTables.Commands, null, filter);
         if (dbCommands == null)
             return;
@@ -100,16 +103,12 @@ public class CommandManager {
 
             // add to commandsList and allCommands
             allCommands.put(c.name, command);
-            if (c.owner.equals("system"))
-                commandList.put(c.name, command);
-            else
-                parents.put(command, c.owner);
+            parents.put(command, c.owner);
         }
 
         // add commands to their parents sub commands list
         for (Command c :
                 parents.keySet()) {
-            if (!parents.get(c).equals("system"))
                 addSubCommand(allCommands.get(parents.get(c)), c);
         }
     }
