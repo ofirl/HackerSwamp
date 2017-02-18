@@ -109,6 +109,7 @@ public class DatabaseClient {
         URI dbUri = new URI(System.getenv("DATABASE_URL"));
         int port = dbUri.getPort();
         String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ":" + port + dbUri.getPath();
+        Logger.log("DatabaseClient.getConnection", "database URL = " + dbUrl);
 
         if (dbUri.getUserInfo() != null) {
             String username = dbUri.getUserInfo().split(":")[0];
