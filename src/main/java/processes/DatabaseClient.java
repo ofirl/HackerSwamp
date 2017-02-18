@@ -106,10 +106,13 @@ public class DatabaseClient {
      * @throws SQLException sql exception
      */
     private static Connection getConnection() throws URISyntaxException, SQLException {
+
+
         URI dbUri = new URI(System.getenv("DATABASE_URL"));
         int port = dbUri.getPort();
         String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ":" + port + dbUri.getPath();
         Logger.log("DatabaseClient.getConnection", "database URL = " + dbUrl);
+        Logger.log("DatabaseClient.getConnection", "database URI = " + System.getenv("DATABASE_URL"));
 
         if (dbUri.getUserInfo() != null) {
             String username = dbUri.getUserInfo().split(":")[0];
