@@ -49,7 +49,6 @@ public class DatabaseClient {
         Connection connection = null;
         try {
             connection = getConnection();
-            addSqlTypes(connection);
             Statement stmt = connection.createStatement();
             if (dbQuery.query.startsWith("SELECT"))
                 rs = stmt.executeQuery(dbQuery.query);
@@ -79,27 +78,6 @@ public class DatabaseClient {
     }
 
     /**
-     * adds the custom sql types to the connection
-     * @param con the connection to add sql types to
-     */
-    public static void addSqlTypes(Connection con) {
-        try {
-            java.util.Map<String, Class<?>> map = con.getTypeMap();
-            if (map == null)
-                map = new HashMap<>();
-
-            //Class<?> test = Class.forName("database_objects.CommandAccessSqlType");
-            //Logger.log("DatabaseClient.addSqlType", "class found " + test.getName());
-            map.put("public.command_access", String.class);
-            con.setTypeMap(map);
-        }
-        catch (Exception e) {
-            Logger.log("DatabaseClient.addSqlType", "adding types failed, " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * gets a database connection
      * @return a database connection
      * @throws URISyntaxException syntax exception
@@ -107,15 +85,15 @@ public class DatabaseClient {
      */
     private static Connection getConnection() throws URISyntaxException, SQLException {
         // local testing
-        //String testUri = "postgres://gstsirazztbdli:2d4c2b57af25918d67127e906604aca03aa45dbfb05b01c5617a97107a9ac1e2@ec2-54-217-235-11.eu-west-1.compute.amazonaws.com:5432/d96llmqknu88a";
-        //URI dbUri = new URI(testUri);
+        String testUri = "postgres://gstsirazztbdli:2d4c2b57af25918d67127e906604aca03aa45dbfb05b01c5617a97107a9ac1e2@ec2-54-217-235-11.eu-west-1.compute.amazonaws.com:5432/d96llmqknu88a";
+        URI dbUri = new URI(testUri);
         // production
-        URI dbUri = new URI(System.getenv("DATABASE_URL"));
+        //URI dbUri = new URI(System.getenv("DATABASE_URL"));
 
         int port = dbUri.getPort();
         String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ":" + port + dbUri.getPath();
         // local testing
-        //dbUrl += "?sslmode=require";
+        dbUrl += "?sslmode=require";
         Logger.log("DatabaseClient.getConnection", "database URL = " + dbUrl);
 
         if (dbUri.getUserInfo() != null) {

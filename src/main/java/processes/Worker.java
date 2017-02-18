@@ -25,7 +25,7 @@ public class Worker {
     public String error;
     public List<String> commands = new ArrayList<>();
     public List<Argument> arguments = new ArrayList<>();
-    public boolean initCommand = false;
+    public String initCommand = "";
     // endregion
 
     /**
@@ -75,36 +75,50 @@ public class Worker {
      * @param args arguments for the worker thread
      */
     public void workerStart(Object... args) {
-        // parse the input and populate commands and arguments
         Logger.log("Worker.workerStart", "got " + request.command);
+
+        // sanity check
+        if (request.command == null || request.command.equals("")) {
+            Parser.addResponse(request.getKey(), Parameters.ErrorNullCommand);
+            return;
+        }
+
+        // parse the input and populate commands and arguments
         if (!checkSyntax(request.command)) {
             if (error.equals(""))
-                error = "Error : unknown error occurred";
+                error = Parameters.ErrorUnknownError;
 
             Parser.addResponse(request.getKey(), error);
             return;
         }
 
-        if (initCommand) {
-            HashMap<String, Argument> argsMap = new HashMap<>();
-            arguments.forEach((a) -> argsMap.put(a.name, a));
-            // asked for auto complete list
-            if (argsMap.get(Parameters.InitCommandAutoCompleteList) != null)
-                executeInitCommandAutoCompleteList();
-            // asked for system spec
-            else if (argsMap.get(Parameters.InitCommandSystemSpec) != null)
-                executeInitCommandSystemSpec();
-            // asked for account balance
-            else if (argsMap.get(Parameters.InitCommandAccountBalance) != null)
-                executeInitCommandAccountBalance();
-            // asked for system status
-            else if (argsMap.get(Parameters.InitCommandSystemStatus) != null)
-                executeInitCommandSystemStatus();
-            // asked for macros
-            else if (argsMap.get(Parameters.InitCommandMacros) != null)
-                executeInitCommandMacros();
+        if (commands.size() == 1 && commands.get(0).equals("init")) {
+            if (arguments.size() == 1) {
+                initCommand = arguments.get(0).value;
 
-            return;
+                if (initCommand.equals("")) {
+                    Parser.addResponse(request.getKey(), Parameters.ErrorInvalidInitCommand);
+                    return;
+                }
+
+                boolean foundInitCommand = true;
+
+                if (initCommand.equals(Parameters.InitCommandAutoCompleteList))
+                    executeInitCommandAutoCompleteList();
+                else if (initCommand.equals(Parameters.InitCommandAccountBalance))
+                    executeInitCommandAccountBalance();
+                else if (initCommand.equals(Parameters.InitCommandMacros))
+                    executeInitCommandMacros();
+                else if (initCommand.equals(Parameters.InitCommandSystemSpec))
+                    executeInitCommandSystemSpec();
+                else if (initCommand.equals(Parameters.InitCommandSystemStatus))
+                    executeInitCommandSystemStatus();
+                else
+                    foundInitCommand = false;
+
+                if (foundInitCommand)
+                    return;
+            }
         }
 
         String response = null;
@@ -391,7 +405,7 @@ public class Worker {
     /**
      * checks the command syntax and populates {@code commands} and {@code argument}
      * @param input the input to check
-     * @return whether there were errors, if true, check {@code error} field for description
+     * @return whether the check succeeded, if false (errors), check {@code error} field for description
      */
     public boolean checkSyntax(String input) {
         // check for '{' and '}'
@@ -400,9 +414,12 @@ public class Worker {
             return false;
         }
 
+        String commandToParse = null;
+
         int commandEnd = input.length();
 
         // check argument list syntax
+        // { } format
         if (input.contains("{")) {
             int startIndex = input.indexOf('{');
             int endIndex = input.indexOf('}');
@@ -421,27 +438,28 @@ public class Worker {
                     return false;
                 }
 
-                if (arg.equals(Parameters.InitCommandTemplate)) {
-                    initCommand = true;
-                    continue;
-                }
+                // check argument type
+                String type = checkArgumentType(argParts[1]);
 
                 // add argument to list
-                String type;
-                if (argParts[1].contains("\""))
-                    type = "String";
-                else if (argParts[1].contains("."))
-                    type = "float";
-                else
-                    type = "int";
                 arguments.add(new Argument(argParts[0], type, argParts[1]));
             }
+
+            commandToParse = input.substring(0, commandEnd);
+        }
+        else { // "command arg1" format
+            String[] commandParts = input.split(" ");
+            if (commandParts.length == 0)
+                return false;
+
+            commandToParse = commandParts[0];
+
+            for (int i = 1; i < commandParts.length; i++)
+                arguments.add(new Argument("arg" + i, checkArgumentType(commandParts[i]), commandParts[i]));
         }
 
-        // add commands
-        String command = input.substring(0, commandEnd);
-        if (command.contains(".")) {
-            String[] commandSplat = command.split("\\.");
+        if (commandToParse.contains(".")) {
+            String[] commandSplat = commandToParse.split("\\.");
             commandSplat[0] = commandSplat[0].trim();
             commandSplat[commandSplat.length - 1] = commandSplat[commandSplat.length - 1].trim();
             for (String s :
@@ -449,8 +467,34 @@ public class Worker {
                 commands.add(s);
         }
         else
-            commands.add(command.trim());
+            commands.add(commandToParse.trim());
 
         return true;
+    }
+
+    /**
+     * checks the argument type
+     * @param arg the argument to check
+     * @return the argument type name (int, float or string)
+     */
+    public String checkArgumentType(String arg) {
+        String type;
+        try {
+            //noinspection ResultOfMethodCallIgnored
+            Integer.parseInt(arg);
+            type = "int";
+        }
+        catch (Exception e) {
+            try {
+                //noinspection ResultOfMethodCallIgnored
+                Float.parseFloat(arg);
+                type = "float";
+            }
+            catch (Exception ex) {
+                type = "java.lang.String";
+            }
+        }
+
+        return type;
     }
 }

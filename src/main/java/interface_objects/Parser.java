@@ -124,12 +124,14 @@ public class Parser {
             return Parameters.parserErrorNoAuthKey;
         if (LoginHandler.getUsernameByKey(args.get("authKey")) == null)
             return Parameters.parserErrorBadAuthKey;
-        if (!args.containsKey("command"))
+        if (!args.containsKey("command") && !args.containsKey("init"))
             return Parameters.parserErrorInvalidArguments;
 
         ActiveUser activeUser = LoginHandler.getActiveUserByKey(args.get("authKey"));
         CommandContext context = new CommandContext(activeUser.username, activeUser.playerId, activeUser.getLocation());
-        CommandRequest c = new CommandRequest(args.get("command"), context);
+
+        String commandToPass = args.containsKey("init") ? args.get("init") : args.get("command");
+        CommandRequest c = new CommandRequest(commandToPass, context);
 
         addCommand(c);
         Logger.log("Parser.requestResponse", "waiting for response for : " + c.command);

@@ -1,7 +1,9 @@
 package tests.general;
 
+import com.sun.org.apache.xml.internal.security.Init;
 import interface_objects.LoginHandler;
 import interface_objects.Parser;
+import objects.Parameters;
 import org.junit.Test;
 import processes.DatabaseClient;
 import processes.Worker;
@@ -38,7 +40,9 @@ public class GeneralTest {
         test1.start();
         test2.start();
 
-        String userInput =  "help\n";
+        String userInput =  "init\n";
+        userInput += "connect first.bank.cash\n";
+        userInput += "help\n";
         userInput += "help.comm\n";
         userInput += "help.commands\n";
         userInput += "system\n";
@@ -59,6 +63,32 @@ public class GeneralTest {
             if (input.equals("start")) {
                 String temp = LoginHandler.checkLogin("8:5=username:ofirl&8:4=password:test");
                 authKey = temp.substring(5);
+            }
+            else if (input.equals("init")) {
+                String initCommand = "init " + Parameters.InitCommandAutoCompleteList;
+                input = "7:32=authKey:" + authKey;
+                input += "&4:" + initCommand.length() + "=init:" + initCommand;
+                System.out.println(Parser.requestResponse(input));
+
+                initCommand = "init " + Parameters.InitCommandAccountBalance;
+                input = "7:32=authKey:" + authKey;
+                input += "&4:" + initCommand.length() + "=init:" + initCommand;
+                System.out.println(Parser.requestResponse(input));
+
+                initCommand = "init " + Parameters.InitCommandMacros;
+                input = "7:32=authKey:" + authKey;
+                input += "&4:" + initCommand.length() + "=init:" + initCommand;
+                System.out.println(Parser.requestResponse(input));
+
+                initCommand = "init " + Parameters.InitCommandSystemSpec;
+                input = "7:32=authKey:" + authKey;
+                input += "&4:" + initCommand.length() + "=init:" + initCommand;
+                System.out.println(Parser.requestResponse(input));
+
+                initCommand = "init " + Parameters.InitCommandSystemStatus;
+                input = "7:32=authKey:" + authKey;
+                input += "&4:" + initCommand.length() + "=init:" + initCommand;
+                //System.out.println(Parser.requestResponse(input));
             }
             else {
                 input = "7:" + input.length() + "=command:" + input;

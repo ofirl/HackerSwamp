@@ -16,9 +16,10 @@ public class Connect extends BaseCommand{
     public static Command superCommand;
     public static List<Argument> acceptedArguments = new ArrayList<>();
 
+    // TODO : check accepted arguments somewhere?
     static {
         superCommand = CommandManager.allCommands.get(Parameters.CommandNameConnect);
-        acceptedArguments.add(new Argument("filter", String.class));
+        acceptedArguments.add(new Argument("arg1", String.class));
     }
 
     /**
@@ -50,7 +51,7 @@ public class Connect extends BaseCommand{
      * @return general help
      */
     public String main() {
-        Argument domain = args.get("domain");
+        Argument domain = args.get("arg1");
         if (domain != null)
             return DomainsManager.connectToDomain(domain.value, context, args);
 

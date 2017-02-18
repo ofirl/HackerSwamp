@@ -166,6 +166,21 @@ public class Parameters {
      */
     public static String ErrorSystemSpecNetworkCardNotFound = "Error : could not find a network card in system specs";
 
+    /**
+     * error for invalid init command
+     */
+    public static String ErrorInvalidInitCommand = "Error : invalid init command";
+
+    /**
+     * error for unknown error
+     */
+    public static String ErrorUnknownError = "Error : unknown error occurred";
+
+    /**
+     * error for receiving a null command
+     */
+    public static String ErrorNullCommand = "Error : didn't receive command";
+
     // endregion
 
         // region init commands

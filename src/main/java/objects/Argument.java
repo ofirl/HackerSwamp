@@ -8,7 +8,7 @@ import java.util.List;
 public class Argument {
     public String name;
     public Class type;
-    public String value = null;
+    public String value;
 
     public static final List<String> primitiveTypeList = new ArrayList<>();
     static {
@@ -50,6 +50,6 @@ public class Argument {
     }
 
     public Argument(String name, String type, String value) {
-        this(name, ClassUtils.resolvePrimitiveClassName(type), value);
+        this(name, getClassByName(type), value);
     }
 }
