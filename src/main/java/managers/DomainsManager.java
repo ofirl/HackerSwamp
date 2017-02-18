@@ -30,6 +30,8 @@ public class DomainsManager {
         b.addObstacle(new Firewall("firewall 1", 9));
         //b.addCommand(new Command(0, "transfer", null, CommandAccess.system));
 
+        b = addBank("First International Bank", "first.inter.bank", null);
+
         // endregion
 
         // region companies

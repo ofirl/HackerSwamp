@@ -44,21 +44,18 @@ public class PlayerContext {
             this.corpId = playerRow.corp;
         }
 
-        this.availableCommands = getAvailableCommands(username);
-        this.autoCompleteCommands = getAutoCompleteCommands(username);
-        this.macros = getMacros(username);
+        getAvailableCommands();
+        getAutoCompleteCommands();
+        getMacros();
         this.systemSpec = SystemSpec.getUserSystemSpecs(username);
         this.mainAccount = DomainsManager.getMainAccountByUsername(username);
     }
 
     /**
      * gets all the available commands of {@code username}
-     * @param username the username to filter for
      * @return all the available commands
      */
-    public HashMap<String, Command> getAvailableCommands(String username) {
-        HashMap<String, Command> commands = new HashMap<>();
-
+    public void getAvailableCommands() {
         List<CommandsViewTableRow> accessibleCommands = DatabaseHandler.getTableElements(DatabaseTables.Accessible_Commands, "name", "username='" + username + "'");
         if (accessibleCommands != null) {
             for (CommandsViewTableRow f :
@@ -67,41 +64,30 @@ public class PlayerContext {
                 Logger.log("PlayerContext.getAvailableCommands", "available command added " + f.name);
             }
         }
-
-        return commands;
     }
 
     /**
      * gets all the available commands for autocomplete of {@code username}
-     * @param username the username to filter for
      * @return all the available commands for auto complete
      */
-    public HashMap<String, Command> getAutoCompleteCommands(String username) {
-        HashMap<String, Command> commands = new HashMap<>();
-
+    public void getAutoCompleteCommands() {
         List<CommandsViewTableRow> accessibleCommands = DatabaseHandler.getTableElements(DatabaseTables.Autocomplete_Commands, "name", "username='" + username + "'");
         if (accessibleCommands != null) {
             for (CommandsViewTableRow f :
                     accessibleCommands)
-                availableCommands.put(f.name, CommandManager.getCommandByName(f.name));
+                autoCompleteCommands.put(f.name, CommandManager.getCommandByName(f.name));
         }
-
-        return commands;
     }
 
     /**
      * gets all the defined macros for the provided {@code username}
-     * @param username the username to search for
      * @return all the defined macros of {@code username}
      */
-    public HashMap<String, String> getMacros(String username) {
-        HashMap<String, String> macros = new HashMap<>();
+    public void getMacros() {
         List<MacrosTableRow> macrosList = DatabaseHandler.getTableElements(DatabaseTables.Macros, null, "player_id=" + playerId);
         for (MacrosTableRow m :
                 macrosList)
             macros.put(m.macro, m.command);
-
-        return macros;
     }
 
     /**
