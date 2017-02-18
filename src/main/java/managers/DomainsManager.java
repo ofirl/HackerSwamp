@@ -49,8 +49,8 @@ public class DomainsManager {
      */
     public static Bank addBank(String name, String domain, String ip) {
         Bank b = new Bank(name, domain, ip, DomainType.Bank);
-        allDomains.put(name, b);
-        bankDomains.put(name, b);
+        allDomains.put(domain, b);
+        bankDomains.put(domain, b);
         return b;
     }
 
@@ -62,8 +62,8 @@ public class DomainsManager {
      */
     public static void addCompany(String name, String domain, String ip) {
         Company c = new Company(name, domain, ip, DomainType.Company);
-        allDomains.put(name, c);
-        companyDomains.put(name, c);
+        allDomains.put(domain, c);
+        companyDomains.put(domain, c);
     }
 
     /**
@@ -74,8 +74,8 @@ public class DomainsManager {
      */
     public static void addOrganization(String name, String domain, String ip) {
         Organization o = new Organization(name, domain, ip, DomainType.Organization);
-        allDomains.put(name, o);
-        organizationDomains.put(name, o);
+        allDomains.put(domain, o);
+        organizationDomains.put(domain, o);
     }
 
     /**

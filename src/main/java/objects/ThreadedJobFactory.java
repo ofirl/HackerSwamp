@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.*;
 import interfaces.*;
+import managers.Logger;
 
 public class ThreadedJobFactory{
     // class related
@@ -20,7 +21,9 @@ public class ThreadedJobFactory{
 
     public ThreadedJob newThread(ThreadEntryPoint r, Object[] args, String name){
         // wait until space is available
+        Logger.log("ThreadedJobFactory.newThread", "waiting for space");
         waitUntilSpaceAvailable();
+        Logger.log("ThreadedJobFactory.newThread", "got space");
         // create a thread and add it to the list
         ThreadedJob threadedJob = new ThreadedJob(r, args, name, this::threadEnded);
 
@@ -29,10 +32,11 @@ public class ThreadedJobFactory{
         return threadedJob;
     }
 
-    public void threadEnded() {
+    public void threadEnded(Thread that) {
         lock.lock();
         try {
             spaceAvailable.signal();
+            threads.remove(that);
         }
         finally {
             lock.unlock();
@@ -42,8 +46,9 @@ public class ThreadedJobFactory{
     public void waitUntilSpaceAvailable() {
         lock.lock();
         try {
-            if (threads.size() == maxThreads) {
+            while (threads.size() == maxThreads) {
                 try {
+                    Logger.log("ThreadedJobFactory.waitUntilSpaceAvailable", "waiting...");
                     spaceAvailable.await();
                 }
                 catch (Exception e) {

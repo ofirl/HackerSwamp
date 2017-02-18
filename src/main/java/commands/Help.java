@@ -73,6 +73,8 @@ public class Help extends BaseCommand {
                     break;
             }
         }
+        else
+            commands = Worker.getAllAccessibleCommands(context);
 
         if (commands == null)
             return "";

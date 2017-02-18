@@ -79,8 +79,9 @@ public class Worker {
         Logger.log("Worker.workerStart", "got " + request.command);
         if (!checkSyntax(request.command)) {
             if (error.equals(""))
-                Parser.addResponse(request.getKey(), error);
+                error = "Error : unknown error occurred";
 
+            Parser.addResponse(request.getKey(), error);
             return;
         }
 
@@ -440,11 +441,15 @@ public class Worker {
         // add commands
         String command = input.substring(0, commandEnd);
         if (command.contains(".")) {
-            String[] commandSplat = command.split(".");
-            Collections.addAll(commands, commandSplat);
+            String[] commandSplat = command.split("\\.");
+            commandSplat[0] = commandSplat[0].trim();
+            commandSplat[commandSplat.length - 1] = commandSplat[commandSplat.length - 1].trim();
+            for (String s :
+                    commandSplat)
+                commands.add(s);
         }
         else
-            commands.add(command);
+            commands.add(command.trim());
 
         return true;
     }

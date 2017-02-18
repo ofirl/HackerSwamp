@@ -49,7 +49,7 @@ public class ThreadedJob extends Thread {
                 errorOutput.response = "Error running the requestToHandle : " + errorOutput.command;
         }
 
-        threadOnFinished.onFinish();
+        threadOnFinished.onFinish(this);
 
         if (error != null)
             System.err.println("Error : exception caught on thread : " + thread.getName() + " - " + error);
