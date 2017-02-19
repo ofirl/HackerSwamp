@@ -160,7 +160,7 @@ public class Parser {
         for (String key :
                 args.keySet()) {
             String value = args.get(key);
-            output += key.length() + ":" + value.length() + " " + key + ":" + value + "&"; // key_length:value_length key:value&
+            output += key.length() + ":" + value.length() + "=" + key + ":" + value + "&"; // key_length:value_length key:value&
         }
 
         if (!output.equals(""))

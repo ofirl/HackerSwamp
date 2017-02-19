@@ -4,15 +4,16 @@ import java.util.HashMap;
 
 public class Cpu extends BaseItem{
     // public variables
-    public float speed;
+    public double speed;
     public int cores;
 
     /**
      * constructor
      */
-    public Cpu(int id, String name, int speed) {
+    public Cpu(int id, String name, double speed, int cores) {
         super(id, name);
         this.speed = speed;
+        this.cores = cores;
     }
 
     /**

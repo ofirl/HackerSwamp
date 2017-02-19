@@ -80,10 +80,12 @@ public class SystemSpec {
         HashMap<String, String> spec = new HashMap<>();
 
         // motherboard
-        spec.putAll(motherboard.getSpecAsArguments());
+        if (motherboard != null)
+            spec.putAll(motherboard.getSpecAsArguments());
 
         // network card
-        spec.putAll(networkCard.getSpecAsArguments());
+        if (networkCard != null)
+            spec.putAll(networkCard.getSpecAsArguments());
 
         // cpu
         for (Cpu c :

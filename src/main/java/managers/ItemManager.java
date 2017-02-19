@@ -1,5 +1,8 @@
 package managers;
 
+import database_objects.*;
+import interface_objects.DatabaseHandler;
+import interface_objects.DatabaseTables;
 import items.*;
 import objects.Account;
 import objects.Parameters;
@@ -26,7 +29,50 @@ public class ItemManager {
      * init
      */
     public static void init() {
-        //TODO : implement
+        // motherboards
+        List<MotherboardsTableRow> motherboardItems = DatabaseHandler.getTableElements(DatabaseTables.Motherboards);
+        for (MotherboardsTableRow i :
+                motherboardItems) {
+            Motherboard motherboard = new Motherboard(i.id, i.name, i.cpu_slots, i.ram_slots, i.hdd_slots, i.max_ram_size, i.max_cpu_speed);
+            motherboards.put(motherboard.id, motherboard);
+            allItems.put(motherboard.id, motherboard);
+        }
+
+        // cpus
+        List<CpusTableRow> cpuItems = DatabaseHandler.getTableElements(DatabaseTables.Cpus);
+        for (CpusTableRow i :
+                cpuItems) {
+            Cpu cpu = new Cpu(i.id, i.name, i.speed, i.cores);
+            cpus.put(cpu.id, cpu);
+            allItems.put(cpu.id, cpu);
+        }
+
+        // rams
+        List<RamsTableRow> ramItems = DatabaseHandler.getTableElements(DatabaseTables.Rams);
+        for (RamsTableRow i :
+                ramItems) {
+            Ram ram = new Ram(i.id, i.name, i.size);
+            rams.put(ram.id, ram);
+            allItems.put(ram.id, ram);
+        }
+
+        // hdds
+        List<HddsTableRow> hddItems = DatabaseHandler.getTableElements(DatabaseTables.Hdds);
+        for (HddsTableRow i :
+                hddItems) {
+            Hdd hdd = new Hdd(i.id, i.name, i.size);
+            hdds.put(hdd.id, hdd);
+            allItems.put(hdd.id, hdd);
+        }
+
+        // network cards
+        List<NetworkcardsTableRow> networkCardItems = DatabaseHandler.getTableElements(DatabaseTables.NetworkCards);
+        for (NetworkcardsTableRow i :
+                networkCardItems) {
+            NetworkCard networkCard = new NetworkCard(i.id, i.name, i.download, i.upload);
+            networkCards.put(networkCard.id, networkCard);
+            allItems.put(networkCard.id, networkCard);
+        }
     }
 
     /**

@@ -14,7 +14,7 @@ public class Argument {
     static {
         // TODO : make sure this is everything
         primitiveTypeList.add("int");
-        primitiveTypeList.add("float");
+        primitiveTypeList.add("double");
         primitiveTypeList.add("boolean");
     }
 

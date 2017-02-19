@@ -225,8 +225,6 @@ public class Worker {
             error = Parameters.ErrorSystemSpecRamNotFound;
         else if (spec.hdds == null)
             error = Parameters.ErrorSystemSpecHddNotFound;
-        else if (spec.networkCard == null)
-            error = Parameters.ErrorSystemSpecNetworkCardNotFound;
 
         // return if there is an error
         if (error != null) {
@@ -487,8 +485,8 @@ public class Worker {
         catch (Exception e) {
             try {
                 //noinspection ResultOfMethodCallIgnored
-                Float.parseFloat(arg);
-                type = "float";
+                Double.parseDouble(arg);
+                type = "double";
             }
             catch (Exception ex) {
                 type = "java.lang.String";

@@ -11,16 +11,18 @@ public class Motherboard extends BaseItem{
     public int ramSlots;
     public int hddSlots;
     public int maxRamSize;
-    public float maxCpuSpeed;
+    public double maxCpuSpeed;
 
     /**
      * constructor
      */
-    public Motherboard(int id, String name, int cpuSlots, int ramSlots, int hddSlots) {
+    public Motherboard(int id, String name, int cpuSlots, int ramSlots, int hddSlots, int maxRamSize, double maxCpuSpeed) {
         super(id, name);
         this.cpuSlots = cpuSlots;
         this.ramSlots = ramSlots;
         this.hddSlots = hddSlots;
+        this.maxRamSize = maxRamSize;
+        this.maxCpuSpeed = maxCpuSpeed;
     }
 
     /**
