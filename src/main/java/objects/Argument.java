@@ -12,7 +12,6 @@ public class Argument {
 
     public static final List<String> primitiveTypeList = new ArrayList<>();
     static {
-        // TODO : make sure this is everything
         primitiveTypeList.add("int");
         primitiveTypeList.add("double");
         primitiveTypeList.add("boolean");

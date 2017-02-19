@@ -34,7 +34,6 @@ public class CommandManager {
      */
     public static void initSystemCommands() {
         // get command list from db
-        // TODO : check caps in systemUser
         String filter = "access='" + CommandAccess.System + "'";
         List<CommandsTableRow> rows = DatabaseHandler.getTableElements(DatabaseTables.Commands, "id, name", filter);
 
@@ -78,7 +77,6 @@ public class CommandManager {
      */
     public static void initPlayerScripts(){
         // get command list from db
-        // TODO : check caps in systemUser
         String filter = "access!='" + CommandAccess.System + "'";
         List<CommandsTableRow> dbCommands = DatabaseHandler.getTableElements(DatabaseTables.Commands, null, filter);
         if (dbCommands == null)

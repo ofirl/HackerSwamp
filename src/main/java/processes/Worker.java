@@ -17,7 +17,6 @@ public class Worker {
     public static CommandRequest requestToHandle;
     public static ThreadedJobFactory threadFactory = new ThreadedJobFactory(Parameters.maxWorkerThreads);
 
-    // TODO : add domain manager and command manager, worker is not responsible for them - change the calls
     // endregion
 
     // region public variables
@@ -56,7 +55,7 @@ public class Worker {
      * main init method for the entire system
      */
     public static void initSystem() {
-        // TODO : add all the initializations and maybe move it somewhere else?
+        // TODO : add all the initializations
         CommandManager.init();
         DomainsManager.init();
         ItemManager.init();
@@ -374,7 +373,6 @@ public class Worker {
      * @return the command to actually run
      */
     public Command parseCommand(HashMap<String, Command> startingPoint) {
-        // TODO : fix
         Logger.log("Worker.parseCommand", "commands length is " + commands.size());
 
         HashMap<String, Command> commandsToSearch = startingPoint;

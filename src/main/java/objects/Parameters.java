@@ -316,8 +316,7 @@ public class Parameters {
     /**
      * main bank name
      */
-    // TODO : change to the right value
-    public static String MainBankName = "";
+    public static String MainBankName = "First International Bank";
 
     // endregion
 

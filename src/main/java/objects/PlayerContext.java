@@ -1,6 +1,7 @@
 package objects;
 
 import database_objects.MacrosTableRow;
+import database_objects.PlayerCorpsTableRow;
 import database_objects.PlayersTableRow;
 import managers.CommandManager;
 import database_objects.CommandsViewTableRow;
@@ -18,7 +19,6 @@ public class PlayerContext {
     // public variables
     public String username;
     public int playerId;
-    // TODO : get corp name on object creation
     public String corpName;
     public int corpId;
     public String location;
@@ -43,6 +43,10 @@ public class PlayerContext {
             this.playerId = playerRow.id;
             this.corpId = playerRow.corp;
         }
+
+        List<PlayerCorpsTableRow> playerCorp = DatabaseHandler.getTableElements(DatabaseTables.Player_Corps, "corp_name", "username='" + username + "'");
+        if (playerCorp != null && playerCorp.size() == 1)
+            corpName = playerCorp.get(0).corp_name;
 
         getAvailableCommands();
         getAutoCompleteCommands();
