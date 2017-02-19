@@ -4,7 +4,8 @@ import java.util.HashMap;
 
 public class Cpu extends BaseItem{
     // public variables
-    public int speed;
+    public float speed;
+    public int cores;
 
     /**
      * constructor
@@ -24,6 +25,7 @@ public class Cpu extends BaseItem{
         cpu.put("cpu_id", String.valueOf(id));
         cpu.put("cpu_name", name);
         cpu.put("cpu_speed", String.valueOf(speed));
+        cpu.put("cpu_cores", String.valueOf(cores));
 
         return cpu;
     }

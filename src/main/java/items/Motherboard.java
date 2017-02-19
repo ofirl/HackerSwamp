@@ -10,6 +10,8 @@ public class Motherboard extends BaseItem{
     public int cpuSlots;
     public int ramSlots;
     public int hddSlots;
+    public int maxRamSize;
+    public float maxCpuSpeed;
 
     /**
      * constructor
@@ -33,6 +35,8 @@ public class Motherboard extends BaseItem{
         motherboard.put("motherboard_cpu_slots", String.valueOf(cpuSlots));
         motherboard.put("motherboard_ram_slots", String.valueOf(ramSlots));
         motherboard.put("motherboard_hdd_slots", String.valueOf(hddSlots));
+        motherboard.put("motherboard_max_ram_size", String.valueOf(maxRamSize));
+        motherboard.put("motherboard_max_cpu_speed", String.valueOf(maxCpuSpeed));
 
         return motherboard;
     }
