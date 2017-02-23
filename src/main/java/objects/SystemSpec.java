@@ -110,7 +110,24 @@ public class SystemSpec {
      * @return a detailed print
      */
     public String getDetailedPrint() {
-        // TODO : implement
-        return "implement!";
+        String output = "";
+
+        // motherboard
+        output += motherboard;
+        // cpu
+        for (Cpu c :
+                cpus)
+            output += c;
+        // ram
+        for (Ram r :
+                rams)
+            output += r;
+        // hdd
+        for (Hdd h :
+                hdds)
+            output += h;
+        output += networkCard;
+
+        return output;
     }
 }

@@ -6,5 +6,5 @@ public class ObstaclesTableRow {
     public int id;
     public String type;
     public int tier;
-    public String domain;
+    public int domain;
 }

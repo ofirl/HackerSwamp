@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 public abstract class BaseDomain {
+    public int id;
     public String name;
     public String domain;
     public String ip;
@@ -16,7 +17,8 @@ public abstract class BaseDomain {
     public DomainType type;
     public List<Obstacle> obstacles = new ArrayList<>();
 
-    public BaseDomain(String name, String domain, String ip, DomainType type) {
+    public BaseDomain(int id, String name, String domain, String ip, DomainType type) {
+        this.id = id;
         this.name = name;
         this.domain = domain;
         this.ip = ip;
@@ -24,7 +26,8 @@ public abstract class BaseDomain {
         this.type = type;
     }
 
-    public BaseDomain(String name, String domain, String ip, HashMap<String, Command> commands, DomainType type) {
+    public BaseDomain(int id, String name, String domain, String ip, HashMap<String, Command> commands, DomainType type) {
+        this.id = id;
         this.name = name;
         this.domain = domain;
         this.ip = ip;
@@ -44,7 +47,7 @@ public abstract class BaseDomain {
         // check obstacles state
         for (Obstacle o :
                 obstacles) {
-            if (o.getStateForUser(context.username) != ObstacleState.Removed)
+            if (o.getStateForUser(context.username) != ObstacleState.Disabled)
                 return " Error : cannot connect, " + o.name + " must be removed first";
         }
 
@@ -53,7 +56,6 @@ public abstract class BaseDomain {
         if ( a == null)
             return Parameters.ErrorActiveUserNotFound;
 
-        // TODO : domain? or name? need to make sure
         a.context.changeLocation(domain);
 
         return Parameters.DomainConnectedSuccessfully;

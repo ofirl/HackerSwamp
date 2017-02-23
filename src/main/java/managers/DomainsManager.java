@@ -1,9 +1,14 @@
 package managers;
 
 import commands.CommandAccess;
+import database_objects.DomainsTableRow;
+import database_objects.ObstaclesTableRow;
 import domains.*;
+import interface_objects.DatabaseHandler;
+import interface_objects.DatabaseTables;
 import objects.*;
 import obstacles.Firewall;
+import obstacles.Obstacle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,6 +16,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DomainsManager {
+    private static String className = "DomainsManager";
 
     // key == name
     public static ConcurrentHashMap<String, BaseDomain> allDomains = new ConcurrentHashMap<>();
@@ -24,13 +30,34 @@ public class DomainsManager {
     public static void init() {
         // region banks
 
-        // TODO : pull domains from db and add them
-        // TODO : add obstacles table to db
-        Bank b = addBank("First Bank", "first.bank.cash", null);
-        b.addObstacle(new Firewall("firewall 1", 9));
-        //b.addCommand(new Command(0, "transfer", null, CommandAccess.system));
+        List<DomainsTableRow> banks = DatabaseHandler.getTableElements(DatabaseTables.Domains, null, "type='Bank'");
+        if (banks == null) {
+            Logger.log(className + ".init", Parameters.ErrorDomainsInit);
+            return;
+        }
 
-        b = addBank("First International Bank", "first.inter.bank", null);
+        for (DomainsTableRow bankRow :
+                banks) {
+            // add bank
+            Bank b = addBank(bankRow.id, bankRow.name, bankRow.domain, bankRow.ip);
+            // add obstacles
+            List<ObstaclesTableRow> obstacles = DatabaseHandler.getTableElements(DatabaseTables.Obstacles, null, "domain=" + bankRow.id);
+            if (obstacles == null) {
+                Logger.log(className + ".init", Parameters.ErrorDomainsInit);
+                return;
+            }
+
+            for (ObstaclesTableRow o :
+                    obstacles) {
+                Obstacle obstacleObject = createObstacle(o.id, o.type, o.tier);
+                if (obstacleObject == null) {
+                    Logger.log(className + ".init", Parameters.ErrorDomainsInit);
+                    return;
+                }
+
+                b.addObstacle(obstacleObject);
+            }
+        }
 
         // endregion
 
@@ -43,14 +70,26 @@ public class DomainsManager {
         // endregion
     }
 
+    public static Obstacle createObstacle(int id, String type, int tier) {
+        switch (type) {
+            case "firewall" :
+                return new Firewall(id, "firewall " + tier, tier);
+            case "lock" :
+                // TODO : return a lock object (once implemented)
+                return null;
+        }
+
+        return null;
+    }
+
     /**
      * adds a bank
      * @param name the name of the bank
      * @param domain the domain of the bank
      * @param ip the ip of the bank
      */
-    public static Bank addBank(String name, String domain, String ip) {
-        Bank b = new Bank(name, domain, ip, DomainType.Bank);
+    public static Bank addBank(int id, String name, String domain, String ip) {
+        Bank b = new Bank(id, name, domain, ip, DomainType.Bank);
         allDomains.put(domain, b);
         bankDomains.put(domain, b);
         return b;
@@ -62,8 +101,8 @@ public class DomainsManager {
      * @param domain the domain of the company
      * @param ip the ip of the company
      */
-    public static void addCompany(String name, String domain, String ip) {
-        Company c = new Company(name, domain, ip, DomainType.Company);
+    public static void addCompany(int id, String name, String domain, String ip) {
+        Company c = new Company(id, name, domain, ip, DomainType.Company);
         allDomains.put(domain, c);
         companyDomains.put(domain, c);
     }
@@ -74,8 +113,8 @@ public class DomainsManager {
      * @param domain the domain of the organization
      * @param ip the ip of the organization
      */
-    public static void addOrganization(String name, String domain, String ip) {
-        Organization o = new Organization(name, domain, ip, DomainType.Organization);
+    public static void addOrganization(int id, String name, String domain, String ip) {
+        Organization o = new Organization(id, name, domain, ip, DomainType.Organization);
         allDomains.put(domain, o);
         organizationDomains.put(domain, o);
     }
@@ -87,13 +126,13 @@ public class DomainsManager {
      * @param ip the ip of the domain
      * @param type the type of the domain
      */
-    public static void addDomain(String name, String domain, String ip, DomainType type) {
+    public static void addDomain(int id, String name, String domain, String ip, DomainType type) {
         if (type == DomainType.Bank)
-            addBank(name, domain, ip);
+            addBank(id, name, domain, ip);
         else if (type == DomainType.Company)
-            addCompany(name, domain, ip);
+            addCompany(id, name, domain, ip);
         else if (type == DomainType.Organization)
-            addOrganization(name, domain, ip);
+            addOrganization(id, name, domain, ip);
     }
 
     /**

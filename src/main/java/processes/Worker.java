@@ -55,7 +55,6 @@ public class Worker {
      * main init method for the entire system
      */
     public static void initSystem() {
-        // TODO : add all the initializations
         CommandManager.init();
         DomainsManager.init();
         ItemManager.init();

@@ -40,4 +40,19 @@ public class MarketScript extends BaseItem{
 
         return cmd;
     }
+
+    /**
+     * detailed info about the item
+     */
+    @Override
+    public String toString() {
+        String output = "";
+
+        output += super.toString() + "\n";
+        // TODO : add units
+        output += "Price : " + price + " <units> per use\n";
+        output += "Owner : " + owner;
+
+        return output;
+    }
 }

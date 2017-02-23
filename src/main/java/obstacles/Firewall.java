@@ -9,8 +9,8 @@ public class Firewall extends Obstacle{
      * @param name the name of the firewall
      * @param strength the strength of the firewall
      */
-    public Firewall(String name, int strength) {
-        super(name, ObstacleType.Firewall);
+    public Firewall(int id, String name, int strength) {
+        super(id, name, ObstacleType.Firewall);
         this.strength = strength;
     }
 

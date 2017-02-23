@@ -189,6 +189,9 @@ public class DatabaseHandler {
         elementTypes.put(DatabaseTables.Equipped_Items, EquippedItemsTableRow.class);
         elementTypes.put(DatabaseTables.Accessible_Commands, CommandsViewTableRow.class);
         elementTypes.put(DatabaseTables.Autocomplete_Commands, CommandsViewTableRow.class);
+        elementTypes.put(DatabaseTables.Player_Corps, PlayerCorpsTableRow.class);
+        elementTypes.put(DatabaseTables.Obstacles, ObstaclesTableRow.class);
+        elementTypes.put(DatabaseTables.Disabled_Obstacles_Users, DisabledObstaclesUsersTableRow.class);
     }
 
     /**

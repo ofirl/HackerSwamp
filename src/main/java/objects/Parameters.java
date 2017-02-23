@@ -314,6 +314,11 @@ public class Parameters {
     public static String ErrorActiveUserNotFound = "Error : active user can't be found";
 
     /**
+     * error for problems with init
+     */
+    public static String ErrorDomainsInit = "Error : domains init has encountered in an error (prob. database related)";
+
+    /**
      * main bank name
      */
     public static String MainBankName = "First International Bank";

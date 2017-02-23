@@ -1,5 +1,7 @@
 package items;
 
+import groovy.transform.ToString;
+
 import java.util.HashMap;
 
 public abstract class BaseItem {
@@ -22,4 +24,12 @@ public abstract class BaseItem {
      * @return the item as arguments
      */
     public abstract HashMap<String, String> getSpecAsArguments();
+
+    /**
+     * detailed info about the item
+     */
+    @Override
+    public String toString() {
+        return "Name : " + name;
+    }
 }

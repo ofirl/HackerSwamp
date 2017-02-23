@@ -30,4 +30,18 @@ public class NetworkCard extends  BaseItem{
 
         return networkCard;
     }
+
+    /**
+     * detailed info about the item
+     */
+    @Override
+    public String toString() {
+        String output = "";
+
+        output += super.toString() + "\n";
+        output += "Upload limit : " + uploadLimit + " Mb/s \n";
+        output += "Download limit : " + downloadLimit + " Mb/s";
+
+        return output;
+    }
 }

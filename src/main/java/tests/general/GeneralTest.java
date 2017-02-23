@@ -3,6 +3,7 @@ package tests.general;
 import com.sun.org.apache.xml.internal.security.Init;
 import interface_objects.LoginHandler;
 import interface_objects.Parser;
+import managers.ItemManager;
 import objects.Parameters;
 import org.junit.Test;
 import processes.DatabaseClient;
@@ -39,6 +40,8 @@ public class GeneralTest {
 
         test1.start();
         test2.start();
+        // testing....
+        ItemManager.init();
 
         String userInput =  "init\n";
         userInput += "connect first.bank.cash\n";

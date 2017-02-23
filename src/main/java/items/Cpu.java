@@ -30,4 +30,18 @@ public class Cpu extends BaseItem{
 
         return cpu;
     }
+
+    /**
+     * detailed info about the item
+     */
+    @Override
+    public String toString() {
+        String output = "";
+
+        output += super.toString() + "\n";
+        output += "Speed : " + speed + " Ghz\n";
+        output += "# of cores : " + cores;
+
+        return output;
+    }
 }

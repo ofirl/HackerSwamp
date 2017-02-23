@@ -17,7 +17,7 @@ import domains.Bank;
 public class Account {
     public final String owner;
     public final String accountId;
-    public float balance;
+    public double balance;
     public final Bank bank;
 
     /**
@@ -37,7 +37,7 @@ public class Account {
      * @param balance balance of the account
      * @param bank bank of the account
      */
-    public Account(String owner, String accountId, float balance, Bank bank) {
+    public Account(String owner, String accountId, double balance, Bank bank) {
         this.owner = owner;
         this.accountId = accountId;
         this.balance = balance;

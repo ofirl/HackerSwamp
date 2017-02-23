@@ -38,7 +38,7 @@ public class CommandManager {
         List<CommandsTableRow> rows = DatabaseHandler.getTableElements(DatabaseTables.Commands, "id, name", filter);
 
         // sanity check
-        //TODO : throw error?
+        //TODO : throw error
         if (rows == null)
             return;
 

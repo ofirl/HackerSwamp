@@ -5,5 +5,5 @@ public class AccountsTableRow {
     public String username;
     public int bank;
     public String account_number;
-    public float balance;
+    public double balance;
 }

@@ -27,4 +27,21 @@ public class Hdd extends BaseItem{
 
         return hdd;
     }
+
+    /**
+     * detailed info about the item
+     */
+    @Override
+    public String toString() {
+        String output = "";
+
+        output += super.toString() + "\n";
+
+        if (size >= 1024)
+            output += "Size : " + size / 1024 + " Tb\n";
+        else
+            output += "Size : " + size + " Gb\n";
+
+        return output;
+    }
 }

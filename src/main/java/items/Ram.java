@@ -27,4 +27,17 @@ public class Ram extends BaseItem{
 
         return ram;
     }
+
+    /**
+     * detailed info about the item
+     */
+    @Override
+    public String toString() {
+        String output = "";
+
+        output += super.toString() + "\n";
+        output += "Size : " + size + " Mb";
+
+        return output;
+    }
 }

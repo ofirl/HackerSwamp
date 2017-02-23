@@ -42,4 +42,21 @@ public class Motherboard extends BaseItem{
 
         return motherboard;
     }
+
+    /**
+     * detailed info about the item
+     */
+    @Override
+    public String toString() {
+        String output = "";
+
+        output += super.toString() + "\n";
+        output += "# of CPU slots : " + cpuSlots + "\n";
+        output += "# of RAM slots : " + ramSlots + "\n";
+        output += "# of HDD slots : " + hddSlots + "\n";
+        output += "Max RAM size : " + maxRamSize + "\n";
+        output += "Max CPU speed : " + maxCpuSpeed;
+
+        return output;
+    }
 }

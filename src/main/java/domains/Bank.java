@@ -1,5 +1,8 @@
 package domains;
 
+import database_objects.AccountsTableRow;
+import interface_objects.DatabaseHandler;
+import interface_objects.DatabaseTables;
 import objects.*;
 
 import java.util.*;
@@ -22,8 +25,8 @@ public class Bank extends BaseDomain{
      * @param ip
      * @param type
      */
-    public Bank(String name, String domain, String ip, DomainType type) {
-        this(name, domain, ip, null, type);
+    public Bank(int id, String name, String domain, String ip, DomainType type) {
+        this(id, name, domain, ip, null, type);
     }
 
     /**
@@ -34,10 +37,17 @@ public class Bank extends BaseDomain{
      * @param commands
      * @param type
      */
-    public Bank(String name, String domain, String ip, HashMap<String, Command> commands, DomainType type) {
-        super(name, domain, ip, commands, type);
+    public Bank(int id, String name, String domain, String ip, HashMap<String, Command> commands, DomainType type) {
+        super(id, name, domain, ip, commands, type);
 
-        // TODO : pull accounts data from db and add them
+        List<AccountsTableRow> accountsRows = DatabaseHandler.getTableElements(DatabaseTables.Accounts, null, "bank=" + id);
+        if (accountsRows == null)
+            // TODO : add error log
+            return;
+
+        for (AccountsTableRow a :
+                accountsRows)
+            addAccount(a.username, a.account_number, a.balance);
     }
 
     /**
@@ -53,7 +63,7 @@ public class Bank extends BaseDomain{
                 if (rand.nextDouble() > 0.5)
                     accountId += rand.nextInt(10); // 0-9
                 else
-                    accountId += (char)rand.nextInt(26) + 65; // 65-90
+                    accountId += (char)rand.nextInt(26) + 65; // 65-90 (a-z)
             }
         }
         while (accountIdList.contains(accountId));
@@ -68,11 +78,31 @@ public class Bank extends BaseDomain{
      * @return whether the insertion succeeded
      */
     public boolean addAccount(String owner) {
+        return addAccount(owner, getRandomAccountId());
+    }
+
+    /**
+     * adds an account to the bank
+     * @param owner the account owner
+     * @param id id for the new account
+     * @return whether the insertion succeeded
+     */
+    public boolean addAccount(String owner, String id) {
+        return addAccount(owner, id, 0);
+    }
+
+    /**
+     * adds an account to the bank
+     * @param owner the account owner
+     * @param id id for the new account
+     * @param balance balance for the new account
+     * @return whether the insertion succeeded
+     */
+    public boolean addAccount(String owner, String id, double balance) {
         if (getAccountByUsername(owner) != null)
             return false;
 
-        String id = getRandomAccountId();
-        accounts.put(id ,new Account(owner, id, this));
+        accounts.put(id ,new Account(owner, id, balance, this));
         return true;
     }
 
