@@ -52,11 +52,13 @@ public class WebListener {
 
 
         post("/db", (req, res) -> {
-            return Parser.requestResponse(req.body().replaceAll("%3a", ":"));
+            String input = req.body().replaceAll("%3a", ":").replaceAll("%7b", "{").replaceAll("%7d", "}").replaceAll("\\+", " ");
+            return Parser.requestResponse(input);
         });
 
         post("/login", (req, res) -> {
-            return LoginHandler.checkLogin(req.body().replaceAll("%3a", ":"));
+            String input = req.body().replaceAll("%3a", ":").replaceAll("%7b", "{").replaceAll("%7d", "}").replaceAll("\\+", " ");
+            return LoginHandler.checkLogin(input);
         });
 
 
