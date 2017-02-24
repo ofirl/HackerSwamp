@@ -1,7 +1,5 @@
 package items;
 
-import groovy.transform.ToString;
-
 import java.util.HashMap;
 
 public abstract class BaseItem {
