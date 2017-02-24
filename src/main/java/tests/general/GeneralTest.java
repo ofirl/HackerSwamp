@@ -1,6 +1,5 @@
 package tests.general;
 
-import com.sun.org.apache.xml.internal.security.Init;
 import interface_objects.LoginHandler;
 import interface_objects.Parser;
 import managers.ItemManager;
