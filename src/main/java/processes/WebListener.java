@@ -52,12 +52,12 @@ public class WebListener {
 
 
         post("/db", (req, res) -> {
-            String input = req.body().replaceAll("%3a", ":").replaceAll("%7b", "{").replaceAll("%7d", "}").replaceAll("\\+", " ");
+            String input = decodeUrl(req.body());
             return Parser.requestResponse(input);
         });
 
         post("/login", (req, res) -> {
-            String input = req.body().replaceAll("%3a", ":").replaceAll("%7b", "{").replaceAll("%7d", "}").replaceAll("\\+", " ");
+            String input = decodeUrl(req.body());
             return LoginHandler.checkLogin(input);
         });
 
@@ -114,5 +114,11 @@ public class WebListener {
         } else {
             return DriverManager.getConnection(dbUrl);
         }
+    }
+
+    private static String decodeUrl(String input) {
+        input = input.replaceAll("%3a", ":").replaceAll("%7b", "{").replaceAll("%7d", "}");
+        input = input.replaceAll("\\+", " ").replaceAll("%27", "'");
+        return input;
     }
 }
