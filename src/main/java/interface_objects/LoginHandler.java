@@ -68,7 +68,7 @@ public class LoginHandler {
         if (authKey.startsWith("Error :"))
             return authKey;
 
-        WebListener.executePost("https://" + getActiveUserByUsername(username).clientIp + ":2525", "test");
+        WebListener.executePost("https://" + getActiveUserByUsername(username).clientIp, "test");
 
         return "OK : " + authKey;
     }
@@ -86,7 +86,6 @@ public class LoginHandler {
             return Parameters.loginErrorAuthKeyGeneration;
 
         activeUsers.put(authKey, new ActiveUser(authKey, username, id, clientIp));
-        WebListener.executePost(clientIp, "testing");
         Logger.log("LoginHandler.addActiveUser", "active user " + username + " added");
 
         if (error != null)
