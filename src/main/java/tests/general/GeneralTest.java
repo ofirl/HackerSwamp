@@ -1,4 +1,4 @@
-package tests.general;
+package general;
 
 import interface_objects.LoginHandler;
 import interface_objects.Parser;
@@ -6,6 +6,7 @@ import managers.ItemManager;
 import objects.Parameters;
 import org.junit.Test;
 import processes.DatabaseClient;
+import processes.WebListener;
 import processes.Worker;
 
 import java.util.Scanner;
@@ -41,6 +42,8 @@ public class GeneralTest {
         test2.start();
         // testing....
         ItemManager.init();
+
+        WebListener.executePost("https://169.254.218.134", "test");
 
         String userInput =  "init\n";
         userInput += "connect first.bank.cash\n";
