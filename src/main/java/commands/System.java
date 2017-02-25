@@ -49,7 +49,7 @@ public class System extends BaseCommand{
      */
     public String main() {
         // testing purposes
-        WebListener.executePost("http://" + LoginHandler.getActiveUserByUsername(context.username).clientIp + ":7777", "test");
+        //WebListener.executePost("http://" + LoginHandler.getActiveUserByUsername(context.username).clientIp + ":7777", "test");
 
         Argument domain = args.get("domain");
         if (domain != null)
