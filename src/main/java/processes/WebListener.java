@@ -1,12 +1,9 @@
 package processes;
 
-import java.sql.*;
+import java.io.*;
+import java.net.*;
 import java.util.HashMap;
-import java.util.ArrayList;
 import java.util.Map;
-
-import java.net.URI;
-import java.net.URISyntaxException;
 
 import static spark.Spark.*;
 
@@ -70,55 +67,56 @@ public class WebListener {
             attributes.put("message", "test");
             return new ModelAndView(attributes, "message.ftl");
         },new FreeMarkerEngine());
-
-        get("/db", (req, res) -> {
-  /*private void showDatabase(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException { */
-            Connection connection = null;
-            Map<String, Object> attributes = new HashMap<>();
-
-            try {
-                connection = getConnection();
-
-                Statement stmt = connection.createStatement();
-                stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
-                stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
-                ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
-
-                ArrayList<String> output = new ArrayList<>();
-                while (rs.next()) {
-                    output.add( "Read from DB: " + rs.getTimestamp("tick"));
-                }
-
-                attributes.put("results", output);
-                return new ModelAndView(attributes, "db.ftl");
-            } catch (Exception e) {
-                attributes.put("message", "There was an error: " + e);
-                return new ModelAndView(attributes, "error.ftl");
-            } finally {
-                if (connection != null) try{connection.close();} catch(SQLException e){}
-            }
-        }, new FreeMarkerEngine());
-
-    }
-
-    private static Connection getConnection() throws URISyntaxException, SQLException {
-        URI dbUri = new URI(System.getenv("DATABASE_URL"));
-        int port = dbUri.getPort();
-        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ":" + port + dbUri.getPath();
-
-        if (dbUri.getUserInfo() != null) {
-            String username = dbUri.getUserInfo().split(":")[0];
-            String password = dbUri.getUserInfo().split(":")[1];
-            return DriverManager.getConnection(dbUrl, username, password);
-        } else {
-            return DriverManager.getConnection(dbUrl);
-        }
     }
 
     private static String decodeUrl(String input) {
         input = input.replaceAll("%3a", ":").replaceAll("%7b", "{").replaceAll("%7d", "}");
         input = input.replaceAll("\\+", " ").replaceAll("%27", "'");
         return input;
+    }
+
+    public static String executePost(String targetURL, String urlParameters) {
+        HttpURLConnection connection = null;
+
+        try {
+            //Create connection
+            URL url = new URL(targetURL);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type",
+                    "application/x-www-form-urlencoded");
+
+            connection.setRequestProperty("Content-Length",
+                    Integer.toString(urlParameters.getBytes().length));
+            connection.setRequestProperty("Content-Language", "en-US");
+
+            connection.setUseCaches(false);
+            connection.setDoOutput(true);
+
+            //Send request
+            DataOutputStream wr = new DataOutputStream (
+                    connection.getOutputStream());
+            wr.writeBytes(urlParameters);
+            wr.close();
+
+            //Get Response
+            InputStream is = connection.getInputStream();
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = rd.readLine()) != null) {
+                response.append(line);
+                response.append('\r');
+            }
+            rd.close();
+            return response.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
     }
 }

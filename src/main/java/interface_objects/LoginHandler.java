@@ -4,6 +4,7 @@ import database_objects.PlayersTableRow;
 import managers.Logger;
 import objects.ActiveUser;
 import objects.Parameters;
+import processes.WebListener;
 
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +47,8 @@ public class LoginHandler {
         // more sanity checks checks
         String username = args.get("username");
         String password = args.get("password");
-        if (args.size() != 2 || username == null || password == null) {
+        String clientIp = args.get("clientIp");
+        if (args.size() != 3 || username == null || password == null || clientIp == null) {
             Logger.log("LoginHandler.checkLogin", "invalid arguments");
             return Parameters.loginErrorInvalidArguments;
         }
@@ -61,7 +63,7 @@ public class LoginHandler {
         }
 
         // generating authentication key
-        String authKey = addActiveUser(username, dbRow.id);
+        String authKey = addActiveUser(username, dbRow.id, clientIp);
         Logger.log("LoginHandler.checkLogin", username + "=" + authKey);
         if (authKey.startsWith("Error :"))
             return authKey;
@@ -74,14 +76,15 @@ public class LoginHandler {
      * @param username the username to add to the active users list
      * @return authentication key or error message (starts with "Error")
      */
-    private static String addActiveUser(String username, int id) {
+    private static String addActiveUser(String username, int id, String clientIp) {
         String error = null;
         String authKey = generateAuthKey();
         Logger.log("LoginHandler.addActiveUser", "authKey = " + authKey);
         if (authKey == null)
             return Parameters.loginErrorAuthKeyGeneration;
 
-        activeUsers.put(authKey, new ActiveUser(authKey, username, id));
+        activeUsers.put(authKey, new ActiveUser(authKey, username, id, clientIp));
+        WebListener.executePost(clientIp, "testing");
         Logger.log("LoginHandler.addActiveUser", "active user " + username + " added");
 
         if (error != null)

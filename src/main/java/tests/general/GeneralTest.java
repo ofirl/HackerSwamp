@@ -63,7 +63,8 @@ public class GeneralTest {
         String input = "start";
         while (!input.equals("exit")) {
             if (input.equals("start")) {
-                String temp = LoginHandler.checkLogin("8:5=username:ofirl&8:4=password:test");
+                String ip = "";
+                String temp = LoginHandler.checkLogin("8:5=username:ofirl&8:4=password:test&8:" + ip.length() + "=clientIp:" + ip);
                 authKey = temp.substring(5);
             }
             else if (input.equals("init")) {

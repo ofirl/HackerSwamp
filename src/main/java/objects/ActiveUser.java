@@ -8,6 +8,7 @@ public class ActiveUser {
     public final String username;
     public final int playerId;
     public final PlayerContext context;
+    public final String clientIp;
 
     /**
      * constructor
@@ -15,11 +16,12 @@ public class ActiveUser {
      * @param username username
      * @param playerId player id (as in the database table)
      */
-    public ActiveUser(String authKey, String username, int playerId) {
+    public ActiveUser(String authKey, String username, int playerId, String clientIp) {
         this.authKey = authKey;
         this.username = username;
         this.playerId = playerId;
         this.context = new PlayerContext(username);
+        this.clientIp = clientIp;
     }
 
     /**
