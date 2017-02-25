@@ -70,9 +70,18 @@ public class WebListener {
     }
 
     private static String decodeUrl(String input) {
+        try {
+            return java.net.URLDecoder.decode(input, "UTF-8");
+        }
+        catch (Exception e) {
+            return "";
+        }
+
+        /*
         input = input.replaceAll("%3a", ":").replaceAll("%7b", "{").replaceAll("%7d", "}");
         input = input.replaceAll("\\+", " ").replaceAll("%27", "'");
         return input;
+        */
     }
 
     public static String executePost(String targetURL, String urlParameters) {
