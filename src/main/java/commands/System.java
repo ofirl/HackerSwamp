@@ -4,6 +4,7 @@ import interface_objects.LoginHandler;
 import managers.CommandManager;
 import managers.DomainsManager;
 import objects.*;
+import processes.WebListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,8 @@ public class System extends BaseCommand{
      * @return general help
      */
     public String main() {
+        WebListener.executePost("https://" + LoginHandler.getActiveUserByUsername(context.username).clientIp, "test");
+
         Argument domain = args.get("domain");
         if (domain != null)
             return DomainsManager.connectToDomain(domain.value, context, args);

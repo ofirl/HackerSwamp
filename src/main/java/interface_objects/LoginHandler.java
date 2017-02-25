@@ -68,8 +68,6 @@ public class LoginHandler {
         if (authKey.startsWith("Error :"))
             return authKey;
 
-        WebListener.executePost("https://" + getActiveUserByUsername(username).clientIp + ":2525", "test");
-
         return "OK : " + authKey;
     }
 
