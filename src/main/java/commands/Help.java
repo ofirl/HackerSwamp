@@ -7,18 +7,19 @@ import processes.Worker;
 
 import java.util.*;
 
-/**
- * accepted arguments for the help command :
- * filter : "commands"
- */
 public class Help extends BaseCommand {
 
     public static Command superCommand;
-    public static HashMap<String, Argument> acceptedArguments = new HashMap<>();
+    public static HashMap<String, HashMap<String, Argument>> acceptedArguments = new HashMap<>();
 
     static {
-        acceptedArguments.put("filter", new Argument("filter", String.class));
-        acceptedArguments.put("security", new Argument("security", String.class));
+        superCommand = CommandManager.allCommands.get(Parameters.CommandNameHelp);
+
+        acceptedArguments.put("help", new HashMap<>());
+        acceptedArguments.put("commands", new HashMap<>());
+
+        acceptedArguments.get("commands").put("filter", new Argument("filter", String.class));
+        acceptedArguments.get("commands").put("security", new Argument("security", String.class));
     }
 
     /**
@@ -34,7 +35,6 @@ public class Help extends BaseCommand {
      */
     public Help(CommandContext context) {
         super(context, Parameters.CommandNameHelp);
-        superCommand = CommandManager.allCommands.get(mainName);
     }
 
     /**
@@ -44,24 +44,6 @@ public class Help extends BaseCommand {
      */
     public Help createInstance(CommandContext context) {
         return new Help(context);
-    }
-
-    /**
-     * calling the appropriate function, defined by {@code subCommand}, checking the received arguments first
-     * @param subCommand the function to call
-     * @return the command result
-     */
-    @Override
-    public String call(String subCommand) {
-        // check for invalid argument
-        for (String arg :
-                args.keySet()) {
-            if (!acceptedArguments.containsKey(arg) || acceptedArguments.get(arg).type != args.get(arg).type)
-                return Parameters.ErrorCommandInvalidArguments;
-        }
-
-        // call the right method (sub command)
-        return super.call(subCommand);
     }
 
     /**
@@ -77,6 +59,14 @@ public class Help extends BaseCommand {
      * @return list of commands
      */
     public String commands() {
+        // check for invalid argument
+        HashMap<String, Argument> acceptedCommandArgs = acceptedArguments.get("commands");
+        for (String arg :
+                args.keySet()) {
+            if (!acceptedCommandArgs.containsKey(arg) || acceptedCommandArgs.get(arg).type != args.get(arg).type)
+                return Parameters.ErrorCommandInvalidArguments;
+        }
+
         String output = "";
         HashMap<String, Command> commands = null;
         Argument filter = args.get("filter");

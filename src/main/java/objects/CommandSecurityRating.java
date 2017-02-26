@@ -1,5 +1,5 @@
 package objects;
 
 public enum CommandSecurityRating {
-    System, TopSec, MedSec, LowSec
+    System, TopSec, MedSec, LowSec, Unknown
 }

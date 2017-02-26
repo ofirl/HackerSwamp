@@ -7,4 +7,6 @@ public class PlayersTableRow {
     public String email;
     public String ip;
     public int corp;
+    // TODO : check it's parsing okay
+    public boolean locked;
 }

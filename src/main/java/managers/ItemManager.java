@@ -5,11 +5,13 @@ import interface_objects.DatabaseHandler;
 import interface_objects.DatabaseTables;
 import items.*;
 import objects.Account;
+import objects.CommandSecurityRating;
 import objects.Parameters;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 /**
  * manages all the items for better performance
@@ -159,6 +161,32 @@ public class ItemManager {
      */
     public static HashMap<Integer, MarketScript> getAllMarketScripts() {
         return marketScripts;
+    }
+
+    /**
+     * gets all the market scripts, with the provided {@code securityRating} (exact)
+     * @return all market scripts with the appropriate {@code securityLevel} (exact)
+     */
+    public static HashMap<Integer, MarketScript> getAllMarketScripts(CommandSecurityRating securityRating) {
+        HashMap<Integer, MarketScript> filtered = new HashMap<>();
+        marketScripts.forEach((integer, marketScript) -> {
+            if (marketScript.command.securityRating.compareTo(securityRating) == 0)
+                filtered.put(integer, marketScript);
+        });
+
+        return  filtered;
+    }
+
+    /**
+     * casts {@link HashMap} of items to {@link BaseItem}
+     * @param items the items to cast
+     * @param <T> the type to cast from
+     * @return the items converted
+     */
+    public static <T extends BaseItem> HashMap<Integer, BaseItem> castItemsToBaseItem(HashMap<Integer, T> items) {
+        HashMap<Integer, BaseItem> converted = new HashMap<>();
+        items.forEach(converted::put);
+        return converted;
     }
 
     /**

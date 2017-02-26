@@ -6,19 +6,18 @@ import objects.*;
 
 import java.util.HashMap;
 
-/**
- * accepted arguments for the connect command :
- * filter : "commands"
- */
 public class Connect extends BaseCommand{
 
     public static Command superCommand;
-    public static HashMap<String, Argument> acceptedArguments = new HashMap<>();
+    public static HashMap<String, HashMap<String, Argument>> acceptedArguments = new HashMap<>();
 
     static {
         superCommand = CommandManager.allCommands.get(Parameters.CommandNameConnect);
-        acceptedArguments.put("arg1", new Argument("arg1", String.class));
-        acceptedArguments.put("domain", new Argument("domain", String.class));
+
+        acceptedArguments.put("connect", new HashMap<>());
+
+        acceptedArguments.get("connect").put("arg1", new Argument("arg1", String.class));
+        acceptedArguments.get("connect").put("domain", new Argument("domain", String.class));
     }
 
     /**
@@ -46,28 +45,18 @@ public class Connect extends BaseCommand{
     }
 
     /**
-     * calling the appropriate function, defined by {@code subCommand}, checking the received arguments first
-     * @param subCommand the function to call
-     * @return the command result
+     * connect command
+     * @return connect to a domain
      */
-    @Override
-    public String call(String subCommand) {
+    public String main() {
         // check for invalid argument
+        HashMap<String, Argument> acceptedCommandArgs = acceptedArguments.get("connect");
         for (String arg :
                 args.keySet()) {
-            if (!acceptedArguments.containsKey(arg) || acceptedArguments.get(arg).type != args.get(arg).type)
+            if (!acceptedCommandArgs.containsKey(arg) || acceptedCommandArgs.get(arg).type != args.get(arg).type)
                 return Parameters.ErrorCommandInvalidArguments;
         }
 
-        // call the right method (sub command)
-        return super.call(subCommand);
-    }
-
-    /**
-     * help command
-     * @return general help
-     */
-    public String main() {
         Argument domain = args.get("arg1");
         if (domain == null)
             domain = args.get("domain");

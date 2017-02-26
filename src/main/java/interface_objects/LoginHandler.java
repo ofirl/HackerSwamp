@@ -58,8 +58,12 @@ public class LoginHandler {
 
         // returns if invalid
         if (dbRow == null) {
-            Logger.log("LoginHandler.checkLogin", "invalid credentials");
+            Logger.log("LoginHandler.checkLogin","invalid credentials : " + username + ", password = " + password);
             return Parameters.loginErrorInvalidCredentials;
+        }
+        else if (dbRow.locked) {
+            Logger.log("LoginHandler.checkLogin","user locked : " + dbRow.username);
+            return Parameters.loginErrorLockedUser;
         }
 
         // generating authentication key

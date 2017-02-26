@@ -65,9 +65,20 @@ public class CommandManager {
         // system
         name = Parameters.CommandNameSystem;
         cmd = addSystemCommand(commandIds.get(name), name, new System(), true);
-        // spec
+        // system.spec
         name = Parameters.CommandNameSystemSpec;
         subCmd = addSystemCommand(commandIds.get(name), name, new System(), false);
+        addSubCommand(cmd, subCmd);
+        // market
+        name = Parameters.CommandNameMarket;
+        cmd = addSystemCommand(commandIds.get(name), name, new Market(), true);
+        // market.items
+        name = Parameters.CommandNameMarketItems;
+        subCmd = addSystemCommand(commandIds.get(name), name, new Market(), true);
+        addSubCommand(cmd, subCmd);
+        // market.scripts
+        name = Parameters.CommandNameMarketScripts;
+        cmd = addSystemCommand(commandIds.get(name), name, new Market(), true);
         addSubCommand(cmd, subCmd);
         // TODO : add implementation for the commands
     }

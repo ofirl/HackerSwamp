@@ -75,6 +75,11 @@ public class Parameters {
      */
     public static String loginErrorAuthKeyGeneration = "Error : could not generate authentication key";
 
+    /**
+     * error for locked user
+     */
+    public static String loginErrorLockedUser = "Error : the user is locked";
+
     // endregion
 
     // endregion
@@ -247,6 +252,21 @@ public class Parameters {
      * system.spec
      */
     public static String CommandNameSystemSpec = "spec";
+
+    /**
+     * market
+     */
+    public static String CommandNameMarket = "market";
+
+    /**
+     * market.items
+     */
+    public static String CommandNameMarketItems = "items";
+
+    /**
+     * market.scripts
+     */
+    public static String CommandNameMarketScripts = "scripts";
 
     // endregion
 
