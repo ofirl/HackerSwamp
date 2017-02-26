@@ -15,6 +15,8 @@ public class Command {
     public CommandAccess access;
     public List<Argument> arguments;
     public BaseCommand entry;
+    // TODO : add security rating to the constructor and parse accordingly
+    public String securityRating;
 
     public Command(int id, String name, BaseCommand entry, CommandAccess access) {
         this.id = id;

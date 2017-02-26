@@ -1,6 +1,7 @@
 package commands;
 
 import managers.CommandManager;
+import managers.Logger;
 import objects.*;
 import processes.Worker;
 
@@ -17,6 +18,7 @@ public class Help extends BaseCommand {
 
     static {
         acceptedArguments.put("filter", new Argument("filter", String.class));
+        acceptedArguments.put("security", new Argument("security", String.class));
     }
 
     /**
@@ -75,6 +77,7 @@ public class Help extends BaseCommand {
      * @return list of commands
      */
     public String commands() {
+        String output = "";
         HashMap<String, Command> commands = null;
         Argument filter = args.get("filter");
         if (filter != null) {
@@ -85,18 +88,40 @@ public class Help extends BaseCommand {
                 case "scripts":
                     commands = Worker.getAccessiblePlayerScripts(context);
                     break;
-                default:
+                case "all" :
                     commands = Worker.getAllAccessibleCommands(context);
+                    break;
+                default:
+                    output += "available \"filter\" values are : commands, scripts and all\n\n";
                     break;
             }
         }
-        else
-            commands = Worker.getAllAccessibleCommands(context);
+        else {
+            output += "a filter argument is required\n";
+            output += "available \"filter\" values are : commands, scripts and all\n\n";
+            output += "a security argument is optional and will filter by security rating\n";
+            return output;
+        }
 
-        if (commands == null)
-            return "";
+        if (commands == null) {
+            String msg = "Error retrieving commands for : filter = " + filter.value + ", username = " + context.username;
+            Logger.log("Help.commands", msg);
+            return Parameters.ErrorUnknownError;
+        }
 
-        String output = "";
+        // filter commands by security
+        Argument security = args.get("security");
+        if (security != null) {
+            HashMap<String, Command> filteredCommands = new HashMap<>();
+            for (String com :
+                    commands.keySet()) {
+                if (!commands.get(com).securityRating.equals(security.value))
+                    filteredCommands.put(com, commands.get(com));
+            }
+            commands = filteredCommands;
+        }
+
+        output += "";
         for (String sub :
                 commands.keySet()) {
             Command parent = commands.get(sub).parent;
