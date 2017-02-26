@@ -219,6 +219,8 @@ public class Parameters {
 
     // endregion
 
+    // region commands
+
     // region command names
 
     /**
@@ -245,6 +247,17 @@ public class Parameters {
      * system.spec
      */
     public static String CommandNameSystemSpec = "spec";
+
+    // endregion
+
+    // region command errors
+
+    /**
+     * error for arguments not in accepted arguments list
+     */
+    public static String ErrorCommandInvalidArguments = "Error : command includes invalid arguments";
+
+    // endregion
 
     // endregion
 

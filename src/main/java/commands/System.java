@@ -7,16 +7,17 @@ import objects.*;
 import processes.WebListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class System extends BaseCommand{
 
     public static Command superCommand;
-    public static List<Argument> acceptedArguments = new ArrayList<>();
+    public static HashMap<String, Argument> acceptedArguments = new HashMap<>();
 
     static {
         superCommand = CommandManager.allCommands.get(Parameters.CommandNameSystem);
-        //acceptedArguments.add(new Argument("filter", String.class));
+        //acceptedArguments.put("filer", new Argument("filter", String.class));
     }
 
     /**

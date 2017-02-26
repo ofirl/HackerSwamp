@@ -5,6 +5,7 @@ import managers.DomainsManager;
 import objects.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -14,13 +15,12 @@ import java.util.List;
 public class Connect extends BaseCommand{
 
     public static Command superCommand;
-    public static List<Argument> acceptedArguments = new ArrayList<>();
+    public static HashMap<String, Argument> acceptedArguments = new HashMap<>();
 
-    // TODO : check accepted arguments somewhere
     static {
         superCommand = CommandManager.allCommands.get(Parameters.CommandNameConnect);
-        acceptedArguments.add(new Argument("arg1", String.class));
-        acceptedArguments.add(new Argument("domain", String.class));
+        acceptedArguments.put("arg1", new Argument("arg1", String.class));
+        acceptedArguments.put("domain", new Argument("domain", String.class));
     }
 
     /**
@@ -45,6 +45,24 @@ public class Connect extends BaseCommand{
      */
     public Connect createInstance(CommandContext context) {
         return new Connect(context);
+    }
+
+    /**
+     * calling the appropriate function, defined by {@code subCommand}, checking the received arguments first
+     * @param subCommand the function to call
+     * @return the command result
+     */
+    @Override
+    public String call(String subCommand) {
+        // check for invalid argument
+        for (String arg :
+                args.keySet()) {
+            if (!acceptedArguments.containsKey(arg) || acceptedArguments.get(arg).type != args.get(arg).type)
+                return Parameters.ErrorCommandInvalidArguments;
+        }
+
+        // call the right method (sub command)
+        return super.call(subCommand);
     }
 
     /**

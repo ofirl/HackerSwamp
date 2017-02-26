@@ -14,10 +14,10 @@ import java.util.*;
 public class Help extends BaseCommand {
 
     public static Command superCommand;
-    public static List<Argument> acceptedArguments = new ArrayList<>();
+    public static HashMap<String, Argument> acceptedArguments = new HashMap<>();
 
     static {
-        acceptedArguments.add(new Argument("filter", String.class));
+        acceptedArguments.put("filter", new Argument("filter", String.class));
     }
 
     /**
@@ -43,6 +43,24 @@ public class Help extends BaseCommand {
      */
     public Help createInstance(CommandContext context) {
         return new Help(context);
+    }
+
+    /**
+     * calling the appropriate function, defined by {@code subCommand}, checking the received arguments first
+     * @param subCommand the function to call
+     * @return the command result
+     */
+    @Override
+    public String call(String subCommand) {
+        // check for invalid argument
+        for (String arg :
+                args.keySet()) {
+            if (!acceptedArguments.containsKey(arg) || acceptedArguments.get(arg).type != args.get(arg).type)
+                return Parameters.ErrorCommandInvalidArguments;
+        }
+
+        // call the right method (sub command)
+        return super.call(subCommand);
     }
 
     /**
