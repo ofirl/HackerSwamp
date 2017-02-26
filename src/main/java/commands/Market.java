@@ -124,7 +124,7 @@ public class Market extends BaseCommand {
      */
     public String scripts() {
         // check for invalid argument
-        HashMap<String, Argument> acceptedCommandArgs = acceptedArguments.get("items");
+        HashMap<String, Argument> acceptedCommandArgs = acceptedArguments.get("scripts");
         for (String arg :
                 args.keySet()) {
             if (!acceptedCommandArgs.containsKey(arg) || acceptedCommandArgs.get(arg).type != args.get(arg).type)
@@ -153,7 +153,7 @@ public class Market extends BaseCommand {
             }
         }
         else
-            items = ItemManager.getAllItems();
+            items = ItemManager.castItemsToBaseItem(ItemManager.getAllMarketScripts());
 
         if (items == null) {
             String msg = "Error retrieving items for type = " + args.get("type").value + ", username = " + context.username;
