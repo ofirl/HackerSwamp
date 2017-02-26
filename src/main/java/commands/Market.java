@@ -14,14 +14,21 @@ public class Market extends BaseCommand {
     public static HashMap<String, HashMap<String, Argument>> acceptedArguments = new HashMap<>();
 
     static {
+        // super command
         superCommand = CommandManager.allCommands.get(Parameters.CommandNameMarket);
 
+        // sub commands hash maps init
         acceptedArguments.put("market", new HashMap<>());
         acceptedArguments.put("items", new HashMap<>());
         acceptedArguments.put("scripts", new HashMap<>());
 
+        // items
         acceptedArguments.get("items").put("type", new Argument("type", String.class));
+        acceptedArguments.get("items").put("buy", new Argument("buy", int.class));
+
+        // scripts
         acceptedArguments.get("scripts").put("security", new Argument("security", String.class));
+        acceptedArguments.get("scripts").put("buy", new Argument("buy", int.class));
     }
 
     /**

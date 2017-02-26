@@ -10,11 +10,21 @@ import java.util.HashMap;
 public class System extends BaseCommand{
 
     public static Command superCommand;
-    public static HashMap<String, Argument> acceptedArguments = new HashMap<>();
+    public static HashMap<String, HashMap<String, Argument>> acceptedArguments = new HashMap<>();
 
     static {
+        // super command
         superCommand = CommandManager.allCommands.get(Parameters.CommandNameSystem);
-        //acceptedArguments.put("filer", new Argument("filter", String.class));
+
+        // sub commands hash maps init
+        acceptedArguments.put("system", new HashMap<>());
+        acceptedArguments.put("spec", new HashMap<>());
+
+        // system
+        //acceptedArguments.get("system").put("filer", new Argument("filter", String.class));
+
+        // system
+        //acceptedArguments.get("spec").put("filer", new Argument("filter", String.class));
     }
 
     /**

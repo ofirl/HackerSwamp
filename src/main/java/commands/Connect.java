@@ -12,10 +12,13 @@ public class Connect extends BaseCommand{
     public static HashMap<String, HashMap<String, Argument>> acceptedArguments = new HashMap<>();
 
     static {
+        // super command
         superCommand = CommandManager.allCommands.get(Parameters.CommandNameConnect);
 
+        // sub commands hash maps init
         acceptedArguments.put("connect", new HashMap<>());
 
+        // connect
         acceptedArguments.get("connect").put("arg1", new Argument("arg1", String.class));
         acceptedArguments.get("connect").put("domain", new Argument("domain", String.class));
     }

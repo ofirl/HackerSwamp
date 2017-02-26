@@ -13,11 +13,14 @@ public class Help extends BaseCommand {
     public static HashMap<String, HashMap<String, Argument>> acceptedArguments = new HashMap<>();
 
     static {
+        // super command
         superCommand = CommandManager.allCommands.get(Parameters.CommandNameHelp);
 
+        // sub commands hash maps init
         acceptedArguments.put("help", new HashMap<>());
         acceptedArguments.put("commands", new HashMap<>());
 
+        // commands
         acceptedArguments.get("commands").put("filter", new Argument("filter", String.class));
         acceptedArguments.get("commands").put("security", new Argument("security", String.class));
     }
