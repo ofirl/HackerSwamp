@@ -4,9 +4,7 @@ import managers.CommandManager;
 import managers.DomainsManager;
 import objects.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * accepted arguments for the connect command :
