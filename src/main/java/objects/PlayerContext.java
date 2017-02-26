@@ -103,14 +103,14 @@ public class PlayerContext {
     }
 
     /**
-     * returns whether or not the system is being hacked
+     * returns whether or not the syscmd is being hacked
      */
     public boolean isBeingHacked() {
         return systemStatus.beingHacked;
     }
 
     /**
-     * returns whether or not the system is hacked (someone is already in)
+     * returns whether or not the syscmd is hacked (someone is already in)
      */
     // TODO : change the name from hacked to something more intuitive
     public boolean isHacked() {
@@ -118,37 +118,37 @@ public class PlayerContext {
     }
 
     /**
-     * returns whether or not the system is installing new hardware
+     * returns whether or not the syscmd is installing new hardware
      */
     public boolean isInstallingHardware() {
         return systemStatus.installingHardware != 0;
     }
 
     /**
-     * returns whether or not the system is installing new obstacle
+     * returns whether or not the syscmd is installing new obstacle
      */
     public boolean isInstallingObstacle() {
         return systemStatus.installingObstacle != 0;
     }
 
     /**
-     * gets the system status as arguments to send
-     * @return the system status as arguments to send
+     * gets the syscmd status as arguments to send
+     * @return the syscmd status as arguments to send
      */
     public HashMap<String, String> getSystemStatusAsArguments() {
         return systemStatus.getStatusAsArguments();
     }
 
     /**
-     * gets the system specs as arguments to send
-     * @return the system spec as arguments to send
+     * gets the syscmd specs as arguments to send
+     * @return the syscmd spec as arguments to send
      */
     public HashMap<String, String> getSystemSpecAsArguments() {
         return systemSpec.getSpecAsArguments();
     }
 
     /**
-     * get the system spec object
+     * get the syscmd spec object
      * @return systemSpec object
      */
     public SystemSpec getSystemSpec() {

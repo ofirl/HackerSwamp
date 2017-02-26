@@ -20,10 +20,10 @@ public class System extends BaseCommand{
         acceptedArguments.put("system", new HashMap<>());
         acceptedArguments.put("spec", new HashMap<>());
 
-        // system
-        //acceptedArguments.get("system").put("filer", new Argument("filter", String.class));
+        // syscmd
+        //acceptedArguments.get("syscmd").put("filer", new Argument("filter", String.class));
 
-        // system
+        // syscmd
         //acceptedArguments.get("spec").put("filer", new Argument("filter", String.class));
     }
 
@@ -52,7 +52,7 @@ public class System extends BaseCommand{
     }
 
     /**
-     * system command
+     * syscmd command
      * @return general help
      */
     public String main() {
@@ -67,8 +67,8 @@ public class System extends BaseCommand{
     }
 
     /**
-     * system.spec command
-     * @return detailed print of the system spec
+     * syscmd.spec command
+     * @return detailed print of the syscmd spec
      */
     public String spec() {
         ActiveUser activeUser = LoginHandler.getActiveUserByUsername(context.username);

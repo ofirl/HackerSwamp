@@ -137,19 +137,19 @@ public class Market extends BaseCommand {
         if (args.containsKey("security")) {
             String securityLevel = args.get("security").value;
             switch (CommandSecurityRating.valueOf(securityLevel)) {
-                case Unknown:
-                    items.putAll(ItemManager.castItemsToBaseItem(ItemManager.getAllMarketScripts(CommandSecurityRating.Unknown)));
-                case LowSec :
-                    items.putAll(ItemManager.castItemsToBaseItem(ItemManager.getAllMarketScripts(CommandSecurityRating.LowSec)));
-                case MedSec:
-                    items.putAll(ItemManager.castItemsToBaseItem(ItemManager.getAllMarketScripts(CommandSecurityRating.MedSec)));
-                case TopSec :
-                    items.putAll(ItemManager.castItemsToBaseItem(ItemManager.getAllMarketScripts(CommandSecurityRating.TopSec)));
-                case System :
-                    items.putAll(ItemManager.castItemsToBaseItem(ItemManager.getAllMarketScripts(CommandSecurityRating.System)));
+                case unknown:
+                    items.putAll(ItemManager.castItemsToBaseItem(ItemManager.getAllMarketScripts(CommandSecurityRating.unknown)));
+                case lowsec:
+                    items.putAll(ItemManager.castItemsToBaseItem(ItemManager.getAllMarketScripts(CommandSecurityRating.lowsec)));
+                case medsec:
+                    items.putAll(ItemManager.castItemsToBaseItem(ItemManager.getAllMarketScripts(CommandSecurityRating.medsec)));
+                case topsec:
+                    items.putAll(ItemManager.castItemsToBaseItem(ItemManager.getAllMarketScripts(CommandSecurityRating.topsec)));
+                case syscmd:
+                    items.putAll(ItemManager.castItemsToBaseItem(ItemManager.getAllMarketScripts(CommandSecurityRating.syscmd)));
                     break;
                 default :
-                    return "accepted values for \"security\" are : System, TopSec, MedSec, LowSec, Unknown";
+                    return "accepted values for \"security\" are : syscmd, topsec, medsec, lowsec, unknown";
             }
         }
         else

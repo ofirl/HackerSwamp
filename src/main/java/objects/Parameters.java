@@ -142,32 +142,32 @@ public class Parameters {
     public static String ErrorMacroNotFound = "Error : macro is not defined";
 
     /**
-     * error for system specs not found
+     * error for syscmd specs not found
      */
     public static String ErrorSystemSpecsNotFound = "Error : could not find system specs";
 
     /**
-     * error for motherboard not found in system specs
+     * error for motherboard not found in syscmd specs
      */
     public static String ErrorSystemSpecMotherboardNotFound = "Error : could not find a motherboard in system specs";
 
     /**
-     * error for cpu not found in system specs
+     * error for cpu not found in syscmd specs
      */
     public static String ErrorSystemSpecCpuNotFound = "Error : could not find a cpu in system specs";
 
     /**
-     * error for ram not found in system specs
+     * error for ram not found in syscmd specs
      */
     public static String ErrorSystemSpecRamNotFound = "Error : could not find a ram in system specs";
 
     /**
-     * error for hdd not found in system specs
+     * error for hdd not found in syscmd specs
      */
     public static String ErrorSystemSpecHddNotFound = "Error : could not find a hdd in system specs";
 
     /**
-     * error for network card not found in system specs
+     * error for network card not found in syscmd specs
      */
     public static String ErrorSystemSpecNetworkCardNotFound = "Error : could not find a network card in system specs";
 
@@ -201,7 +201,7 @@ public class Parameters {
     public static String InitCommandAutoCompleteList = "autocomplete";
 
     /**
-     * name of the init parameter for requesting the system specs
+     * name of the init parameter for requesting the syscmd specs
      */
     public static String InitCommandSystemSpec = "systemspec";
 
@@ -211,7 +211,7 @@ public class Parameters {
     public static String InitCommandAccountBalance = "accountbalance";
 
     /**
-     * name of the init parameter for requesting the system status
+     * name of the init parameter for requesting the syscmd status
      */
     public static String InitCommandSystemStatus = "systemstatus";
 
@@ -244,12 +244,12 @@ public class Parameters {
     public static String CommandNameConnect = "connect";
 
     /**
-     * system
+     * syscmd
      */
     public static String CommandNameSystem = "system";
 
     /**
-     * system.spec
+     * syscmd.spec
      */
     public static String CommandNameSystemSpec = "spec";
 

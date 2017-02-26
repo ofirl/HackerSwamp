@@ -57,14 +57,14 @@ public class ActiveUser {
     }
 
     /**
-     * returns whether or not the system is being hacked
+     * returns whether or not the syscmd is being hacked
      */
     public boolean isBeingHacked() {
         return context.isBeingHacked();
     }
 
     /**
-     * returns whether or not the system is hacked (someone is already in)
+     * returns whether or not the syscmd is hacked (someone is already in)
      */
     // TODO : change the name from hacked to something more intuitive
     public boolean isHacked() {
@@ -72,37 +72,37 @@ public class ActiveUser {
     }
 
     /**
-     * returns whether or not the system is installing new hardware
+     * returns whether or not the syscmd is installing new hardware
      */
     public boolean isInstallingHardware() {
         return context.isInstallingHardware();
     }
 
     /**
-     * returns whether or not the system is installing new obstacle
+     * returns whether or not the syscmd is installing new obstacle
      */
     public boolean isInstallingObstacle() {
         return context.isInstallingObstacle();
     }
 
     /**
-     * gets the system status as arguments to send
-     * @return the system status as arguments to send
+     * gets the syscmd status as arguments to send
+     * @return the syscmd status as arguments to send
      */
     public HashMap<String, String> getSystemStatusAsArguments() {
         return context.getSystemStatusAsArguments();
     }
 
     /**
-     * gets the system spec as arguments to send
-     * @return the system spec as arguments to send
+     * gets the syscmd spec as arguments to send
+     * @return the syscmd spec as arguments to send
      */
     public HashMap<String, String> getSystemSpecAsArguments() {
         return context.getSystemSpecAsArguments();
     }
 
     /**
-     * gets the system spec object
+     * gets the syscmd spec object
      * @return systemSpec object
      */
     public SystemSpec getSystemSpec() {

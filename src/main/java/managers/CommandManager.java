@@ -6,7 +6,6 @@ import database_objects.CommandsTableRow;
 import interface_objects.DatabaseHandler;
 import interface_objects.DatabaseTables;
 import objects.*;
-import player_scripts.PlayerScript;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +29,7 @@ public class CommandManager {
     }
 
     /**
-     * init for system commands
+     * init for syscmd commands
      */
     public static void initSystemCommands() {
         // get command list from db
@@ -44,7 +43,7 @@ public class CommandManager {
 
         HashMap<String, Integer> commandIds = new HashMap<>();
 
-        // parse system commands
+        // parse syscmd commands
         for (CommandsTableRow c :
                 rows)
             commandIds.put(c.name, c.id);
@@ -62,10 +61,10 @@ public class CommandManager {
         // connect
         name = Parameters.CommandNameConnect;
         cmd = addSystemCommand(commandIds.get(name), name, new Connect(), true);
-        // system
+        // syscmd
         name = Parameters.CommandNameSystem;
         cmd = addSystemCommand(commandIds.get(name), name, new System(), true);
-        // system.spec
+        // syscmd.spec
         name = Parameters.CommandNameSystemSpec;
         subCmd = addSystemCommand(commandIds.get(name), name, new System(), false);
         addSubCommand(cmd, subCmd);
@@ -139,16 +138,16 @@ public class CommandManager {
     }
 
     /**
-     * created and adds a system command to the lists
+     * created and adds a syscmd command to the lists
      * @param name the name of hte command
      * @param baseCommand the class that implements the command
      */
     public static Command addSystemCommand(int id, String name, BaseCommand baseCommand, boolean mainCommand) {
-        return addCommand(id, name, baseCommand, mainCommand, CommandAccess.System, CommandSecurityRating.System);
+        return addCommand(id, name, baseCommand, mainCommand, CommandAccess.System, CommandSecurityRating.syscmd);
     }
 
     /**
-     * created and adds a system command to the lists
+     * created and adds a syscmd command to the lists
      * @param name the name of hte command
      * @param baseCommand the class that implements the command
      * @param access the command access type

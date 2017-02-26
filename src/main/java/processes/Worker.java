@@ -33,7 +33,7 @@ public class Worker {
      */
     @SuppressWarnings("InfiniteLoopStatement")
     public static void main(String[] args) {
-        // init the entire system
+        // init the entire syscmd
         initSystem();
 
         // main loop
@@ -52,7 +52,7 @@ public class Worker {
     }
 
     /**
-     * main init method for the entire system
+     * main init method for the entire syscmd
      */
     public static void initSystem() {
         CommandManager.init();
@@ -189,7 +189,7 @@ public class Worker {
     }
 
     /**
-     * executes init command for requesting system status
+     * executes init command for requesting syscmd status
      */
     public void executeInitCommandSystemStatus() {
         ActiveUser activeUser = LoginHandler.getActiveUserByUsername(request.context.username);
@@ -202,10 +202,10 @@ public class Worker {
     }
 
     /**
-     * executes init command for requesting system spec
+     * executes init command for requesting syscmd spec
      */
     public void executeInitCommandSystemSpec() {
-        // get the system specs
+        // get the syscmd specs
         SystemSpec spec =  SystemSpec.getUserSystemSpecs(request.context.username);
         // sanity checks
         if (spec == null) {

@@ -43,9 +43,9 @@ public class GeneralTest {
         // testing....
         ItemManager.init();
 
-        WebListener.executePost("https://169.254.218.134", "test");
+        //WebListener.executePost("https://169.254.218.134", "test");
 
-        String userInput =  "init\n";
+        String userInput = "init\n";
         userInput += "connect first.bank.cash\n";
         userInput += "help\n";
         userInput += "help.comm\n";

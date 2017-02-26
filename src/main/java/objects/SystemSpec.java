@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * implements system specs
+ * implements syscmd specs
  */
 public class SystemSpec {
     // public variables
@@ -33,9 +33,9 @@ public class SystemSpec {
     }
 
     /**
-     * gets the provided {@code username} system spec
+     * gets the provided {@code username} syscmd spec
      * @param username the username to search for
-     * @return the system spec of the user
+     * @return the syscmd spec of the user
      */
     public static SystemSpec getUserSystemSpecs(String username) {
         List<EquippedItemsTableRow> equippedItems = DatabaseHandler.getTableElements(DatabaseTables.Equipped_Items, "itemid, type", "owner='" + username + "'");
@@ -73,8 +73,8 @@ public class SystemSpec {
     }
 
     /**
-     * gets the system spec as arguments to send
-     * @return the system spec as arguments
+     * gets the syscmd spec as arguments to send
+     * @return the syscmd spec as arguments
      */
     public HashMap<String, String> getSpecAsArguments() {
         HashMap<String, String> spec = new HashMap<>();
@@ -106,7 +106,7 @@ public class SystemSpec {
     }
 
     /**
-     * gets a detailed and pretty print of the system spec object
+     * gets a detailed and pretty print of the syscmd spec object
      * @return a detailed print
      */
     public String getDetailedPrint() {

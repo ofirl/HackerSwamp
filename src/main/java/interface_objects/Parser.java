@@ -111,7 +111,7 @@ public class Parser {
 
     /**
      * requests and waits for response to {@code input}
-     * {@code input} is similar to : authKey(32):JSD97843HJ0843&command(15):system.help
+     * {@code input} is similar to : authKey(32):JSD97843HJ0843&command(15):syscmd.help
      * @param input the request received
      * @return a response
      */
