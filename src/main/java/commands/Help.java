@@ -115,7 +115,7 @@ public class Help extends BaseCommand {
             HashMap<String, Command> filteredCommands = new HashMap<>();
             for (String com :
                     commands.keySet()) {
-                if (!commands.get(com).securityRating.equals(security.value))
+                if (commands.get(com).securityRating.compareTo(CommandSecurityRating.valueOf(security.value)) <= 0)
                     filteredCommands.put(com, commands.get(com));
             }
             commands = filteredCommands;

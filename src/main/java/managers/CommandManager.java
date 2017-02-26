@@ -88,7 +88,7 @@ public class CommandManager {
         for (CommandsTableRow c :
                 dbCommands) {
             // TODO : get the correct callable instead of null
-            Command command = new Command(c.id, c.name, null, CommandAccess.valueOf(c.access));
+            Command command = new Command(c.id, c.name, null, CommandAccess.valueOf(c.access), CommandSecurityRating.valueOf(c.security_rating));
 
             // parse arguments
             if (c.arguments != null && !c.arguments.equals("")) {
@@ -133,7 +133,7 @@ public class CommandManager {
      * @param baseCommand the class that implements the command
      */
     public static Command addSystemCommand(int id, String name, BaseCommand baseCommand, boolean mainCommand) {
-        return addCommand(id, name, baseCommand, mainCommand, CommandAccess.System);
+        return addCommand(id, name, baseCommand, mainCommand, CommandAccess.System, CommandSecurityRating.System);
     }
 
     /**
@@ -142,8 +142,8 @@ public class CommandManager {
      * @param baseCommand the class that implements the command
      * @param access the command access type
      */
-    public static Command addCommand(int id, String name, BaseCommand baseCommand, boolean mainCommand, CommandAccess access) {
-        Command cmd = new Command(id, name, baseCommand, access);
+    public static Command addCommand(int id, String name, BaseCommand baseCommand, boolean mainCommand, CommandAccess access, CommandSecurityRating securityRating) {
+        Command cmd = new Command(id, name, baseCommand, access, securityRating);
         allCommands.put(cmd.name, cmd);
         if (mainCommand)
             commandList.put(cmd.name, cmd);
