@@ -437,7 +437,7 @@ public class Worker {
                 String type = checkArgumentType(argParts[1]);
 
                 // add argument to list
-                arguments.add(new Argument(argParts[0], type, argParts[1]));
+                arguments.add(new Argument(argParts[0].trim(), type, argParts[1].trim()));
             }
 
             commandToParse = input.substring(0, commandEnd);

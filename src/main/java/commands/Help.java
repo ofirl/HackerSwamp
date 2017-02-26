@@ -66,7 +66,7 @@ public class Help extends BaseCommand {
         HashMap<String, Argument> acceptedCommandArgs = acceptedArguments.get("commands");
         for (String arg :
                 args.keySet()) {
-            if (!acceptedCommandArgs.containsKey(arg) || acceptedCommandArgs.get(arg).type != args.get(arg).type)
+            if (!acceptedCommandArgs.containsKey(arg) || !acceptedCommandArgs.get(arg).type.equals(args.get(arg).type))
                 return Parameters.ErrorCommandInvalidArguments;
         }
 

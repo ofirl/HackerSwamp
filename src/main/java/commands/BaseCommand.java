@@ -88,7 +88,7 @@ public abstract class BaseCommand {
      */
     public void parseArguments(List<Argument> arguments) {
         args = new HashMap<>();
-        arguments.forEach((a) -> args.put(a.name, a));
+        arguments.forEach((a) -> args.put(a.name.trim(), a));
     }
 
     /**
