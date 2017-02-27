@@ -1,8 +1,6 @@
 package database_objects;
 
-public class NetworkcardsTableRow {
-    public int id;
-    public String name;
+public class NetworkcardsTableRow extends MarketItemsTableRow {
     public int download;
     public int upload;
 }

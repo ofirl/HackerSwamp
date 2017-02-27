@@ -6,15 +6,17 @@ public abstract class BaseItem {
     // public variables
     public int id;
     public String name;
+    public int price;
 
     /**
      * constructor
      * @param id id of the item
      * @param name name of the item
      */
-    public BaseItem(int id, String name) {
+    public BaseItem(int id, String name, int price) {
         this.id = id;
         this.name = name;
+        this.price = price;
     }
 
     /**

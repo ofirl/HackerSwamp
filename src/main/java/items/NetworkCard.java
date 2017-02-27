@@ -10,8 +10,8 @@ public class NetworkCard extends  BaseItem{
     /**
      * constructor
      */
-    public NetworkCard(int id, String name, int downloadLimit, int uploadLimit) {
-        super(id, name);
+    public NetworkCard(int id, String name, int price, int downloadLimit, int uploadLimit) {
+        super(id, name, price);
         this.downloadLimit = downloadLimit;
         this.uploadLimit = uploadLimit;
     }

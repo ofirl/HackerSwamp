@@ -277,6 +277,16 @@ public class Parameters {
      */
     public static String ErrorCommandInvalidArguments = "Error : command includes invalid arguments";
 
+    /**
+     * error for item does not exists
+     */
+    public static String ErrorMarketItemNotFound = "Error : could not find item";
+
+    /**
+     * error for item already found in inventory
+     */
+    public static String ErrorMarketItemAlreadyBought = "Error : this item is already in your inventory";
+
     // endregion
 
     // endregion

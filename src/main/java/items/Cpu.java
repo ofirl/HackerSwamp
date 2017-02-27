@@ -10,8 +10,8 @@ public class Cpu extends BaseItem{
     /**
      * constructor
      */
-    public Cpu(int id, String name, double speed, int cores) {
-        super(id, name);
+    public Cpu(int id, String name, int price, double speed, int cores) {
+        super(id, name, price);
         this.speed = speed;
         this.cores = cores;
     }

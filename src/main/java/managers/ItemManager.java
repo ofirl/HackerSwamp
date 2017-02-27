@@ -35,7 +35,7 @@ public class ItemManager {
         List<MotherboardsTableRow> motherboardItems = DatabaseHandler.getTableElements(DatabaseTables.Motherboards);
         for (MotherboardsTableRow i :
                 motherboardItems) {
-            Motherboard motherboard = new Motherboard(i.id, i.name, i.cpu_slots, i.ram_slots, i.hdd_slots, i.max_ram_size, i.max_cpu_speed);
+            Motherboard motherboard = new Motherboard(i.id, i.name, i.price, i.cpu_slots, i.ram_slots, i.hdd_slots, i.max_ram_size, i.max_cpu_speed);
             motherboards.put(motherboard.id, motherboard);
             allItems.put(motherboard.id, motherboard);
         }
@@ -44,7 +44,7 @@ public class ItemManager {
         List<CpusTableRow> cpuItems = DatabaseHandler.getTableElements(DatabaseTables.Cpus);
         for (CpusTableRow i :
                 cpuItems) {
-            Cpu cpu = new Cpu(i.id, i.name, i.speed, i.cores);
+            Cpu cpu = new Cpu(i.id, i.name, i.price, i.speed, i.cores);
             cpus.put(cpu.id, cpu);
             allItems.put(cpu.id, cpu);
         }
@@ -53,7 +53,7 @@ public class ItemManager {
         List<RamsTableRow> ramItems = DatabaseHandler.getTableElements(DatabaseTables.Rams);
         for (RamsTableRow i :
                 ramItems) {
-            Ram ram = new Ram(i.id, i.name, i.size);
+            Ram ram = new Ram(i.id, i.name, i.price, i.size);
             rams.put(ram.id, ram);
             allItems.put(ram.id, ram);
         }
@@ -62,7 +62,7 @@ public class ItemManager {
         List<HddsTableRow> hddItems = DatabaseHandler.getTableElements(DatabaseTables.Hdds);
         for (HddsTableRow i :
                 hddItems) {
-            Hdd hdd = new Hdd(i.id, i.name, i.size);
+            Hdd hdd = new Hdd(i.id, i.name, i.price, i.size);
             hdds.put(hdd.id, hdd);
             allItems.put(hdd.id, hdd);
         }
@@ -71,7 +71,7 @@ public class ItemManager {
         List<NetworkcardsTableRow> networkCardItems = DatabaseHandler.getTableElements(DatabaseTables.NetworkCards);
         for (NetworkcardsTableRow i :
                 networkCardItems) {
-            NetworkCard networkCard = new NetworkCard(i.id, i.name, i.download, i.upload);
+            NetworkCard networkCard = new NetworkCard(i.id, i.name, i.price, i.download, i.upload);
             networkCards.put(networkCard.id, networkCard);
             allItems.put(networkCard.id, networkCard);
         }
@@ -190,8 +190,8 @@ public class ItemManager {
     }
 
     /**
-     * gets the script with the given {@code name} (name is from the form of "owner.script")
-     * @param name the name to search for
+     * gets the script with the given name, command is from the form of {owner,script}
+     * @param command the name to search for
      * @return a marketScript object, or null if there isn't one
      */
     public static MarketScript getMarketScriptByName(List<String> command) {
@@ -248,5 +248,34 @@ public class ItemManager {
         account.changeBalance(-script.price);
 
         return "OK";
+    }
+
+    /**
+     * gets the inventory of the provided {@code username}
+     * @param username the username to search for
+     * @return {@code HashMap} containing the username inventory
+     */
+    public static HashMap<Integer, BaseItem> getUserInventory(String username) {
+        List<InventoriesTableRow> rows = DatabaseHandler.getTableElements(DatabaseTables.Inventories, null, "owner='" + username + "'");
+
+        HashMap<Integer, BaseItem> inventory = new HashMap<>();
+        if (rows == null)
+            return inventory;
+
+        for (InventoriesTableRow i :
+                rows)
+            inventory.put(i.item, getItemById(i.item));
+
+        return inventory;
+    }
+
+    /**
+     * adds the provided {@code itemId} to the {@code username} inventory
+     * @param username the username to add the item
+     * @param itemId the item to add
+     * @return whether the action succeeded
+     */
+    public static boolean addItemToUserInventory(String username, int itemId) {
+        return DatabaseHandler.insertTableElements(DatabaseTables.Inventories, "owner, item", username + ", " + itemId);
     }
 }

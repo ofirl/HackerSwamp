@@ -51,4 +51,8 @@ public class Argument {
     public Argument(String name, String type, String value) {
         this(name, getClassByName(type), value);
     }
+
+    public <T> T castValue() {
+        return (T)value;
+    }
 }

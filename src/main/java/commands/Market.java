@@ -1,7 +1,11 @@
 package commands;
 
+import interface_objects.DatabaseHandler;
+import interface_objects.DatabaseTables;
+import interface_objects.LoginHandler;
 import items.BaseItem;
 import managers.CommandManager;
+import managers.DomainsManager;
 import managers.ItemManager;
 import managers.Logger;
 import objects.*;
@@ -56,6 +60,37 @@ public class Market extends BaseCommand {
     }
 
     /**
+     * buys the item
+     * @return a response
+     */
+    public String buyItem() {
+        int itemId = args.get("buy").castValue();
+        // sanity checks
+        BaseItem selectedItem = ItemManager.getItemById(itemId);
+        if (selectedItem == null)
+            return Parameters.ErrorMarketItemNotFound;
+
+        ActiveUser user = LoginHandler.getActiveUserByUsername(context.username);
+        if (user == null)
+            return Parameters.ErrorActiveUserNotFound;
+
+        Account acc = user.getMainAccount();
+        if (acc == null)
+            return Parameters.ErrorMainAccountNotFound;
+
+        if (!acc.canTransfer(selectedItem.price))
+            return Parameters.ErrorInsufficientFunds;
+
+        // subtract the item price if bought successfully
+        if (ItemManager.addItemToUserInventory(context.username, selectedItem.id)) {
+            acc.changeBalance(-selectedItem.price);
+            return "Item has been bought";
+        }
+
+        return "Could not finalize the order";
+    }
+
+    /**
      * help command
      * @return general help
      */
@@ -79,6 +114,9 @@ public class Market extends BaseCommand {
 
         String output = "";
         HashMap<Integer, BaseItem> items = new HashMap<>();
+
+        if (args.containsKey("buy"))
+            return buyItem();
 
         if (args.containsKey("type")) {
             String itemType = args.get("type").value;
@@ -133,6 +171,9 @@ public class Market extends BaseCommand {
 
         String output = "";
         HashMap<Integer, BaseItem> items = new HashMap<>();
+
+        if (args.containsKey("buy"))
+            return buyItem();
 
         if (args.containsKey("security")) {
             String securityLevel = args.get("security").value;

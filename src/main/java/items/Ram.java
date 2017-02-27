@@ -9,8 +9,8 @@ public class Ram extends BaseItem{
     /**
      * constructor
      */
-    public Ram(int id, String name, int size) {
-        super(id, name);
+    public Ram(int id, String name, int price, int size) {
+        super(id, name, price);
         this.size = size;
     }
 

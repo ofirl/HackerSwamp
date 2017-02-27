@@ -16,8 +16,8 @@ public class Motherboard extends BaseItem{
     /**
      * constructor
      */
-    public Motherboard(int id, String name, int cpuSlots, int ramSlots, int hddSlots, int maxRamSize, double maxCpuSpeed) {
-        super(id, name);
+    public Motherboard(int id, String name, int price, int cpuSlots, int ramSlots, int hddSlots, int maxRamSize, double maxCpuSpeed) {
+        super(id, name, price);
         this.cpuSlots = cpuSlots;
         this.ramSlots = ramSlots;
         this.hddSlots = hddSlots;

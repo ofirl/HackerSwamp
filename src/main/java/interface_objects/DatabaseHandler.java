@@ -346,5 +346,21 @@ public class DatabaseHandler {
         return elements != null && elements.size() > 0;
     }
 
+    /**
+     * inserts a new row to a table
+     * @param table the table to insert to
+     * @param columnOrder the column order of the values
+     * @param columnValues the values to insert
+     * @return whether the action succeeded
+     */
+    public static boolean insertTableElements(DatabaseTables table, String columnOrder, String columnValues) {
+        // build the query
+        String query = "INSERT INTO " + table.name() + "(" + columnOrder + ") VALUES (" + columnValues + ")";
+        // TODO : add a response as a flag for success
+        requestAction(query);
+        // TODO : change to return whether the action succeeded or not
+        return true;
+    }
+
     // endregion
 }

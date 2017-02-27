@@ -3,11 +3,13 @@ package objects;
 import database_objects.MacrosTableRow;
 import database_objects.PlayerCorpsTableRow;
 import database_objects.PlayersTableRow;
+import items.BaseItem;
 import managers.CommandManager;
 import database_objects.CommandsViewTableRow;
 import interface_objects.DatabaseHandler;
 import interface_objects.DatabaseTables;
 import managers.DomainsManager;
+import managers.ItemManager;
 import managers.Logger;
 
 import java.util.*;
@@ -28,6 +30,7 @@ public class PlayerContext {
     public SystemSpec systemSpec;
     public SystemStatus systemStatus;
     public Account mainAccount;
+    public HashMap<Integer, BaseItem> inventory = new HashMap<>();
 
     /**
      * constructor
@@ -53,6 +56,7 @@ public class PlayerContext {
         getMacros();
         this.systemSpec = SystemSpec.getUserSystemSpecs(username);
         this.mainAccount = DomainsManager.getMainAccountByUsername(username);
+        this.inventory = ItemManager.getUserInventory(username);
     }
 
     /**
@@ -161,5 +165,13 @@ public class PlayerContext {
      */
     public Account getMainAccount() {
         return mainAccount;
+    }
+
+    /**
+     * gets the player inventory
+     * @return the player inventory
+     */
+    public HashMap<Integer, BaseItem> getInventory() {
+        return inventory;
     }
 }

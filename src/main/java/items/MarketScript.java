@@ -7,7 +7,6 @@ import java.util.HashMap;
 public class MarketScript extends BaseItem{
     // public variables
     public Command command;
-    public int price;
     public String owner;
 
     /**
@@ -19,7 +18,7 @@ public class MarketScript extends BaseItem{
      * @param owner owner of the script
      */
     public MarketScript(int id, String name, Command command, int price, String owner) {
-        super(id, name);
+        super(id, name, price);
         this.command = command;
         this.price = price;
         this.owner = owner;

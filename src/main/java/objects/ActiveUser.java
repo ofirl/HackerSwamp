@@ -1,5 +1,8 @@
 package objects;
 
+import commands.BaseCommand;
+import items.BaseItem;
+
 import java.util.*;
 
 public class ActiveUser {
@@ -115,5 +118,13 @@ public class ActiveUser {
      */
     public Account getMainAccount() {
         return context.getMainAccount();
+    }
+
+    /**
+     * gets the user inventory
+     * @return {@code HashMap} of the inventory
+     */
+    public HashMap<Integer, BaseItem> getInventory() {
+        return context.getInventory();
     }
 }

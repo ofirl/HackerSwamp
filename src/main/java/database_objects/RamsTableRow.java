@@ -1,7 +1,5 @@
 package database_objects;
 
-public class RamsTableRow {
-    public int id;
-    public String name;
+public class RamsTableRow extends MarketItemsTableRow {
     public int size;
 }

@@ -9,8 +9,8 @@ public class Hdd extends BaseItem{
     /**
      * constructor
      */
-    public Hdd(int id, String name, int size) {
-        super(id, name);
+    public Hdd(int id, String name, int price, int size) {
+        super(id, name, price);
         this.size = size;
     }
 
