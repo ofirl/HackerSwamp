@@ -81,6 +81,24 @@ public class Worker {
             return;
         }
 
+        if (request.command.startsWith("/")) {
+            ActiveUser activeUser = LoginHandler.getActiveUserByUsername(request.context.username);
+            if (activeUser == null) {
+                Parser.addResponse(request.getKey(), Parser.encodeArgument("response", Parameters.ErrorActiveUserNotFound));
+                return;
+            }
+            HashMap<String, String> macros = activeUser.getMacros();
+            if (macros != null) {
+                String commandReplacement = macros.get(request.command.substring(1));
+                if (commandReplacement == null) {
+                    Parser.addResponse(request.getKey(), Parser.encodeArgument("response", Parameters.ErrorMacroNotFound));
+                    return;
+                }
+
+                request.command = commandReplacement;
+            }
+        }
+
         // parse the input and populate commands and arguments
         if (!checkSyntax(request.command)) {
             if (error.equals(""))
@@ -121,25 +139,6 @@ public class Worker {
 
         String response = null;
         Command commandToRun;
-
-        // TODO : check the macros
-        if (request.command.startsWith("/")) {
-             ActiveUser activeUser = LoginHandler.getActiveUserByUsername(request.context.username);
-             if (activeUser == null) {
-                 Parser.addResponse(request.getKey(), Parser.encodeArgument("response", Parameters.ErrorActiveUserNotFound));
-                 return;
-             }
-             HashMap<String, String> macros = activeUser.getMacros();
-             if (macros != null) {
-                String commandReplacement = macros.get(request.command.substring(1));
-                if (commandReplacement == null) {
-                    Parser.addResponse(request.getKey(), Parser.encodeArgument("response", Parameters.ErrorMacroNotFound));
-                    return;
-                }
-
-                request.command = commandReplacement;
-             }
-        }
 
         // search in domain specific commands (based on current location)
         BaseDomain location = DomainsManager.getDomainByName(request.context.location);
@@ -403,6 +402,9 @@ public class Worker {
      * @return whether the check succeeded, if false (errors), check {@code error} field for description
      */
     public boolean checkSyntax(String input) {
+        commands = new ArrayList<>();
+        arguments = new ArrayList<>();
+
         // check for '{' and '}'
         if (input.contains("{") != input.contains("}")) {
             error = Parameters.SyntaxErrorArgumentsParenthesisMismatch;

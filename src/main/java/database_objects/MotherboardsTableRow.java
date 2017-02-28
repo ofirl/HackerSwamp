@@ -1,6 +1,9 @@
 package database_objects;
 
-public class MotherboardsTableRow extends MarketItemsTableRow {
+public class MotherboardsTableRow {
+    public int id;
+    public String name;
+    public int price;
     public int cpu_slots;
     public int ram_slots;
     public int hdd_slots;

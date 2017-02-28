@@ -59,10 +59,6 @@ public class System extends BaseCommand{
         // testing purposes
         //WebListener.executePost("http://" + LoginHandler.getActiveUserByUsername(context.username).clientIp + ":7777", "test");
 
-        Argument domain = args.get("domain");
-        if (domain != null)
-            return DomainsManager.connectToDomain(domain.value, context, args);
-
         return getSubCommands(superCommand);
     }
 

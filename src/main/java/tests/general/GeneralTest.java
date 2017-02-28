@@ -46,6 +46,7 @@ public class GeneralTest {
         //WebListener.executePost("https://169.254.218.134", "test");
 
         String userInput = "init\n";
+        userInput += "/test\n";
         userInput += "market.scripts {security:lowsec}\n";
         userInput += "connect first.bank.cash\n";
         userInput += "help\n";
