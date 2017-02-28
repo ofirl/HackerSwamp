@@ -278,6 +278,26 @@ public class Parameters {
      */
     public static String CommandNameMarketScripts = "scripts";
 
+    /**
+     * macro
+     */
+    public static String CommandNameMacro = "macro";
+
+    /**
+     * macro.remove
+     */
+    public static String CommandNameMacroRemove = "remove";
+
+    /**
+     * macro.add
+     */
+    public static String CommandNameMacroAdd = "add";
+
+    /**
+     * macro.view
+     */
+    public static String CommandNameMacroView = "view";
+
     // endregion
 
     // region command errors
@@ -296,6 +316,20 @@ public class Parameters {
      * error for item already found in inventory
      */
     public static String ErrorMarketItemAlreadyBought = "Error : this item is already in your inventory";
+
+    // endregion
+
+    // region command usages
+
+    /**
+     * macro.add usage
+     */
+    public static String CommandUsageMacroAdd = "Usage : macro.add <macro name> <macro value>";
+
+    /**
+     * macro.remove usage
+     */
+    public static String CommandUsageMacroRemove = "Usage : macro.remove <macro name>";
 
     // endregion
 

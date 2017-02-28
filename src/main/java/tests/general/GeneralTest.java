@@ -6,7 +6,6 @@ import managers.ItemManager;
 import objects.Parameters;
 import org.junit.Test;
 import processes.DatabaseClient;
-import processes.WebListener;
 import processes.Worker;
 
 import java.util.Scanner;
@@ -63,7 +62,7 @@ public class GeneralTest {
         userInput += "connect {doma:first.bank.cash}\n";
         userInput += "exit\n";
 
-        Scanner scanner = new Scanner(userInput);
+        Scanner scanner = new Scanner(System.in);
         String authKey = "";
         String input = "start";
         while (!input.equals("exit")) {

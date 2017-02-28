@@ -353,9 +353,32 @@ public class DatabaseHandler {
      * @param columnValues the values to insert
      * @return whether the action succeeded
      */
-    public static boolean insertTableElements(DatabaseTables table, String columnOrder, String columnValues) {
+    public static boolean insertIntoTable(DatabaseTables table, String columnOrder, String columnValues) {
         // build the query
         String query = "INSERT INTO " + table.name() + "(" + columnOrder + ") VALUES (" + columnValues + ")";
+        // TODO : add a response as a flag for success
+        requestAction(query);
+        // TODO : change to return whether the action succeeded or not
+        return true;
+    }
+
+    /**
+     * updates a table row
+     * @param table the table to update
+     * @param filter which rows to update
+     * @param values the new values to set
+     * @return whether the action succeeded
+     */
+    public static boolean updateTable(DatabaseTables table, String filter, String values) {
+        String query = "UPDATE " + table.name() + " SET " + values + " WHERE " + filter;
+        // TODO : add a response as a flag for success
+        requestAction(query);
+        // TODO : change to return whether the action succeeded or not
+        return true;
+    }
+
+    public static boolean removeFromTable(DatabaseTables table, String filter) {
+        String query = "DELETE FROM " + table.name() + " WHERE " + filter;
         // TODO : add a response as a flag for success
         requestAction(query);
         // TODO : change to return whether the action succeeded or not

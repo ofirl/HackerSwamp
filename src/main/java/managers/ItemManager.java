@@ -11,7 +11,6 @@ import objects.Parameters;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.BiConsumer;
 
 /**
  * manages all the items for better performance
@@ -276,6 +275,6 @@ public class ItemManager {
      * @return whether the action succeeded
      */
     public static boolean addItemToUserInventory(String username, int itemId) {
-        return DatabaseHandler.insertTableElements(DatabaseTables.Inventories, "owner, item", username + ", " + itemId);
+        return DatabaseHandler.insertIntoTable(DatabaseTables.Inventories, "owner, item", username + ", " + itemId);
     }
 }

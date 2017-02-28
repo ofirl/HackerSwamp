@@ -79,6 +79,21 @@ public class CommandManager {
         name = Parameters.CommandNameMarketScripts;
         subCmd = addSystemCommand(commandIds.get(name), name, new Market(), false);
         addSubCommand(cmd, subCmd);
+        // macro
+        name = Parameters.CommandNameMacro;
+        cmd = addSystemCommand(commandIds.get(name), name, new Macro(), true);
+        // macro.add
+        name = Parameters.CommandNameMacroAdd;
+        subCmd = addSystemCommand(commandIds.get(name), name, new Macro(), false);
+        addSubCommand(cmd, subCmd);
+        // macro.remove
+        name = Parameters.CommandNameMacroRemove;
+        subCmd = addSystemCommand(commandIds.get(name), name, new Macro(), false);
+        addSubCommand(cmd, subCmd);
+        // macro.view
+        name = Parameters.CommandNameMacroView;
+        subCmd = addSystemCommand(commandIds.get(name), name, new Macro(), false);
+        addSubCommand(cmd, subCmd);
         // TODO : add implementation for the commands
     }
 

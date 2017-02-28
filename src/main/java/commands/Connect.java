@@ -53,12 +53,8 @@ public class Connect extends BaseCommand{
      */
     public String main() {
         // check for invalid argument
-        HashMap<String, Argument> acceptedCommandArgs = acceptedArguments.get("connect");
-        for (String arg :
-                args.keySet()) {
-            if (!acceptedCommandArgs.containsKey(arg) || acceptedCommandArgs.get(arg).type != args.get(arg).type)
-                return Parameters.ErrorCommandInvalidArguments;
-        }
+        if (!checkArguments(acceptedArguments.get("connect")))
+            return Parameters.ErrorCommandInvalidArguments;
 
         Argument domain = args.get("arg1");
         if (domain == null)

@@ -46,6 +46,7 @@ public abstract class BaseCommand {
             subCommand = "main";
 
         try {
+            // TODO : generalize checkArguments
             return (String) getClass().getDeclaredMethod(subCommand).invoke(this);
         }
         catch (Exception e) {
@@ -98,5 +99,19 @@ public abstract class BaseCommand {
      */
     public String getHelp(Command mainCommand) {
         return getSubCommands(mainCommand);
+    }
+
+    /**
+     * checks arguments names and types are as expected
+     * @return whether the arguments are as expected
+     */
+    public boolean checkArguments(HashMap<String, Argument> acceptedCommandArgs) {
+        for (String arg :
+                args.keySet()) {
+            if (!acceptedCommandArgs.containsKey(arg) || !acceptedCommandArgs.get(arg).type.equals(args.get(arg).type))
+                return false;
+        }
+
+        return true;
     }
 }

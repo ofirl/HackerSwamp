@@ -1,6 +1,7 @@
 package processes;
 
 import commands.CommandAccess;
+import commands.Macro;
 import items.MarketScript;
 import managers.CommandManager;
 import domains.BaseDomain;
@@ -30,6 +31,7 @@ public class Worker {
 
     /**
      * entry point for worker process
+     *
      * @param args main program arguments
      */
     @SuppressWarnings("InfiniteLoopStatement")
@@ -63,6 +65,7 @@ public class Worker {
 
     /**
      * constructor
+     *
      * @param r the request to handle
      */
     public Worker(CommandRequest r) {
@@ -71,6 +74,7 @@ public class Worker {
 
     /**
      * entry point for the worker thread to start
+     *
      * @param args arguments for the worker thread
      */
     public void workerStart(Object... args) {
@@ -215,7 +219,7 @@ public class Worker {
      */
     public void executeInitCommandSystemSpec() {
         // get the syscmd specs
-        SystemSpec spec =  SystemSpec.getUserSystemSpecs(request.context.username);
+        SystemSpec spec = SystemSpec.getUserSystemSpecs(request.context.username);
         // sanity checks
         if (spec == null) {
             Parser.addResponse(request.getKey(), Parser.encodeArgument("response", Parameters.ErrorSystemSpecsNotFound));
@@ -286,6 +290,7 @@ public class Worker {
 
     /**
      * gets all the available commands for the current {@link CommandRequest}
+     *
      * @return all the available commands
      */
     public HashMap<String, Command> getAccessibleCommands() {
@@ -294,6 +299,7 @@ public class Worker {
 
     /**
      * gets all the available commands for the supplied {@link CommandContext}
+     *
      * @param context the {@link CommandContext} to check with
      * @return all the accessible commands
      */
@@ -315,6 +321,7 @@ public class Worker {
 
     /**
      * gets all the available player scripts for the supplied {@link CommandContext}
+     *
      * @param context the {@link CommandContext} to check with
      * @return all the accessible commands
      */
@@ -336,6 +343,7 @@ public class Worker {
 
     /**
      * gets all the available commands and player scripts for the supplied {@link CommandContext}
+     *
      * @param context the {@link CommandContext} to check with
      * @return all the accessible commands and player scripts
      */
@@ -352,6 +360,7 @@ public class Worker {
 
     /**
      * gets only the commands available to auto complete
+     *
      * @param context the context in which to check
      * @return the auto completable commands
      */
@@ -368,6 +377,7 @@ public class Worker {
 
     /**
      * gets the command needed to run
+     *
      * @return the command to actually run
      */
     public Command parseCommand() {
@@ -377,6 +387,7 @@ public class Worker {
 
     /**
      * searches for a command from a given starting hash map of commands
+     *
      * @param startingPoint the starting hash map for the search
      * @return the command to actually run
      */
@@ -408,6 +419,7 @@ public class Worker {
 
     /**
      * checks the command syntax and populates {@code commands} and {@code argument}
+     *
      * @param input the input to check
      * @return whether the check succeeded, if false (errors), check {@code error} field for description
      */
@@ -453,8 +465,7 @@ public class Worker {
             }
 
             commandToParse = input.substring(0, commandEnd);
-        }
-        else { // "command arg1" format
+        } else { // "command arg1" format
             String[] commandParts = input.split(" ");
             if (commandParts.length == 0)
                 return false;
@@ -472,8 +483,7 @@ public class Worker {
             for (String s :
                     commandSplat)
                 commands.add(s);
-        }
-        else
+        } else
             commands.add(commandToParse.trim());
 
         return true;
@@ -481,6 +491,7 @@ public class Worker {
 
     /**
      * checks the argument type
+     *
      * @param arg the argument to check
      * @return the argument type name (int, float or string)
      */
@@ -490,14 +501,12 @@ public class Worker {
             //noinspection ResultOfMethodCallIgnored
             Integer.parseInt(arg);
             type = "int";
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             try {
                 //noinspection ResultOfMethodCallIgnored
                 Double.parseDouble(arg);
                 type = "double";
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 type = "java.lang.String";
             }
         }
@@ -507,6 +516,7 @@ public class Worker {
 
     /**
      * parses and sets the new macro
+     *
      * @return a response
      */
     public String parseMacro() {
@@ -523,13 +533,6 @@ public class Worker {
         if (macroValue.equals(""))
             return Parameters.ErrorMacroInvalidSyntax;
 
-        String columnOrder = "player_id, macro, command";
-        String values = request.context.playerId + "," + macroName + "," + macroValue;
-        if (DatabaseHandler.insertTableElements(DatabaseTables.Macros, columnOrder, values)) {
-            activeUser.getMacros().put(macroName, macroValue);
-            return "macro " + macroName + "added with a value of " + macroValue;
-        }
-
-        return Parameters.ErrorMacroSetFailed;
+        return new Macro(request.context).addMacro(macroName, macroValue);
     }
 }

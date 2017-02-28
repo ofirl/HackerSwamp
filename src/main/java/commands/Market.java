@@ -106,12 +106,8 @@ public class Market extends BaseCommand {
      */
     public String items() {
         // check for invalid argument
-        HashMap<String, Argument> acceptedCommandArgs = acceptedArguments.get("items");
-        for (String arg :
-                args.keySet()) {
-            if (!acceptedCommandArgs.containsKey(arg) || acceptedCommandArgs.get(arg).type != args.get(arg).type)
-                return Parameters.ErrorCommandInvalidArguments;
-        }
+        if (!checkArguments(acceptedArguments.get("items")))
+            return Parameters.ErrorCommandInvalidArguments;
 
         String output = "";
         HashMap<Integer, BaseItem> items = new HashMap<>();
@@ -163,12 +159,8 @@ public class Market extends BaseCommand {
      */
     public String scripts() {
         // check for invalid argument
-        HashMap<String, Argument> acceptedCommandArgs = acceptedArguments.get("scripts");
-        for (String arg :
-                args.keySet()) {
-            if (!acceptedCommandArgs.containsKey(arg) || acceptedCommandArgs.get(arg).type != args.get(arg).type)
-                return Parameters.ErrorCommandInvalidArguments;
-        }
+        if (!checkArguments(acceptedArguments.get("scripts")))
+            return Parameters.ErrorCommandInvalidArguments;
 
         String output = "";
         HashMap<Integer, BaseItem> items = new HashMap<>();
