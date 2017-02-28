@@ -1,6 +1,7 @@
 package processes;
 
 import commands.CommandAccess;
+import commands.Macro;
 import items.MarketScript;
 import managers.CommandManager;
 import domains.BaseDomain;
@@ -25,10 +26,12 @@ public class Worker {
     public List<String> commands = new ArrayList<>();
     public List<Argument> arguments = new ArrayList<>();
     public String initCommand = "";
+    public ActiveUser activeUser;
     // endregion
 
     /**
      * entry point for worker process
+     *
      * @param args main program arguments
      */
     @SuppressWarnings("InfiniteLoopStatement")
@@ -62,6 +65,7 @@ public class Worker {
 
     /**
      * constructor
+     *
      * @param r the request to handle
      */
     public Worker(CommandRequest r) {
@@ -70,6 +74,7 @@ public class Worker {
 
     /**
      * entry point for the worker thread to start
+     *
      * @param args arguments for the worker thread
      */
     public void workerStart(Object... args) {
@@ -81,12 +86,21 @@ public class Worker {
             return;
         }
 
+        activeUser = LoginHandler.getActiveUserByUsername(request.context.username);
+        if (activeUser == null) {
+            Parser.addResponse(request.getKey(), Parser.encodeArgument("response", Parameters.ErrorActiveUserNotFound));
+            return;
+        }
+
+        // macro
         if (request.command.startsWith("/")) {
-            ActiveUser activeUser = LoginHandler.getActiveUserByUsername(request.context.username);
-            if (activeUser == null) {
-                Parser.addResponse(request.getKey(), Parser.encodeArgument("response", Parameters.ErrorActiveUserNotFound));
+            // set new macro
+            if (request.command.contains("=")) {
+                Parser.addResponse(request.getKey(), parseMacro());
                 return;
             }
+
+            // replace macro with command
             HashMap<String, String> macros = activeUser.getMacros();
             if (macros != null) {
                 String commandReplacement = macros.get(request.command.substring(1));
@@ -205,7 +219,7 @@ public class Worker {
      */
     public void executeInitCommandSystemSpec() {
         // get the syscmd specs
-        SystemSpec spec =  SystemSpec.getUserSystemSpecs(request.context.username);
+        SystemSpec spec = SystemSpec.getUserSystemSpecs(request.context.username);
         // sanity checks
         if (spec == null) {
             Parser.addResponse(request.getKey(), Parser.encodeArgument("response", Parameters.ErrorSystemSpecsNotFound));
@@ -276,6 +290,7 @@ public class Worker {
 
     /**
      * gets all the available commands for the current {@link CommandRequest}
+     *
      * @return all the available commands
      */
     public HashMap<String, Command> getAccessibleCommands() {
@@ -284,6 +299,7 @@ public class Worker {
 
     /**
      * gets all the available commands for the supplied {@link CommandContext}
+     *
      * @param context the {@link CommandContext} to check with
      * @return all the accessible commands
      */
@@ -305,6 +321,7 @@ public class Worker {
 
     /**
      * gets all the available player scripts for the supplied {@link CommandContext}
+     *
      * @param context the {@link CommandContext} to check with
      * @return all the accessible commands
      */
@@ -326,6 +343,7 @@ public class Worker {
 
     /**
      * gets all the available commands and player scripts for the supplied {@link CommandContext}
+     *
      * @param context the {@link CommandContext} to check with
      * @return all the accessible commands and player scripts
      */
@@ -342,6 +360,7 @@ public class Worker {
 
     /**
      * gets only the commands available to auto complete
+     *
      * @param context the context in which to check
      * @return the auto completable commands
      */
@@ -358,6 +377,7 @@ public class Worker {
 
     /**
      * gets the command needed to run
+     *
      * @return the command to actually run
      */
     public Command parseCommand() {
@@ -367,6 +387,7 @@ public class Worker {
 
     /**
      * searches for a command from a given starting hash map of commands
+     *
      * @param startingPoint the starting hash map for the search
      * @return the command to actually run
      */
@@ -398,6 +419,7 @@ public class Worker {
 
     /**
      * checks the command syntax and populates {@code commands} and {@code argument}
+     *
      * @param input the input to check
      * @return whether the check succeeded, if false (errors), check {@code error} field for description
      */
@@ -443,8 +465,7 @@ public class Worker {
             }
 
             commandToParse = input.substring(0, commandEnd);
-        }
-        else { // "command arg1" format
+        } else { // "command arg1" format
             String[] commandParts = input.split(" ");
             if (commandParts.length == 0)
                 return false;
@@ -462,8 +483,7 @@ public class Worker {
             for (String s :
                     commandSplat)
                 commands.add(s);
-        }
-        else
+        } else
             commands.add(commandToParse.trim());
 
         return true;
@@ -471,6 +491,7 @@ public class Worker {
 
     /**
      * checks the argument type
+     *
      * @param arg the argument to check
      * @return the argument type name (int, float or string)
      */
@@ -480,18 +501,38 @@ public class Worker {
             //noinspection ResultOfMethodCallIgnored
             Integer.parseInt(arg);
             type = "int";
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             try {
                 //noinspection ResultOfMethodCallIgnored
                 Double.parseDouble(arg);
                 type = "double";
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 type = "java.lang.String";
             }
         }
 
         return type;
+    }
+
+    /**
+     * parses and sets the new macro
+     *
+     * @return a response
+     */
+    public String parseMacro() {
+        // sanity check
+        int separator = request.command.indexOf("=");
+        if (separator == -1 || separator == 1)
+            return Parameters.ErrorMacroInvalidSyntax;
+
+        String macroName = request.command.substring(1, separator).trim();
+        if (macroName.equals(""))
+            return Parameters.ErrorMacroInvalidSyntax;
+
+        String macroValue = request.command.substring(separator + 1).trim();
+        if (macroValue.equals(""))
+            return Parameters.ErrorMacroInvalidSyntax;
+
+        return new Macro(request.context).addMacro(macroName, macroValue);
     }
 }

@@ -186,6 +186,16 @@ public class Parameters {
      */
     public static String ErrorNullCommand = "Error : didn't receive command";
 
+    /**
+     * error for invalid macro syntax
+     */
+    public static String ErrorMacroInvalidSyntax = "Error : invalid set macro syntax";
+
+    /**
+     * error for macro could not be set
+     */
+    public static String ErrorMacroSetFailed = "Error : could not add macro";
+
     // endregion
 
         // region init commands
@@ -268,6 +278,26 @@ public class Parameters {
      */
     public static String CommandNameMarketScripts = "scripts";
 
+    /**
+     * macro
+     */
+    public static String CommandNameMacro = "macro";
+
+    /**
+     * macro.remove
+     */
+    public static String CommandNameMacroRemove = "remove";
+
+    /**
+     * macro.add
+     */
+    public static String CommandNameMacroAdd = "add";
+
+    /**
+     * macro.view
+     */
+    public static String CommandNameMacroView = "view";
+
     // endregion
 
     // region command errors
@@ -286,6 +316,20 @@ public class Parameters {
      * error for item already found in inventory
      */
     public static String ErrorMarketItemAlreadyBought = "Error : this item is already in your inventory";
+
+    // endregion
+
+    // region command usages
+
+    /**
+     * macro.add usage
+     */
+    public static String CommandUsageMacroAdd = "Usage : macro.add <macro name> <macro value>";
+
+    /**
+     * macro.remove usage
+     */
+    public static String CommandUsageMacroRemove = "Usage : macro.remove <macro name>";
 
     // endregion
 
@@ -395,6 +439,19 @@ public class Parameters {
      * insufficient funds error
      */
     public static String ErrorInsufficientFunds = "Error : insufficient funds";
+
+    // endregion
+
+    // endregion
+
+    // region obstacle
+
+    //region obstacle errors
+
+    /**
+     * error for not receiving user obstacle status
+     */
+    public static String ErrorUserStatusNotFound = "Error : could not pull obstacle status for users";
 
     // endregion
 

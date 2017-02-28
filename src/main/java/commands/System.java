@@ -56,6 +56,10 @@ public class System extends BaseCommand{
      * @return general help
      */
     public String main() {
+        // check for invalid argument
+        if (!checkArguments(acceptedArguments.get("system")))
+            return Parameters.ErrorCommandInvalidArguments;
+
         // testing purposes
         //WebListener.executePost("http://" + LoginHandler.getActiveUserByUsername(context.username).clientIp + ":7777", "test");
 
@@ -67,6 +71,10 @@ public class System extends BaseCommand{
      * @return detailed print of the syscmd spec
      */
     public String spec() {
+        // check for invalid argument
+        if (!checkArguments(acceptedArguments.get("spec")))
+            return Parameters.ErrorCommandInvalidArguments;
+
         ActiveUser activeUser = LoginHandler.getActiveUserByUsername(context.username);
         if (activeUser == null)
             return Parameters.ErrorActiveUserNotFound;

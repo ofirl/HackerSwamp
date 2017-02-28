@@ -63,12 +63,8 @@ public class Help extends BaseCommand {
      */
     public String commands() {
         // check for invalid argument
-        HashMap<String, Argument> acceptedCommandArgs = acceptedArguments.get("commands");
-        for (String arg :
-                args.keySet()) {
-            if (!acceptedCommandArgs.containsKey(arg) || !acceptedCommandArgs.get(arg).type.equals(args.get(arg).type))
-                return Parameters.ErrorCommandInvalidArguments;
-        }
+        if (!checkArguments(acceptedArguments.get("commands")))
+            return Parameters.ErrorCommandInvalidArguments;
 
         String output = "";
         HashMap<String, Command> commands = null;
