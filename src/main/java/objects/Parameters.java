@@ -186,6 +186,16 @@ public class Parameters {
      */
     public static String ErrorNullCommand = "Error : didn't receive command";
 
+    /**
+     * error for invalid macro syntax
+     */
+    public static String ErrorMacroInvalidSyntax = "Error : invalid set macro syntax";
+
+    /**
+     * error for macro could not be set
+     */
+    public static String ErrorMacroSetFailed = "Error : could not add macro";
+
     // endregion
 
         // region init commands
@@ -395,6 +405,19 @@ public class Parameters {
      * insufficient funds error
      */
     public static String ErrorInsufficientFunds = "Error : insufficient funds";
+
+    // endregion
+
+    // endregion
+
+    // region obstacle
+
+    //region obstacle errors
+
+    /**
+     * error for not receiving user obstacle status
+     */
+    public static String ErrorUserStatusNotFound = "Error : could not pull obstacle status for users";
 
     // endregion
 

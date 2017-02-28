@@ -84,6 +84,7 @@ public class Market extends BaseCommand {
         // subtract the item price if bought successfully
         if (ItemManager.addItemToUserInventory(context.username, selectedItem.id)) {
             acc.changeBalance(-selectedItem.price);
+            user.getInventory().put(itemId, selectedItem);
             return "Item has been bought";
         }
 

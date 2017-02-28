@@ -25,6 +25,7 @@ public class Worker {
     public List<String> commands = new ArrayList<>();
     public List<Argument> arguments = new ArrayList<>();
     public String initCommand = "";
+    public ActiveUser activeUser;
     // endregion
 
     /**
@@ -81,12 +82,21 @@ public class Worker {
             return;
         }
 
+        activeUser = LoginHandler.getActiveUserByUsername(request.context.username);
+        if (activeUser == null) {
+            Parser.addResponse(request.getKey(), Parser.encodeArgument("response", Parameters.ErrorActiveUserNotFound));
+            return;
+        }
+
+        // macro
         if (request.command.startsWith("/")) {
-            ActiveUser activeUser = LoginHandler.getActiveUserByUsername(request.context.username);
-            if (activeUser == null) {
-                Parser.addResponse(request.getKey(), Parser.encodeArgument("response", Parameters.ErrorActiveUserNotFound));
+            // set new macro
+            if (request.command.contains("=")) {
+                Parser.addResponse(request.getKey(), parseMacro());
                 return;
             }
+
+            // replace macro with command
             HashMap<String, String> macros = activeUser.getMacros();
             if (macros != null) {
                 String commandReplacement = macros.get(request.command.substring(1));
@@ -493,5 +503,33 @@ public class Worker {
         }
 
         return type;
+    }
+
+    /**
+     * parses and sets the new macro
+     * @return a response
+     */
+    public String parseMacro() {
+        // sanity check
+        int separator = request.command.indexOf("=");
+        if (separator == -1 || separator == 1)
+            return Parameters.ErrorMacroInvalidSyntax;
+
+        String macroName = request.command.substring(1, separator).trim();
+        if (macroName.equals(""))
+            return Parameters.ErrorMacroInvalidSyntax;
+
+        String macroValue = request.command.substring(separator + 1).trim();
+        if (macroValue.equals(""))
+            return Parameters.ErrorMacroInvalidSyntax;
+
+        String columnOrder = "player_id, macro, command";
+        String values = request.context.playerId + "," + macroName + "," + macroValue;
+        if (DatabaseHandler.insertTableElements(DatabaseTables.Macros, columnOrder, values)) {
+            activeUser.getMacros().put(macroName, macroValue);
+            return "macro " + macroName + "added with a value of " + macroValue;
+        }
+
+        return Parameters.ErrorMacroSetFailed;
     }
 }

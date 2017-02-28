@@ -3,6 +3,8 @@ package obstacles;
 import database_objects.DisabledObstaclesUsersTableRow;
 import interface_objects.DatabaseHandler;
 import interface_objects.DatabaseTables;
+import managers.Logger;
+import objects.Parameters;
 
 import java.util.*;
 
@@ -21,7 +23,7 @@ public abstract class Obstacle {
         // pull player states from db
         List<DisabledObstaclesUsersTableRow> disabledUsers = DatabaseHandler.getTableElements(DatabaseTables.Disabled_Obstacles_Users, null, "obstacle=" + id);
         if (disabledUsers == null) {
-            // TODO : add error log
+            Logger.log("Obstacle.constructor", Parameters.ErrorUserStatusNotFound);
             return;
         }
 

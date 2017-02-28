@@ -66,7 +66,6 @@ public class Connect extends BaseCommand{
 
         if (domain != null)
             return DomainsManager.connectToDomain(domain.value, context, args);
-
         return getSubCommands(superCommand);
     }
 }
