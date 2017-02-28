@@ -85,10 +85,10 @@ public class DatabaseClient {
      */
     private static Connection getConnection() throws URISyntaxException, SQLException {
         // local testing
-        String testUri = "postgres://gstsirazztbdli:2d4c2b57af25918d67127e906604aca03aa45dbfb05b01c5617a97107a9ac1e2@ec2-54-217-235-11.eu-west-1.compute.amazonaws.com:5432/d96llmqknu88a";
-        URI dbUri = new URI(testUri);
+        //String testUri = "postgres://gstsirazztbdli:2d4c2b57af25918d67127e906604aca03aa45dbfb05b01c5617a97107a9ac1e2@ec2-54-217-235-11.eu-west-1.compute.amazonaws.com:5432/d96llmqknu88a";
+        //URI dbUri = new URI(testUri);
         // production
-        //URI dbUri = new URI(System.getenv("DATABASE_URL"));
+        URI dbUri = new URI(System.getenv("DATABASE_URL"));
 
         int port = dbUri.getPort();
         String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ":" + port + dbUri.getPath();
