@@ -49,7 +49,7 @@ public class DomainsManager {
 
             for (ObstaclesTableRow o :
                     obstacles) {
-                Obstacle obstacleObject = createObstacle(o.id, o.type, o.tier);
+                Obstacle obstacleObject = createObstacle(o.id, o.type, o.tier, o.sub_type);
                 if (obstacleObject == null) {
                     Logger.log(className + ".init", Parameters.ErrorDomainsInit);
                     return;
@@ -70,7 +70,7 @@ public class DomainsManager {
         // endregion
     }
 
-    public static Obstacle createObstacle(int id, String type, int tier) {
+    public static Obstacle createObstacle(int id, String type, int tier, String sub_type) {
         switch (type) {
             case "firewall" :
                 return new Firewall(id, "firewall " + tier, tier);
