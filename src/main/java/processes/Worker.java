@@ -159,7 +159,7 @@ public class Worker {
         if (location != null) {
             commandToRun = parseCommand(location.commands);
             if (commandToRun != null) {
-                response = location.executeCommand(request.context, commandToRun.name, arguments);
+                response = commandToRun.execute(request.context, commandToRun.name, arguments);
                 Parser.addResponse(request.getKey(), Parser.encodeArgument("response", response));
                 return;
             }

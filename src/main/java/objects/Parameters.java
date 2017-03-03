@@ -298,6 +298,26 @@ public class Parameters {
      */
     public static String CommandNameMacroView = "view";
 
+    /**
+     * logs
+     */
+    public static String CommandNameLogs = "logs";
+
+    /**
+     * logs.view
+     */
+    public static String CommandNameLogsView = "view";
+
+    /**
+     * logs.delete
+     */
+    public static String CommandNameLogsDelete = "delete";
+
+    /**
+     * loot
+     */
+    public static String CommandNameLoot = "loot";
+
     // endregion
 
     // region command errors
@@ -454,6 +474,25 @@ public class Parameters {
     public static String ErrorUserStatusNotFound = "Error : could not pull obstacle status for users";
 
     // endregion
+
+    // endregion
+
+    // region loot
+
+    /**
+     * min amount of money in tier 1 money loot
+     */
+    public static int LootMoneyT1MinAmount = 1000;
+
+    /**
+     * max amount of money in tier 1 money loot
+     */
+    public static int LootMoneyT1MaxAmount = 10000;
+
+    /**
+     * chance to get an addition item in t1 loot
+     */
+    public static double LootItemT1Chance = 0.20;
 
     // endregion
 }

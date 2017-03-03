@@ -6,4 +6,5 @@ public class DomainsTableRow {
     public String ip;
     public String domain;
     public String type;
+    public int loot_tier;
 }

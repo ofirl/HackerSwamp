@@ -8,6 +8,7 @@ import interface_objects.DatabaseHandler;
 import interface_objects.DatabaseTables;
 import objects.*;
 import obstacles.Firewall;
+import obstacles.LockT1;
 import obstacles.Obstacle;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class DomainsManager {
         for (DomainsTableRow bankRow :
                 banks) {
             // add bank
-            Bank b = addBank(bankRow.id, bankRow.name, bankRow.domain, bankRow.ip);
+            Bank b = addBank(bankRow.id, bankRow.name, bankRow.domain, bankRow.ip, bankRow.loot_tier);
             // add obstacles
             List<ObstaclesTableRow> obstacles = DatabaseHandler.getTableElements(DatabaseTables.Obstacles, null, "domain=" + bankRow.id);
             if (obstacles == null) {
@@ -49,7 +50,7 @@ public class DomainsManager {
 
             for (ObstaclesTableRow o :
                     obstacles) {
-                Obstacle obstacleObject = createObstacle(o.id, o.type, o.tier);
+                Obstacle obstacleObject = createObstacle(o.id, o.type, o.tier, o.sub_type);
                 if (obstacleObject == null) {
                     Logger.log(className + ".init", Parameters.ErrorDomainsInit);
                     return;
@@ -70,13 +71,12 @@ public class DomainsManager {
         // endregion
     }
 
-    public static Obstacle createObstacle(int id, String type, int tier) {
+    public static Obstacle createObstacle(int id, String type, int tier, String sub_type) {
         switch (type) {
             case "firewall" :
-                return new Firewall(id, "firewall " + tier, tier);
+                return new Firewall(id, "Firewall T" + tier, tier);
             case "lock" :
-                // TODO : return a lock object (once implemented)
-                return null;
+                return new LockT1(id, sub_type);
         }
 
         return null;
@@ -88,8 +88,8 @@ public class DomainsManager {
      * @param domain the domain of the bank
      * @param ip the ip of the bank
      */
-    public static Bank addBank(int id, String name, String domain, String ip) {
-        Bank b = new Bank(id, name, domain, ip, DomainType.Bank);
+    public static Bank addBank(int id, String name, String domain, String ip, int lootTier) {
+        Bank b = new Bank(id, name, domain, ip, DomainType.Bank, lootTier);
         allDomains.put(domain, b);
         bankDomains.put(domain, b);
         return b;
@@ -101,8 +101,8 @@ public class DomainsManager {
      * @param domain the domain of the company
      * @param ip the ip of the company
      */
-    public static void addCompany(int id, String name, String domain, String ip) {
-        Company c = new Company(id, name, domain, ip, DomainType.Company);
+    public static void addCompany(int id, String name, String domain, String ip, int lootTier) {
+        Company c = new Company(id, name, domain, ip, DomainType.Company, lootTier);
         allDomains.put(domain, c);
         companyDomains.put(domain, c);
     }
@@ -113,8 +113,8 @@ public class DomainsManager {
      * @param domain the domain of the organization
      * @param ip the ip of the organization
      */
-    public static void addOrganization(int id, String name, String domain, String ip) {
-        Organization o = new Organization(id, name, domain, ip, DomainType.Organization);
+    public static void addOrganization(int id, String name, String domain, String ip, int lootTier) {
+        Organization o = new Organization(id, name, domain, ip, DomainType.Organization, lootTier);
         allDomains.put(domain, o);
         organizationDomains.put(domain, o);
     }
@@ -126,13 +126,13 @@ public class DomainsManager {
      * @param ip the ip of the domain
      * @param type the type of the domain
      */
-    public static void addDomain(int id, String name, String domain, String ip, DomainType type) {
+    public static void addDomain(int id, String name, String domain, String ip, DomainType type, int lootTier) {
         if (type == DomainType.Bank)
-            addBank(id, name, domain, ip);
+            addBank(id, name, domain, ip, lootTier);
         else if (type == DomainType.Company)
-            addCompany(id, name, domain, ip);
+            addCompany(id, name, domain, ip, lootTier);
         else if (type == DomainType.Organization)
-            addOrganization(id, name, domain, ip);
+            addOrganization(id, name, domain, ip, lootTier);
     }
 
     /**

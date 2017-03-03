@@ -64,11 +64,11 @@ public class PlayerContext {
      * @return all the available commands
      */
     public void getAvailableCommands() {
-        List<CommandsViewTableRow> accessibleCommands = DatabaseHandler.getTableElements(DatabaseTables.Accessible_Commands, "name", "username='" + username + "'");
+        List<CommandsViewTableRow> accessibleCommands = DatabaseHandler.getTableElements(DatabaseTables.Accessible_Commands, "name, id", "username='" + username + "'");
         if (accessibleCommands != null) {
             for (CommandsViewTableRow f :
                     accessibleCommands) {
-                availableCommands.put(f.name, CommandManager.getCommandByName(f.name));
+                availableCommands.put(f.name, CommandManager.getCommandById(f.id));
                 Logger.log("PlayerContext.getAvailableCommands", "available command added " + f.name);
             }
         }
@@ -79,11 +79,11 @@ public class PlayerContext {
      * @return all the available commands for auto complete
      */
     public void getAutoCompleteCommands() {
-        List<CommandsViewTableRow> accessibleCommands = DatabaseHandler.getTableElements(DatabaseTables.Autocomplete_Commands, "name", "username='" + username + "'");
+        List<CommandsViewTableRow> accessibleCommands = DatabaseHandler.getTableElements(DatabaseTables.Autocomplete_Commands, "name, id", "username='" + username + "'");
         if (accessibleCommands != null) {
             for (CommandsViewTableRow f :
                     accessibleCommands)
-                autoCompleteCommands.put(f.name, CommandManager.getCommandByName(f.name));
+                autoCompleteCommands.put(f.name, CommandManager.getCommandById(f.id));
         }
     }
 

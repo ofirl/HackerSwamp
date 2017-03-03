@@ -1,6 +1,8 @@
 package objects;
 
 import domains.Bank;
+import interface_objects.DatabaseHandler;
+import interface_objects.DatabaseTables;
 
 /**
  * account object
@@ -60,5 +62,6 @@ public class Account {
      */
     public void changeBalance(float sum) {
         balance += sum;
+        DatabaseHandler.updateTable(DatabaseTables.Accounts, "account_number='" + accountId + "'", "balance=" + balance);
     }
 }
