@@ -34,7 +34,7 @@ public class CommandManager {
     public static void initSystemCommands() {
         // get command list from db
         String filter = "security_rating='syscmd'";
-        List<CommandsTableRow> rows = DatabaseHandler.getTableElements(DatabaseTables.Commands, "id, name", filter);
+        List<CommandsTableRow> rows = DatabaseHandler.getTableElements(DatabaseTables.Commands, "id, name, owner", filter);
 
         // sanity check
         //TODO : throw error
@@ -43,59 +43,70 @@ public class CommandManager {
 
         HashMap<String, Integer> commandIds = new HashMap<>();
 
-        // TODO : change to include owner!!! name is not distinct!!!
         // parse syscmd commands
         for (CommandsTableRow c :
                 rows)
-            commandIds.put(c.name, c.id);
+            commandIds.put(c.owner + "." + c.name, c.id);
 
-        String name;
+        String name, subName;
         Command cmd, subCmd;
 
         // region system commands
 
         // help
-        name = Parameters.CommandNameHelp;
-        cmd = addSystemCommand(commandIds.get(name), name, new Help(), true);
+        name = "systemUser";
+        subName = Parameters.CommandNameHelp;
+        cmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Help(), true);
         // help.commands
-        name = Parameters.CommandNameHelpCommands;
-        subCmd = addSystemCommand(commandIds.get(name), name, new Help(), false);
+        name = Parameters.CommandNameHelp;
+        subName = Parameters.CommandNameHelpCommands;
+        subCmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Help(), false);
         addSubCommand(cmd, subCmd);
         // connect
-        name = Parameters.CommandNameConnect;
-        cmd = addSystemCommand(commandIds.get(name), name, new Connect(), true);
+        name = "systemUser";
+        subName = Parameters.CommandNameConnect;
+        cmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Connect(), true);
         // syscmd
-        name = Parameters.CommandNameSystem;
-        cmd = addSystemCommand(commandIds.get(name), name, new System(), true);
+        name = "systemUser";
+        subName = Parameters.CommandNameSystem;
+        cmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new System(), true);
         // syscmd.spec
-        name = Parameters.CommandNameSystemSpec;
-        subCmd = addSystemCommand(commandIds.get(name), name, new System(), false);
+        name = Parameters.CommandNameSystem;
+        subName = Parameters.CommandNameSystemSpec;
+        subCmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new System(), false);
         addSubCommand(cmd, subCmd);
         // market
-        name = Parameters.CommandNameMarket;
-        cmd = addSystemCommand(commandIds.get(name), name, new Market(), true);
+        name = "systemUser";
+        subName = Parameters.CommandNameMarket;
+        cmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Market(), true);
         // market.items
-        name = Parameters.CommandNameMarketItems;
-        subCmd = addSystemCommand(commandIds.get(name), name, new Market(), false);
+        name = Parameters.CommandNameMarket;
+        subName = Parameters.CommandNameMarketItems;
+        subCmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Market(), false);
         addSubCommand(cmd, subCmd);
         // market.scripts
-        name = Parameters.CommandNameMarketScripts;
-        subCmd = addSystemCommand(commandIds.get(name), name, new Market(), false);
+        name = Parameters.CommandNameMarket;
+        subName = Parameters.CommandNameMarketScripts;
+        subCmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Market(), false);
         addSubCommand(cmd, subCmd);
         // macro
-        name = Parameters.CommandNameMacro;
-        cmd = addSystemCommand(commandIds.get(name), name, new Macro(), true);
+        name = "systemUser";
+        subName = Parameters.CommandNameMacro;
+        cmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Macro(), true);
         // macro.add
-        name = Parameters.CommandNameMacroAdd;
-        subCmd = addSystemCommand(commandIds.get(name), name, new Macro(), false);
+        name = Parameters.CommandNameMacro;
+        subName = Parameters.CommandNameMacroAdd;
+        subCmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Macro(), false);
         addSubCommand(cmd, subCmd);
         // macro.remove
-        name = Parameters.CommandNameMacroRemove;
-        subCmd = addSystemCommand(commandIds.get(name), name, new Macro(), false);
+        name = Parameters.CommandNameMacro;
+        subName = Parameters.CommandNameMacroRemove;
+        subCmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Macro(), false);
         addSubCommand(cmd, subCmd);
         // macro.view
-        name = Parameters.CommandNameMacroView;
-        subCmd = addSystemCommand(commandIds.get(name), name, new Macro(), false);
+        name = Parameters.CommandNameMacro;
+        subName = Parameters.CommandNameMacroView;
+        subCmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Macro(), false);
         addSubCommand(cmd, subCmd);
         // TODO : add implementation for the commands
 
@@ -104,22 +115,26 @@ public class CommandManager {
         // region location commands
 
         // logs
-        name = Parameters.CommandNameLogs;
-        cmd = addSystemCommand(commandIds.get(name), name, new Logs(), false);
+        name = "systemUser";
+        subName = Parameters.CommandNameLogs;
+        cmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Logs(), false);
 
         // logs.view
-        name = Parameters.CommandNameLogsView;
-        subCmd = addSystemCommand(commandIds.get(name), name, new Logs(), false);
+        name = Parameters.CommandNameLogs;
+        subName = Parameters.CommandNameLogsView;
+        subCmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Logs(), false);
         addSubCommand(cmd, subCmd);
 
         // logs.delete
-        name = Parameters.CommandNameLogsDelete;
-        subCmd = addSystemCommand(commandIds.get(name), name, new Logs(), false);
+        name = Parameters.CommandNameLogs;
+        subName = Parameters.CommandNameLogsDelete;
+        subCmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Logs(), false);
         addSubCommand(cmd, subCmd);
 
         // loot
-        name = Parameters.CommandNameLoot;
-        cmd = addSystemCommand(commandIds.get(name), name, new Loot(), false);
+        name = "systemUser";
+        subName = Parameters.CommandNameLoot;
+        cmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Loot(), false);
 
         // endregion
     }

@@ -1,12 +1,16 @@
 package commands;
 
+import domains.BaseDomain;
+import loots.BaseLoot;
 import managers.CommandManager;
+import managers.DomainsManager;
 import objects.Argument;
 import objects.Command;
 import objects.CommandContext;
 import objects.Parameters;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class Loot extends BaseCommand {
     public static Command superCommand;
@@ -59,8 +63,6 @@ public class Loot extends BaseCommand {
      * @return general help
      */
     public String main() {
-        // TODO : implement!
-        return "implement loot";
-        //return getSubCommands(superCommand);
+        return DomainsManager.getDomainByName(context.location).ClearLoot(context.username);
     }
 }

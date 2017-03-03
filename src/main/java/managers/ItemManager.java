@@ -275,6 +275,6 @@ public class ItemManager {
      * @return whether the action succeeded
      */
     public static boolean addItemToUserInventory(String username, int itemId) {
-        return DatabaseHandler.insertIntoTable(DatabaseTables.Inventories, "owner, item", username + ", " + itemId);
+        return DatabaseHandler.insertIntoTable(DatabaseTables.Inventories, "owner, item", "'" + username + "', " + itemId);
     }
 }
