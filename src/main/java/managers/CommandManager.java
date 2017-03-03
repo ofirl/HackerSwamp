@@ -33,7 +33,7 @@ public class CommandManager {
      */
     public static void initSystemCommands() {
         // get command list from db
-        String filter = "access='" + CommandAccess.System + "'";
+        String filter = "security_rating='syscmd'";
         List<CommandsTableRow> rows = DatabaseHandler.getTableElements(DatabaseTables.Commands, "id, name", filter);
 
         // sanity check
@@ -43,6 +43,7 @@ public class CommandManager {
 
         HashMap<String, Integer> commandIds = new HashMap<>();
 
+        // TODO : change to include owner!!! name is not distinct!!!
         // parse syscmd commands
         for (CommandsTableRow c :
                 rows)
@@ -50,6 +51,8 @@ public class CommandManager {
 
         String name;
         Command cmd, subCmd;
+
+        // region system commands
 
         // help
         name = Parameters.CommandNameHelp;
@@ -95,6 +98,30 @@ public class CommandManager {
         subCmd = addSystemCommand(commandIds.get(name), name, new Macro(), false);
         addSubCommand(cmd, subCmd);
         // TODO : add implementation for the commands
+
+        // endregion
+
+        // region location commands
+
+        // logs
+        name = Parameters.CommandNameLogs;
+        cmd = addSystemCommand(commandIds.get(name), name, new Logs(), false);
+
+        // logs.view
+        name = Parameters.CommandNameLogsView;
+        subCmd = addSystemCommand(commandIds.get(name), name, new Logs(), false);
+        addSubCommand(cmd, subCmd);
+
+        // logs.delete
+        name = Parameters.CommandNameLogsDelete;
+        subCmd = addSystemCommand(commandIds.get(name), name, new Logs(), false);
+        addSubCommand(cmd, subCmd);
+
+        // loot
+        name = Parameters.CommandNameLoot;
+        cmd = addSystemCommand(commandIds.get(name), name, new Loot(), false);
+
+        // endregion
     }
 
     /**
@@ -102,7 +129,7 @@ public class CommandManager {
      */
     public static void initPlayerScripts(){
         // get command list from db
-        String filter = "access!='" + CommandAccess.System + "'";
+        String filter = "access!='" + CommandAccess.System + "' AND access!='Location'";
         List<CommandsTableRow> dbCommands = DatabaseHandler.getTableElements(DatabaseTables.Commands, null, filter);
         if (dbCommands == null)
             return;
@@ -183,5 +210,20 @@ public class CommandManager {
      */
     public static Command getCommandByName(String name) {
         return allCommands.get(name);
+    }
+
+    /**
+     * gets the command with the provided {@code id}
+     * @param id the id to search for
+     * @return the command or null if not found
+     */
+    public static Command getCommandById(int id) {
+        for (Command c :
+                allCommands.values()) {
+            if (c.id == id)
+                return c;
+        }
+
+        return null;
     }
 }

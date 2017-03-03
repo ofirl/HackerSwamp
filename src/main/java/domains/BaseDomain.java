@@ -1,6 +1,10 @@
 package domains;
 
+import database_objects.CommandsTableRow;
+import interface_objects.DatabaseHandler;
+import interface_objects.DatabaseTables;
 import interface_objects.LoginHandler;
+import managers.CommandManager;
 import objects.*;
 import obstacles.Obstacle;
 import obstacles.ObstacleState;
@@ -24,6 +28,14 @@ public abstract class BaseDomain {
         this.ip = ip;
         this.commands = new HashMap<>();
         this.type = type;
+
+        List<CommandsTableRow> locationCommands = DatabaseHandler.getTableElements(DatabaseTables.Location_Commands, null, "location=" + id);
+        if (locationCommands == null)
+            return;
+
+        for (CommandsTableRow c :
+                locationCommands)
+            addCommand(CommandManager.getCommandById(c.id));
     }
 
     public BaseDomain(int id, String name, String domain, String ip, HashMap<String, Command> commands, DomainType type) {

@@ -298,6 +298,26 @@ public class Parameters {
      */
     public static String CommandNameMacroView = "view";
 
+    /**
+     * logs
+     */
+    public static String CommandNameLogs = "logs";
+
+    /**
+     * logs.view
+     */
+    public static String CommandNameLogsView = "view";
+
+    /**
+     * logs.delete
+     */
+    public static String CommandNameLogsDelete = "delete";
+
+    /**
+     * loot
+     */
+    public static String CommandNameLoot = "loot";
+
     // endregion
 
     // region command errors

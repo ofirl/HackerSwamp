@@ -175,6 +175,7 @@ public class DatabaseHandler {
         elementTypes.put(DatabaseTables.Accounts, AccountsTableRow.class);
         elementTypes.put(DatabaseTables.Autocomplete, AutocompleteTableRow.class);
         elementTypes.put(DatabaseTables.Commands, CommandsTableRow.class);
+        elementTypes.put(DatabaseTables.Location_Commands, CommandsTableRow.class);
         elementTypes.put(DatabaseTables.Corps, CorpsTableRow.class);
         elementTypes.put(DatabaseTables.Cpus, CpusTableRow.class);
         elementTypes.put(DatabaseTables.Domains, DomainsTableRow.class);
@@ -319,6 +320,10 @@ public class DatabaseHandler {
                         objectValue = rs.getString(columnName);
                     }
                     Logger.log("DatabaseHandler.getTableElements", columnName + "=" + objectValue);
+                    if (objectValue == null &&
+                            (ele.getClass().getDeclaredField(columnName).getType() == int.class ||
+                            ele.getClass().getDeclaredField(columnName).getType() == double.class))
+                        objectValue = 0;
                     ele.getClass().getDeclaredField(columnName).set(ele, objectValue);
                 }
                 elements.add(ele);

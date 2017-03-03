@@ -26,19 +26,7 @@ public class Bank extends BaseDomain{
      * @param type
      */
     public Bank(int id, String name, String domain, String ip, DomainType type) {
-        this(id, name, domain, ip, null, type);
-    }
-
-    /**
-     * constructor
-     * @param name
-     * @param domain
-     * @param ip
-     * @param commands
-     * @param type
-     */
-    public Bank(int id, String name, String domain, String ip, HashMap<String, Command> commands, DomainType type) {
-        super(id, name, domain, ip, commands, type);
+        super(id, name, domain, ip, type);
 
         List<AccountsTableRow> accountsRows = DatabaseHandler.getTableElements(DatabaseTables.Accounts, null, "bank=" + id);
         if (accountsRows == null)

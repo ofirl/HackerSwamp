@@ -6,6 +6,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/*
+// check for invalid argument - at the start of "view" function (sub command)
+        if (!checkArguments(acceptedArguments.get("view")))
+            return Parameters.ErrorCommandInvalidArguments;
+ */
+
 public abstract class BaseCommand {
     // public variables
     public CommandContext context;
