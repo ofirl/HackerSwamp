@@ -1,13 +1,14 @@
 package commands;
 
-import interface_objects.LoginHandler;
-import items.BaseItem;
+import database_objects.LogsTableRow;
+import interface_objects.DatabaseHandler;
+import interface_objects.DatabaseTables;
 import managers.CommandManager;
-import managers.ItemManager;
-import managers.Logger;
+import managers.DomainsManager;
 import objects.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class Logs extends BaseCommand {
     public static Command superCommand;
@@ -76,7 +77,31 @@ public class Logs extends BaseCommand {
         String output = "";
 
         // TODO : implement!
-        output += "implement logs.view";
+        Object[] funcArgs = null;
+
+        int count = args.containsKey("arg1") ? args.get("arg1").castValue(Integer.class) : 0;
+        if (count == 0)
+            count = args.containsKey("count") ? args.get("count").castValue(Integer.class) : 0;
+
+        if (count < 1)
+            return Parameters.CommandUsageLogsView;
+
+        if (count == 0)
+            funcArgs = null;
+        else
+            funcArgs = new Object[] { count };
+
+        String filter = "domain=" + DomainsManager.getDomainByName(context.location).id;
+
+        List<LogsTableRow> logs = DatabaseHandler.callFunction(DatabaseTables.Recent_Logs, funcArgs, null, filter);
+        if (logs == null)
+            return Parameters.ErrorLogsNotFound;
+        if (logs.size() == 0)
+            return "Logs are empty...";
+
+        for (LogsTableRow l :
+                logs)
+            output += l.time + " : " + l.entry + "\n";
 
         return output;
     }

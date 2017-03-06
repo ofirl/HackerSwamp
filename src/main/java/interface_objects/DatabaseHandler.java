@@ -6,7 +6,6 @@ import objects.DatabaseQuery;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.sql.Types;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedTransferQueue;
@@ -192,6 +191,7 @@ public class DatabaseHandler {
         elementTypes.put(DatabaseTables.Autocomplete_Commands, CommandsViewTableRow.class);
         elementTypes.put(DatabaseTables.Player_Corps, PlayerCorpsTableRow.class);
         elementTypes.put(DatabaseTables.Obstacles, ObstaclesTableRow.class);
+        elementTypes.put(DatabaseTables.Recent_Logs, LogsTableRow.class);
         elementTypes.put(DatabaseTables.Disabled_Obstacles_Users, DisabledObstaclesUsersTableRow.class);
     }
 
@@ -284,7 +284,6 @@ public class DatabaseHandler {
      * @param <T> the element type to cast to (and return)
      * @return the elements in the table assigned as {@code T}
      */
-    @SuppressWarnings("unchecked")
     public static <T> List<T> getTableElements(DatabaseTables table, String columns, String filter) {
         Logger.log("DatabaseHandler.getTableElements", "building query");
 
@@ -296,10 +295,47 @@ public class DatabaseHandler {
 
         Logger.log("DatabaseHandler.getTableElements", "query : " + query);
 
+        return executeAndParseQuery(table, query);
+    }
+
+    /**
+     * gets the table elements
+     * @param function the function to select from
+     * @param args the arguments for the function
+     * @param columns the columns to select
+     * @param filter filters to apply, of the form column=value
+     * @param <T> the element type to cast to (and return)
+     * @return the elements in the table assigned as {@code T}
+     */
+    public static <T> List<T> callFunction(DatabaseTables function, Object[] args, String columns, String filter) {
+        Logger.log("DatabaseHandler.callFunction", "building query");
+
+        // build the query
+        String query = "SELECT ";
+        query += columns != null ? columns : '*';
+        query += " FROM " + function.name() + "(";
+        if (args != null) {
+            for (Object a :
+                    args)
+                query += a + ",";
+
+            if (query.endsWith(","))
+                query = query.substring(0, query.length() - 1);
+        }
+        query += ")";
+        query += filter != null ? " WHERE " + filter : "";
+
+        Logger.log("DatabaseHandler.getTableElements", "query : " + query);
+
+        return executeAndParseQuery(function, query);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> List<T> executeAndParseQuery(DatabaseTables table, String query) {
         ResultSet rs = requestResponse(query);
         List<String> rsColumns = getResultSetColumns(rs);
         if (rsColumns == null) {
-            Logger.log("DatabaseHandler.getTableElements", "query : " + query + " result column set is null");
+            Logger.log("DatabaseHandler.executeAndParseQuery", "query : " + query + " result column set is null");
             return null;
         }
 
@@ -311,7 +347,7 @@ public class DatabaseHandler {
                 for (String columnName :
                         rsColumns) {
                     int columnIndex = rs.findColumn(columnName);
-                    Logger.log("DatabaseHandler.getTableElements", "column index " + columnIndex);
+                    Logger.log("DatabaseHandler.executeAndParseQuery", "column index " + columnIndex);
                     Object objectValue;
                     try {
                         objectValue = rs.getObject(columnName);
@@ -319,21 +355,21 @@ public class DatabaseHandler {
                     catch (Exception e) {
                         objectValue = rs.getString(columnName);
                     }
-                    Logger.log("DatabaseHandler.getTableElements", columnName + "=" + objectValue);
+                    Logger.log("DatabaseHandler.executeAndParseQuery", columnName + "=" + objectValue);
                     if (objectValue == null &&
                             (ele.getClass().getDeclaredField(columnName).getType() == int.class ||
-                            ele.getClass().getDeclaredField(columnName).getType() == double.class))
+                                    ele.getClass().getDeclaredField(columnName).getType() == double.class))
                         objectValue = 0;
                     ele.getClass().getDeclaredField(columnName).set(ele, objectValue);
                 }
                 elements.add(ele);
             }
 
-            Logger.log("DatabaseHandler.getTableElements", "query : " + query + ", result count : " + elements.size());
+            Logger.log("DatabaseHandler.executeAndParseQuery", "query : " + query + ", result count : " + elements.size());
             return elements;
         }
         catch (Exception e) {
-            Logger.log("DatabaseHandler.getTableElements", "error on query : " + query + ", " + e.getMessage());
+            Logger.log("DatabaseHandler.executeAndParseQuery", "error on query : " + query + ", " + e.getMessage());
             e.printStackTrace();
             return null;
         }

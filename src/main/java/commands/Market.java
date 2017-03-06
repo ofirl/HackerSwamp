@@ -64,7 +64,7 @@ public class Market extends BaseCommand {
      * @return a response
      */
     public String buyItem() {
-        int itemId = args.get("buy").castValue();
+        int itemId = args.get("buy").castValue(Integer.class);
         // sanity checks
         BaseItem selectedItem = ItemManager.getItemById(itemId);
         if (selectedItem == null)

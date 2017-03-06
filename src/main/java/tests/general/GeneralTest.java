@@ -44,7 +44,15 @@ public class GeneralTest {
 
         //WebListener.executePost("https://169.254.218.134", "test");
 
-        String userInput = "init\n";
+        String userInput = "";
+
+        userInput += "connect bc.crypto.bank\n";
+        userInput += "logs.view 3\n";
+        userInput += "logs.view 2\n";
+        userInput += "logs.view 1\n";
+
+        userInput += "init\n";
+
         userInput += "/test\n";
         userInput += "market.scripts {security:lowsec}\n";
         userInput += "connect first.bank.cash\n";

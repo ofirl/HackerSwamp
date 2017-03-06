@@ -120,7 +120,7 @@ public class Macro extends BaseCommand {
         if (!args.containsKey("arg1") || !args.containsKey("arg2"))
             return Parameters.CommandUsageMacroAdd;
 
-        return addMacro(args.get("arg1").castValue(), args.get("arg2").castValue());
+        return addMacro(args.get("arg1").castValue(String.class), args.get("arg2").castValue(String.class));
     }
 
     /**
@@ -139,7 +139,7 @@ public class Macro extends BaseCommand {
         if (!args.containsKey("arg1"))
             return Parameters.CommandUsageMacroRemove;
 
-        String macroName = args.get("arg1").castValue();
+        String macroName = args.get("arg1").castValue(String.class);
         if (activeUser.getMacros().containsKey(macroName)) {
             String filter = "player_id=" + context.playerId + " AND macro='" + macroName + "'";
             DatabaseHandler.removeFromTable(DatabaseTables.Macros, filter);
@@ -167,7 +167,7 @@ public class Macro extends BaseCommand {
         HashMap<String, String> macros = activeUser.getMacros();
 
         if (args.containsKey("arg1")) {
-            String name = args.get("arg1").castValue();
+            String name = args.get("arg1").castValue(String.class);
             if (macros.containsKey(name))
                 return "/" + name + " = " + macros.get(name);
             return Parameters.ErrorMacroNotFound;

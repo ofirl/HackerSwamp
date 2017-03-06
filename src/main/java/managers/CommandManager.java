@@ -108,7 +108,16 @@ public class CommandManager {
         subName = Parameters.CommandNameMacroView;
         subCmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Macro(), false);
         addSubCommand(cmd, subCmd);
-        // TODO : add implementation for the commands
+
+        // disconnect
+        name = Parameters.CommandNameSystemUser;
+        subName = Parameters.CommandNameDisconnect;
+        cmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Disconnect(), true);
+
+        // disconnect
+        name = Parameters.CommandNameSystemUser;
+        subName = Parameters.CommandNameDc;
+        cmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Disconnect(), true);
 
         // endregion
 
