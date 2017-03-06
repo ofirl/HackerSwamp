@@ -83,6 +83,9 @@ public class Logs extends BaseCommand {
         if (count == 0)
             count = args.containsKey("count") ? args.get("count").castValue(Integer.class) : 0;
 
+        if (count < 1)
+            return Parameters.CommandUsageLogsView;
+
         if (count == 0)
             funcArgs = null;
         else
@@ -92,7 +95,7 @@ public class Logs extends BaseCommand {
 
         List<LogsTableRow> logs = DatabaseHandler.callFunction(DatabaseTables.Recent_Logs, funcArgs, null, filter);
         if (logs == null)
-            return Parameters.ErroLogsNotFound;
+            return Parameters.ErrorLogsNotFound;
         if (logs.size() == 0)
             return "Logs are empty...";
 

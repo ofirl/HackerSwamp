@@ -70,7 +70,7 @@ public class GeneralTest {
         userInput += "connect {doma:first.bank.cash}\n";
         userInput += "exit\n";
 
-        Scanner scanner = new Scanner(userInput);
+        Scanner scanner = new Scanner(System.in);
         String authKey = "";
         String input = "start";
         while (!input.equals("exit")) {

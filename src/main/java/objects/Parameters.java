@@ -239,6 +239,11 @@ public class Parameters {
     // region command names
 
     /**
+     * the name of the system user (the owner of all system commands)
+     */
+    public static String CommandNameSystemUser = "systemUser";
+
+    /**
      * help
      */
     public static String CommandNameHelp = "help";
@@ -318,6 +323,16 @@ public class Parameters {
      */
     public static String CommandNameLoot = "loot";
 
+    /**
+     * disconnect
+     */
+    public static String CommandNameDisconnect = "disconnect";
+
+    /**
+     * dc
+     */
+    public static String CommandNameDc = "dc";
+
     // endregion
 
     // region command errors
@@ -340,7 +355,12 @@ public class Parameters {
     /**
      * error for not retrieving logs
      */
-    public static String ErroLogsNotFound = "Error : could not retrieve logs for the current location";
+    public static String ErrorLogsNotFound = "Error : could not retrieve logs for the current location";
+
+    /**
+     * error for disconnecting from local host
+     */
+    public static String ErrorDisconnectingLocalhost = "Error : cannot disconnect from localhost";
 
     // endregion
 
@@ -355,6 +375,11 @@ public class Parameters {
      * macro.remove usage
      */
     public static String CommandUsageMacroRemove = "Usage : macro.remove <macro name>";
+
+    /**
+     * logs.view usage
+     */
+    public static String CommandUsageLogsView = "Usage : logs.view <count(>0)>";
 
     // endregion
 

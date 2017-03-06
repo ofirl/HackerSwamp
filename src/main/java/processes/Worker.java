@@ -103,13 +103,14 @@ public class Worker {
             // replace macro with command
             HashMap<String, String> macros = activeUser.getMacros();
             if (macros != null) {
-                String commandReplacement = macros.get(request.command.substring(1));
+                String macroName = request.command.substring(1).split(" ")[0];
+                String commandReplacement = macros.get(macroName);
                 if (commandReplacement == null) {
                     Parser.addResponse(request.getKey(), Parser.encodeArgument("response", Parameters.ErrorMacroNotFound));
                     return;
                 }
 
-                request.command = commandReplacement;
+                request.command = request.command.replace("/" + macroName, commandReplacement);
             }
         }
 
