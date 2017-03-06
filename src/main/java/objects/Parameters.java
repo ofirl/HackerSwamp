@@ -337,6 +337,11 @@ public class Parameters {
      */
     public static String ErrorMarketItemAlreadyBought = "Error : this item is already in your inventory";
 
+    /**
+     * error for not retrieving logs
+     */
+    public static String ErroLogsNotFound = "Error : could not retrieve logs for the current location";
+
     // endregion
 
     // region command usages

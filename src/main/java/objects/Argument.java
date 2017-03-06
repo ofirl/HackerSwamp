@@ -52,7 +52,7 @@ public class Argument {
         this(name, getClassByName(type), value);
     }
 
-    public <T> T castValue() {
-        return (T)value;
+    public <T> T castValue(Class<T> to) {
+        return ObjectConverter.convert(value, to);
     }
 }
