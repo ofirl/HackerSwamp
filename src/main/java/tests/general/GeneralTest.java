@@ -46,16 +46,26 @@ public class GeneralTest {
 
         String userInput = "";
 
-        userInput += "connect bc.crypto.bank\n";
-        userInput += "logs.view 3\n";
-        userInput += "logs.view 2\n";
-        userInput += "logs.view 1\n";
-
         userInput += "init\n";
 
+        userInput += "macro.view\n";
+        userInput += "macro.view test\n";
+        userInput += "/test = system.spec\n";
+        userInput += "macro.view test\n";
         userInput += "/test\n";
+        userInput += "/tes\n";
+        userInput += "macro.remove test\n";
         userInput += "market.scripts {security:lowsec}\n";
+        userInput += "market.scripts {security:medsec}\n";
+        userInput += "market.scripts {security:topsec}\n";
+        userInput += "market.scripts {security:syscmd}\n";
         userInput += "connect first.bank.cash\n";
+        userInput += "connect bc.crypto.bank\n";
+        userInput += "loot\n";
+        userInput += "logs.view\n";
+        userInput += "logs.view 2\n";
+        userInput += "logs.delete\n";
+        userInput += "disconnect\n";
         userInput += "help\n";
         userInput += "help.comm\n";
         userInput += "help.commands\n";
@@ -70,7 +80,7 @@ public class GeneralTest {
         userInput += "connect {doma:first.bank.cash}\n";
         userInput += "exit\n";
 
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(userInput);
         String authKey = "";
         String input = "start";
         while (!input.equals("exit")) {

@@ -8,6 +8,8 @@ public class MarketScript extends BaseItem{
     // public variables
     public Command command;
     public String owner;
+    // TODO : change type to an enum
+    public String type;
 
     /**
      * constructor
