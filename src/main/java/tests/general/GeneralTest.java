@@ -46,6 +46,8 @@ public class GeneralTest {
 
         String userInput = "";
 
+        userInput += "collect\n";
+
         userInput += "init\n";
 
         userInput += "macro.view\n";

@@ -4,6 +4,7 @@ import database_objects.MacrosTableRow;
 import database_objects.PlayerCorpsTableRow;
 import database_objects.PlayersTableRow;
 import items.BaseItem;
+import items.Software;
 import managers.CommandManager;
 import database_objects.CommandsViewTableRow;
 import interface_objects.DatabaseHandler;
@@ -31,6 +32,7 @@ public class PlayerContext {
     public SystemStatus systemStatus;
     public Account mainAccount;
     public HashMap<Integer, BaseItem> inventory = new HashMap<>();
+    public HashMap<Integer, Software> installedSoftware = new HashMap<>();
 
     /**
      * constructor
@@ -57,6 +59,7 @@ public class PlayerContext {
         this.systemSpec = SystemSpec.getUserSystemSpecs(username);
         this.mainAccount = DomainsManager.getMainAccountByUsername(username);
         this.inventory = ItemManager.getUserInventory(username);
+        this.installedSoftware = ItemManager.getUserInstalledSoftware(username);
     }
 
     /**
@@ -173,5 +176,13 @@ public class PlayerContext {
      */
     public HashMap<Integer, BaseItem> getInventory() {
         return inventory;
+    }
+
+    /**
+     * gets the player installed software
+     * @return the player istalled software
+     */
+    public HashMap<Integer, Software> getInstalledSoftware() {
+        return installedSoftware;
     }
 }

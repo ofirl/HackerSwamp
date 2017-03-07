@@ -10,7 +10,7 @@ import objects.Parameters;
 import java.util.HashMap;
 
 /**
- * BcMiner Program
+ * bcminer Program
  */
 public class BcMiner extends BaseCommand {
     public static Command superCommand;
@@ -25,13 +25,8 @@ public class BcMiner extends BaseCommand {
         //acceptedArguments.put("view", new HashMap<>());
         //acceptedArguments.put("delete", new HashMap<>());
 
-        // view
-        //acceptedArguments.get("view").put("arg1", new Argument("arg1", int.class));
-        //acceptedArguments.get("view").put("count", new Argument("count", int.class));
-
-        // delete
-        //acceptedArguments.get("delete").put("arg1", new Argument("arg1", String.class));
-        //acceptedArguments.get("delete").put("count", new Argument("count", int.class));
+        // bcminer
+        acceptedArguments.get("bcminer").put("installedUsername", new Argument("installedUsername", String.class));
     }
 
     /**
@@ -63,7 +58,15 @@ public class BcMiner extends BaseCommand {
      * @return
      */
     public String main() {
+        // check for invalid argument
+        if (!checkArguments(acceptedArguments.get("bcminer")))
+            return Parameters.ErrorCommandInvalidArguments;
+
+        String output = "";
+
+        output += args.get("installedUsername").value;
+
         // TODO : implement bc miner collection!
-        return "Implement!";
+        return output;
     }
 }
