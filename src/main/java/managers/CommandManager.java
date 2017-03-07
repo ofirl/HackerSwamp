@@ -114,10 +114,24 @@ public class CommandManager {
         subName = Parameters.CommandNameDisconnect;
         cmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Disconnect(), true);
 
-        // disconnect
+        // dc
         name = Parameters.CommandNameSystemUser;
         subName = Parameters.CommandNameDc;
         cmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Disconnect(), true);
+
+        // collect
+        name = Parameters.CommandNameSystemUser;
+        subName = Parameters.CommandNameCollect;
+        cmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Collect(), true);
+
+        // endregion
+
+        // region software commands
+
+        // bcminer
+        name = Parameters.CommandNameSystemUser;
+        subName = Parameters.CommandNameBcMiner;
+        cmd = addSoftwareCommand(commandIds.get(name + "." + subName), subName, new BcMiner(), false);
 
         // endregion
 
@@ -153,7 +167,7 @@ public class CommandManager {
      */
     public static void initPlayerScripts(){
         // get command list from db
-        String filter = "access!='" + CommandAccess.System + "' AND access!='Location'";
+        String filter = "access!='" + CommandAccess.System + "' AND access!='Location' AND (owner='" + Parameters.CommandNameSystemUser + "' AND access!='Private')";
         List<CommandsTableRow> dbCommands = DatabaseHandler.getTableElements(DatabaseTables.Commands, null, filter);
         if (dbCommands == null)
             return;
@@ -210,6 +224,15 @@ public class CommandManager {
      */
     public static Command addSystemCommand(int id, String name, BaseCommand baseCommand, boolean mainCommand) {
         return addCommand(id, name, baseCommand, mainCommand, CommandAccess.System, CommandSecurityRating.syscmd);
+    }
+
+    /**
+     * created and adds a software command (used by scripts and software) to the lists
+     * @param name the name of hte command
+     * @param baseCommand the class that implements the command
+     */
+    public static Command addSoftwareCommand(int id, String name, BaseCommand baseCommand, boolean mainCommand) {
+        return addCommand(id, name, baseCommand, mainCommand, CommandAccess.Private, CommandSecurityRating.syscmd);
     }
 
     /**

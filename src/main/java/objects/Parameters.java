@@ -333,6 +333,16 @@ public class Parameters {
      */
     public static String CommandNameDc = "dc";
 
+    /**
+     * bcminer
+     */
+    public static String CommandNameBcMiner = "bcminer";
+
+    /**
+     * collect
+     */
+    public static String CommandNameCollect = "collect";
+
     // endregion
 
     // region command errors

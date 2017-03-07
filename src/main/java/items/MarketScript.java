@@ -7,7 +7,8 @@ import java.util.HashMap;
 public class MarketScript extends BaseItem{
     // public variables
     public Command command;
-    public String owner;
+    public String creator;
+    public MarketScriptType type;
 
     /**
      * constructor
@@ -15,13 +16,19 @@ public class MarketScript extends BaseItem{
      * @param name name of the item
      * @param command command of the {@code MarketScript}
      * @param price price of the script
-     * @param owner owner of the script
+     * @param creator creator of the script
+     * @param type type of the script
      */
-    public MarketScript(int id, String name, Command command, int price, String owner) {
+    public MarketScript(int id, String name, Command command, int price, String creator, MarketScriptType type) {
         super(id, name, price);
         this.command = command;
         this.price = price;
-        this.owner = owner;
+        this.creator = creator;
+        this.type = type;
+    }
+
+    public MarketScript(MarketScript marketScript) {
+        this(marketScript.id, marketScript.name, marketScript.command, marketScript.price, marketScript.creator, marketScript.type);
     }
 
     /**
@@ -36,6 +43,7 @@ public class MarketScript extends BaseItem{
         cmd.put("market_script_name", name);
         cmd.put("market_script_command_id", String.valueOf(command.id));
         cmd.put("market_script_command_name", command.name);
+        cmd.put("market_script_type", type.name());
 
         return cmd;
     }
@@ -50,7 +58,8 @@ public class MarketScript extends BaseItem{
         output += super.toString() + "\n";
         // TODO : add units
         output += "Price : " + price + " <units> per use\n";
-        output += "Owner : " + owner;
+        output += "Owner : " + creator + "\n";
+        output += "Type : " + type;
 
         return output;
     }

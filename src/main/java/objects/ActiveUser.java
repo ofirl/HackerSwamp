@@ -2,6 +2,7 @@ package objects;
 
 import commands.BaseCommand;
 import items.BaseItem;
+import items.Software;
 
 import java.util.*;
 
@@ -126,5 +127,13 @@ public class ActiveUser {
      */
     public HashMap<Integer, BaseItem> getInventory() {
         return context.getInventory();
+    }
+
+    /**
+     * gets the user installed software
+     * @return {@code HashMap} of the installed software
+     */
+    public HashMap<Integer, Software> getInstalledSoftware() {
+        return context.getInstalledSoftware();
     }
 }

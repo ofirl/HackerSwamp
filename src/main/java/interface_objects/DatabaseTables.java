@@ -5,5 +5,5 @@ public enum DatabaseTables {
     Autocomplete, Commands, Recent_Logs,
     MarketItems, Motherboards, Cpus, Rams, Hdds, NetworkCards, Market_Scripts, All_Market_Items,
     Friends_Commands, Organization_Commands, Accessible_Commands, Autocomplete_Commands, Location_Commands,
-    Equipped_Items
+    Equipped_Items, Equipped_Software
 }

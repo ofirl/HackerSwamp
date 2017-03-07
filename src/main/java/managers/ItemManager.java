@@ -30,7 +30,8 @@ public class ItemManager {
      * init
      */
     public static void init() {
-        // motherboards
+        // region motherboards
+
         List<MotherboardsTableRow> motherboardItems = DatabaseHandler.getTableElements(DatabaseTables.Motherboards);
         for (MotherboardsTableRow i :
                 motherboardItems) {
@@ -39,7 +40,10 @@ public class ItemManager {
             allItems.put(motherboard.id, motherboard);
         }
 
-        // cpus
+        // endregion
+
+        // region cpus
+
         List<CpusTableRow> cpuItems = DatabaseHandler.getTableElements(DatabaseTables.Cpus);
         for (CpusTableRow i :
                 cpuItems) {
@@ -48,7 +52,10 @@ public class ItemManager {
             allItems.put(cpu.id, cpu);
         }
 
-        // rams
+        // endregion
+
+        // region rams
+
         List<RamsTableRow> ramItems = DatabaseHandler.getTableElements(DatabaseTables.Rams);
         for (RamsTableRow i :
                 ramItems) {
@@ -57,7 +64,10 @@ public class ItemManager {
             allItems.put(ram.id, ram);
         }
 
-        // hdds
+        // endregion
+
+        // region hdds
+
         List<HddsTableRow> hddItems = DatabaseHandler.getTableElements(DatabaseTables.Hdds);
         for (HddsTableRow i :
                 hddItems) {
@@ -66,7 +76,10 @@ public class ItemManager {
             allItems.put(hdd.id, hdd);
         }
 
-        // network cards
+        // endregion
+
+        // region network cards
+
         List<NetworkcardsTableRow> networkCardItems = DatabaseHandler.getTableElements(DatabaseTables.NetworkCards);
         for (NetworkcardsTableRow i :
                 networkCardItems) {
@@ -74,6 +87,28 @@ public class ItemManager {
             networkCards.put(networkCard.id, networkCard);
             allItems.put(networkCard.id, networkCard);
         }
+
+        // endregion
+
+        // region market scripts
+
+        List<MarketScriptsTableRow> marketScriptsRows = DatabaseHandler.getTableElements(DatabaseTables.Market_Scripts);
+        for (MarketScriptsTableRow i :
+                marketScriptsRows) {
+            switch (MarketScriptType.valueOf(i.type)) {
+                case player_script:
+                    // TODO : implement!
+                    //PlayerScript script = new PlayerScript();
+                    break;
+                case bcminer:
+                    Software software = new Software(i.id, i.name, CommandManager.getCommandById(i.command), i.price, MarketScriptType.bcminer);
+                    marketScripts.put(software.id, software);
+                    allItems.put(software.id, software);
+                    break;
+            }
+        }
+
+        // endregion
     }
 
     /**
@@ -199,7 +234,7 @@ public class ItemManager {
 
         for (MarketScript m :
                 marketScripts.values()) {
-            if (m.owner.equals(command.get(0)) && m.name.equals(command.get(1)))
+            if (m.creator != null && m.creator.equals(command.get(0)) && m.name.equals(command.get(1)))
                 return m;
         }
 
@@ -243,7 +278,7 @@ public class ItemManager {
         // main account for script owner will never be null,
         // to put something on the market you got to have a main account
         //noinspection ConstantConditions
-        DomainsManager.getMainAccountByUsername(script.owner).changeBalance(script.price);
+        DomainsManager.getMainAccountByUsername(script.creator).changeBalance(script.price);
         account.changeBalance(-script.price);
 
         return "OK";
@@ -276,5 +311,25 @@ public class ItemManager {
      */
     public static boolean addItemToUserInventory(String username, int itemId) {
         return DatabaseHandler.insertIntoTable(DatabaseTables.Inventories, "owner, item", "'" + username + "', " + itemId);
+    }
+
+    /**
+     * gets the installed software of the provided {@code username}
+     * @param username the username to search for
+     * @return {@code HashMap} containing the username installed software
+     */
+    public static HashMap<Integer, Software> getUserInstalledSoftware(String username) {
+        // TODO : check!!!
+        List<EquippedSoftwareTableRow> rows = DatabaseHandler.getTableElements(DatabaseTables.Equipped_Software, null, "owner='" + username + "'");
+
+        HashMap<Integer, Software> inventory = new HashMap<>();
+        if (rows == null)
+            return inventory;
+
+        for (EquippedSoftwareTableRow i :
+                rows)
+            inventory.put(i.item, new Software(getItemById(i.item), i.location, i.version, i.hidden));
+
+        return inventory;
     }
 }

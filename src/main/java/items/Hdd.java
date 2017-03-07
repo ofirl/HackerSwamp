@@ -39,8 +39,10 @@ public class Hdd extends BaseItem{
 
         if (size >= 1024)
             output += "Size : " + size / 1024 + " Tb\n";
-        else
+        else if (size >= 1)
             output += "Size : " + size + " Gb\n";
+        else
+            output += "Size : " + size * 1024 + " Mb\n";
 
         return output;
     }

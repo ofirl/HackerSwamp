@@ -5,4 +5,5 @@ public class MarketScriptsTableRow {
     public String name;
     public int price;
     public int command;
+    public String type;
 }
