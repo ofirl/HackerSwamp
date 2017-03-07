@@ -234,7 +234,7 @@ public class ItemManager {
 
         for (MarketScript m :
                 marketScripts.values()) {
-            if (m.creator.equals(command.get(0)) && m.name.equals(command.get(1)))
+            if (m.creator != null && m.creator.equals(command.get(0)) && m.name.equals(command.get(1)))
                 return m;
         }
 

@@ -46,10 +46,11 @@ public class GeneralTest {
 
         String userInput = "";
 
-        userInput += "collect\n";
+        userInput += "help.comm\n";
 
         userInput += "init\n";
 
+        userInput += "collect\n";
         userInput += "macro.view\n";
         userInput += "macro.view test\n";
         userInput += "/test = system.spec\n";
