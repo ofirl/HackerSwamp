@@ -12,8 +12,8 @@ public class Software extends MarketScript {
     /**
      * constructor
      */
-    public Software(int id, String name, Command command, int price, String creator, MarketScriptType type, double version, double hidden) {
-        super(id, name, command, price, creator, type);
+    public Software(int id, String name, Command command, int price, String creator, MarketScriptType type, double size, double version, double hidden) {
+        super(id, name, command, price, creator, type, size);
         this.version = version;
         this.hidden = hidden;
     }
@@ -21,8 +21,8 @@ public class Software extends MarketScript {
     /**
      * constructor
      */
-    public Software(int id, String name, Command command, int price, MarketScriptType type) {
-        this(id, name, command, price, null, type, 0, 0);
+    public Software(int id, String name, Command command, int price, MarketScriptType type, double size) {
+        this(id, name, command, price, null, type, size, 0, 0);
     }
 
     /**

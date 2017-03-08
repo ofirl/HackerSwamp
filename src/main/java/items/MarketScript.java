@@ -9,6 +9,7 @@ public class MarketScript extends BaseItem{
     public Command command;
     public String creator;
     public MarketScriptType type;
+    public double size;
 
     /**
      * constructor
@@ -18,17 +19,19 @@ public class MarketScript extends BaseItem{
      * @param price price of the script
      * @param creator creator of the script
      * @param type type of the script
+     * @param size size of the script
      */
-    public MarketScript(int id, String name, Command command, int price, String creator, MarketScriptType type) {
+    public MarketScript(int id, String name, Command command, int price, String creator, MarketScriptType type, double size) {
         super(id, name, price);
         this.command = command;
         this.price = price;
         this.creator = creator;
         this.type = type;
+        this.size = size;
     }
 
     public MarketScript(MarketScript marketScript) {
-        this(marketScript.id, marketScript.name, marketScript.command, marketScript.price, marketScript.creator, marketScript.type);
+        this(marketScript.id, marketScript.name, marketScript.command, marketScript.price, marketScript.creator, marketScript.type, marketScript.size);
     }
 
     /**
@@ -44,6 +47,7 @@ public class MarketScript extends BaseItem{
         cmd.put("market_script_command_id", String.valueOf(command.id));
         cmd.put("market_script_command_name", command.name);
         cmd.put("market_script_type", type.name());
+        cmd.put("market_script_size", String.valueOf(size));
 
         return cmd;
     }
@@ -59,7 +63,8 @@ public class MarketScript extends BaseItem{
         // TODO : add units
         output += "Price : " + price + " <units> per use\n";
         output += "Owner : " + creator + "\n";
-        output += "Type : " + type;
+        output += "Type : " + type + "\n";
+        output += "Size : " + size;
 
         return output;
     }
