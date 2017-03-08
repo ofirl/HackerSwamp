@@ -101,7 +101,7 @@ public class ItemManager {
                     //PlayerScript script = new PlayerScript();
                     break;
                 case bcminer:
-                    Software software = new Software(i.id, i.name, CommandManager.getCommandById(i.command), i.price, MarketScriptType.bcminer);
+                    Software software = new Software(i.id, i.name, CommandManager.getCommandById(i.command), i.price, MarketScriptType.bcminer, i.size);
                     marketScripts.put(software.id, software);
                     allItems.put(software.id, software);
                     break;
