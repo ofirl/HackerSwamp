@@ -130,4 +130,17 @@ public class SystemSpec {
 
         return output;
     }
+
+    /**
+     * gets the total hdds size
+     * @return the total size
+     */
+    public int getTotalSize() {
+        int size = 0;
+        for (Hdd h :
+                hdds)
+            size += h.size;
+
+        return size;
+    }
 }

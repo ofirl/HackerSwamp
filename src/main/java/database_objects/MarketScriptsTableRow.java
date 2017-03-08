@@ -6,4 +6,5 @@ public class MarketScriptsTableRow {
     public int price;
     public int command;
     public String type;
+    public double size;
 }
