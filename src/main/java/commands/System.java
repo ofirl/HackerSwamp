@@ -14,7 +14,7 @@ public class System extends BaseCommand{
 
     static {
         // super command
-        superCommand = CommandManager.allCommands.get(Parameters.CommandNameSystem);
+        superCommand = CommandManager.getCommandByName(Parameters.CommandNameSystem);
 
         // sub commands hash maps init
         acceptedArguments.put("system", new HashMap<>());

@@ -13,7 +13,7 @@ public class Disconnect extends BaseCommand {
 
     static {
         // super command
-        superCommand = CommandManager.allCommands.get(Parameters.CommandNameDisconnect);
+        superCommand = CommandManager.getCommandByName(Parameters.CommandNameDisconnect);
 
         // sub commands hash maps init
         acceptedArguments.put("disconnect", new HashMap<>());

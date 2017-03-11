@@ -353,6 +353,16 @@ public class Parameters {
      */
     public static String CommandNameUninstall = "uninstall";
 
+    /**
+     * copy
+     */
+    public static String CommandNameCopy = "copy";
+
+    /**
+     * delete
+     */
+    public static String CommandNameDelete = "delete";
+
     // endregion
 
     // region command errors
@@ -419,6 +429,16 @@ public class Parameters {
      * install usage
      */
     public static String CommandUsageInstall = "Usage : install <program>";
+
+    /**
+     * copy usage
+     */
+    public static String CommandUsageCopy = "Usage : copy <program> <new_ name>";
+
+    /**
+     * delete usage
+     */
+    public static String CommandUsageDelete = "Usage : delete <program>";
 
     // endregion
 

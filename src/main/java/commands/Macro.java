@@ -15,7 +15,7 @@ public class Macro extends BaseCommand {
 
     static {
         // super command
-        superCommand = CommandManager.allCommands.get(Parameters.CommandNameMacro);
+        superCommand = CommandManager.getCommandByName(Parameters.CommandNameMacro);
 
         // sub commands hash maps init
         acceptedArguments.put("macro", new HashMap<>());

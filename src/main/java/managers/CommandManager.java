@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class CommandManager {
     // public variables
     public static ConcurrentHashMap<String, Command> commandList = new ConcurrentHashMap<>();
-    public static ConcurrentHashMap<String, Command> allCommands = new ConcurrentHashMap<>();
+    public static ConcurrentHashMap<String, List<Command>> allCommands = new ConcurrentHashMap<>();
 
     /**
      * commands initializer
@@ -180,6 +180,16 @@ public class CommandManager {
         subName = Parameters.CommandNameUninstall;
         cmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Uninstall(), false);
 
+        // copy
+        name = "systemUser";
+        subName = Parameters.CommandNameCopy;
+        cmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Copy(), false);
+
+        // delete
+        name = "systemUser";
+        subName = Parameters.CommandNameDelete;
+        cmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Delete(), false);
+
         // endregion
     }
 
@@ -214,7 +224,7 @@ public class CommandManager {
             }
 
             // add to commandsList and allCommands
-            allCommands.put(c.name, command);
+            putCommand(c.name, command);
             if (!c.owner.equals("systemUser"))
                 parents.put(command, c.owner);
         }
@@ -222,8 +232,18 @@ public class CommandManager {
         // add commands to their parents sub commands list
         for (Command c :
                 parents.keySet()) {
-            addSubCommand(allCommands.get(parents.get(c)), c);
+            addSubCommand(getCommandByName(parents.get(c)), c);
         }
+    }
+
+    /**
+     * adds a command to allCommands
+     */
+    public static void putCommand(String key, Command value) {
+        if (!allCommands.containsKey(key))
+            allCommands.put(key, new ArrayList<>());
+
+        allCommands.get(key).add(value);
     }
 
     /**
@@ -264,7 +284,7 @@ public class CommandManager {
      */
     public static Command addCommand(int id, String name, BaseCommand baseCommand, boolean mainCommand, CommandAccess access, CommandSecurityRating securityRating) {
         Command cmd = new Command(id, name, baseCommand, access, securityRating);
-        allCommands.put(cmd.name, cmd);
+        putCommand(cmd.name, cmd);
         if (mainCommand)
             commandList.put(cmd.name, cmd);
 
@@ -272,12 +292,17 @@ public class CommandManager {
     }
 
     /**
-     * gets the command with the provided {@code name}
+     * gets the command with the provided {@code name},
+     * returns the first command if there is more than one command in the list
      * @param name the name to search for
      * @return the command or null if not found
      */
     public static Command getCommandByName(String name) {
-        return allCommands.get(name);
+        List<Command> commandList = allCommands.get(name);
+        if (commandList != null)
+            return commandList.get(0);
+
+        return null;
     }
 
     /**
@@ -286,10 +311,13 @@ public class CommandManager {
      * @return the command or null if not found
      */
     public static Command getCommandById(int id) {
-        for (Command c :
+        for (List<Command> c :
                 allCommands.values()) {
-            if (c.id == id)
-                return c;
+            for (Command com :
+                    c) {
+                if (com.id == id)
+                    return com;
+            }
         }
 
         return null;

@@ -15,7 +15,7 @@ public class Install extends BaseCommand {
 
     static {
         // super command
-        superCommand = CommandManager.allCommands.get(Parameters.CommandNameInstall);
+        superCommand = CommandManager.getCommandByName(Parameters.CommandNameInstall);
 
         // sub commands hash maps init
         acceptedArguments.put("install", new HashMap<>());
@@ -69,7 +69,7 @@ public class Install extends BaseCommand {
         String softwareName = null;
         if (args.containsKey("arg1"))
             softwareName = args.get("arg1").castValue(String.class);
-        else if (args.containsKey("software"))
+        else if (args.containsKey("program"))
             softwareName = args.get("program").castValue(String.class);
         else
             return Parameters.CommandUsageInstall;
@@ -112,14 +112,6 @@ public class Install extends BaseCommand {
 
         if (foundSoftware.installed)
             return Parameters.ErrorSoftwareAlreadyInstalled;
-
-        // TODO : move to copy command
-        /*
-        // make sure there is enough space
-        int availableSpace = DomainsManager.getDomainByName(installLocation).getAvailableSize();
-        if (foundSoftware.size > availableSpace)
-            return "Error : not enough free space";
-        */
 
         // TODO : add timer (based on cpu speed?)
         if (domainLocation)
