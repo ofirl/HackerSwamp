@@ -54,6 +54,13 @@ public class Software extends MarketScript {
     }
 
     /**
+     * constructor
+     */
+    public Software(Software software, String costumeName) {
+        this (software, software.location, software.version, software.hidden, software.rowId, costumeName, software.installed);
+    }
+
+    /**
      * creates an inventory entry (filling in rowId)
      * @param rowId row id to add
      * @return software inventory entry

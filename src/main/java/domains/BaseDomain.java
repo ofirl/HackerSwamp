@@ -258,7 +258,7 @@ public abstract class BaseDomain {
     public void addSoftware(Software software, String owner) {
         softwareInventory.put(software.id, software);
         String columnOrder = "owner, item, location, version, costume_name";
-        String columnValues = owner + "," + software.id + "," + this.name + "," + software.version + "," + software.costumeName;
+        String columnValues = "'" + owner + "'," + software.id + ",'" + this.name + "'," + software.version + ",'" + software.costumeName + "'";
         DatabaseHandler.insertIntoTable(DatabaseTables.Inventories_Software, columnOrder, columnValues);
     }
 

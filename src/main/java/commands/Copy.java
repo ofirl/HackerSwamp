@@ -124,7 +124,7 @@ public class Copy extends BaseCommand {
 
         // TODO : add timer (based on cpu speed?)
         if (domainLocation)
-            DomainsManager.getDomainByName(copyLocation).addSoftware(foundSoftware, context.username);
+            DomainsManager.getDomainByName(copyLocation).addSoftware(new Software(foundSoftware, newName), context.username);
         else
             // TODO : implement install at user
             domainLocation = false;
