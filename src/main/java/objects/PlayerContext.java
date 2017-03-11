@@ -33,6 +33,8 @@ public class PlayerContext {
     public Account mainAccount;
     public HashMap<Integer, BaseItem> inventory = new HashMap<>();
     public HashMap<Integer, Software> installedSoftware = new HashMap<>();
+    public HashMap<Integer, Software> softwareInventory = new HashMap<>();
+    public HashMap<Integer, Software> allSoftwareInventory = new HashMap<>();
 
     /**
      * constructor
@@ -60,6 +62,8 @@ public class PlayerContext {
         this.mainAccount = DomainsManager.getMainAccountByUsername(username);
         this.inventory = ItemManager.getUserInventory(username);
         this.installedSoftware = ItemManager.getUserInstalledSoftware(username);
+        this.softwareInventory = ItemManager.getUserSoftwareInventory(username);
+        this.allSoftwareInventory = ItemManager.getAllLocationSoftware(username);
     }
 
     /**
@@ -184,5 +188,21 @@ public class PlayerContext {
      */
     public HashMap<Integer, Software> getInstalledSoftware() {
         return installedSoftware;
+    }
+
+    /**
+     * gets the player software inventory
+     * @return the player software inventory
+     */
+    public HashMap<Integer, Software> getSoftwareInventory() {
+        return softwareInventory;
+    }
+
+    /**
+     * gets all the software in user inventory (owner or at location)
+     * @return all the software in user inventory
+     */
+    public HashMap<Integer, Software> getAllSoftwareInventory() {
+        return allSoftwareInventory;
     }
 }

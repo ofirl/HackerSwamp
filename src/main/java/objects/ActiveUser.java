@@ -136,4 +136,20 @@ public class ActiveUser {
     public HashMap<Integer, Software> getInstalledSoftware() {
         return context.getInstalledSoftware();
     }
+
+    /**
+     * gets the user software inventory
+     * @return {@code HashMap} of the software inventory
+     */
+    public HashMap<Integer, Software> getSoftwareInventory() {
+        return context.getSoftwareInventory();
+    }
+
+    /**
+     * gets all the software in the user inventory (owner or at location)
+     * @return all the software in the user inventory
+     */
+    public HashMap<Integer, Software> getAllSoftwareInventory() {
+        return context.getAllSoftwareInventory();
+    }
 }

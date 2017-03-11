@@ -1,7 +1,5 @@
 package commands;
 
-import domains.BaseDomain;
-import loots.BaseLoot;
 import managers.CommandManager;
 import managers.DomainsManager;
 import objects.Argument;
@@ -10,7 +8,6 @@ import objects.CommandContext;
 import objects.Parameters;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class Loot extends BaseCommand {
     public static Command superCommand;

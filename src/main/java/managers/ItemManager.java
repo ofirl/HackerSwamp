@@ -1,5 +1,6 @@
 package managers;
 
+import com.sun.javafx.binding.SelectBinding;
 import database_objects.*;
 import interface_objects.DatabaseHandler;
 import interface_objects.DatabaseTables;
@@ -92,8 +93,8 @@ public class ItemManager {
 
         // region market scripts
 
-        List<MarketScriptsTableRow> marketScriptsRows = DatabaseHandler.getTableElements(DatabaseTables.Market_Scripts);
-        for (MarketScriptsTableRow i :
+        List<MarketScriptsDetailsTableRow> marketScriptsRows = DatabaseHandler.getTableElements(DatabaseTables.Market_Scripts_Details);
+        for (MarketScriptsDetailsTableRow i :
                 marketScriptsRows) {
             switch (MarketScriptType.valueOf(i.type)) {
                 case player_script:
@@ -101,7 +102,7 @@ public class ItemManager {
                     //PlayerScript script = new PlayerScript();
                     break;
                 case bcminer:
-                    Software software = new Software(i.id, i.name, CommandManager.getCommandById(i.command), i.price, MarketScriptType.bcminer, i.size);
+                    Software software = new Software(i.id, i.name, CommandManager.getCommandById(i.command), i.price, i.creator, MarketScriptType.bcminer, i.size);
                     marketScripts.put(software.id, software);
                     allItems.put(software.id, software);
                     break;
@@ -247,7 +248,7 @@ public class ItemManager {
      * @return a marketScript object, or null if there isn't one
      */
     public static MarketScript getMarketScriptByName(String name) {
-        String[] nameParts = name.split(".");
+        String[] nameParts = name.split("\\.");
         if (nameParts.length != 2)
             return null;
 
@@ -290,15 +291,34 @@ public class ItemManager {
      * @return {@code HashMap} containing the username inventory
      */
     public static HashMap<Integer, BaseItem> getUserInventory(String username) {
+        HashMap<Integer, BaseItem> inventory = new HashMap<>();
+
+        List<InventoriesSoftwareTableRow> rowsSoftware = DatabaseHandler.getTableElements(DatabaseTables.Inventories_Software, null, "owner='" + username + "'");
+        if (rowsSoftware == null)
+            return inventory;
+
+        HashMap<Integer, String> softwareRowId = new HashMap<>();
+        for (InventoriesSoftwareTableRow i :
+                rowsSoftware)
+            softwareRowId.put(i.id, i.costume_name);
+
         List<InventoriesTableRow> rows = DatabaseHandler.getTableElements(DatabaseTables.Inventories, null, "owner='" + username + "'");
 
-        HashMap<Integer, BaseItem> inventory = new HashMap<>();
         if (rows == null)
             return inventory;
 
         for (InventoriesTableRow i :
-                rows)
-            inventory.put(i.item, getItemById(i.item));
+                rows) {
+            if (softwareRowId.keySet().contains(i.id)) {
+                BaseItem currentItem = getItemById(i.item);
+                if (currentItem == null)
+                    continue;
+
+                inventory.put(i.item, ((Software) currentItem).createInventoryEntry(i.id, softwareRowId.get(i.id), i.equipped));
+            }
+            else
+                inventory.put(i.item, getItemById(i.item));
+        }
 
         return inventory;
     }
@@ -328,7 +348,56 @@ public class ItemManager {
 
         for (EquippedSoftwareTableRow i :
                 rows)
-            inventory.put(i.item, new Software(getItemById(i.item), i.location, i.version, i.hidden));
+            inventory.put(i.item, new Software(getItemById(i.item), i.location, i.version, i.hidden, i.id, i.costume_name, i.equipped));
+
+        return inventory;
+    }
+
+    /**
+     * gets the software inventory of the provided {@code username}
+     * @param username the username to search for
+     * @return the software inventory
+     */
+    public static HashMap<Integer, Software> getUserSoftwareInventory(String username) {
+        HashMap<Integer, Software> inventory = new HashMap<>();
+
+        List<InventoriesSoftwareTableRow> rowsSoftware = DatabaseHandler.getTableElements(DatabaseTables.Inventories_Software, null, "owner='" + username + "'");
+        if (rowsSoftware == null)
+            return inventory;
+
+        for (InventoriesSoftwareTableRow i :
+                rowsSoftware) {
+            BaseItem currentItem = getItemById(i.item);
+            if (currentItem == null)
+                continue;
+
+            inventory.put(i.item, ((Software) currentItem).createInventoryEntry(i.id, i.costume_name, i.equipped));
+        }
+
+        return inventory;
+    }
+
+    /**
+     * gets all the software in the inventory of the provided {@code username}
+     * @param username the username to search for
+     * @return the software inventory
+     */
+    public static HashMap<Integer, Software> getAllLocationSoftware(String username) {
+        HashMap<Integer, Software> inventory = new HashMap<>();
+
+        String filter = "owner='" + username + "' OR location='" + username + "'";
+        List<InventoriesSoftwareTableRow> rowsSoftware = DatabaseHandler.getTableElements(DatabaseTables.Inventories_Software, null, filter);
+        if (rowsSoftware == null)
+            return inventory;
+
+        for (InventoriesSoftwareTableRow i :
+                rowsSoftware) {
+            BaseItem currentItem = getItemById(i.item);
+            if (currentItem == null)
+                continue;
+
+            inventory.put(i.item, ((Software) currentItem).createInventoryEntry(i.id, i.costume_name, i.equipped));
+        }
 
         return inventory;
     }
