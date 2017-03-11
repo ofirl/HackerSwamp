@@ -29,6 +29,7 @@ public abstract class BaseDomain {
     public List<BaseLoot> loot = new ArrayList<>();
     public SystemSpec spec;
     public HashMap<Integer, Software> installedSoftware;
+    public HashMap<Integer, Software> softwareInventory;
 
     /**
      * constructor
@@ -64,6 +65,7 @@ public abstract class BaseDomain {
         this.loot = loot == null ? new ArrayList<>() : loot;
         this.spec = SystemSpec.getUserSystemSpecs(name);
         this.installedSoftware = ItemManager.getUserInstalledSoftware(name);
+        this.softwareInventory = ItemManager.getAllLocationSoftware(name);
 
         if (commands == null) {
             List<CommandsTableRow> locationCommands = DatabaseHandler.getTableElements(DatabaseTables.Location_Commands, null, "location=" + id);
@@ -124,6 +126,22 @@ public abstract class BaseDomain {
      */
     public void addObstacle(Obstacle obstacle) {
         obstacles.add(obstacle);
+    }
+
+    /**
+     * gets the software inventory
+     * @return software inventory
+     */
+    public HashMap<Integer, Software> getSoftwareInventory() {
+        return softwareInventory;
+    }
+
+    /**
+     * gets the installed software
+     * @return all the installed software
+     */
+    public HashMap<Integer, Software> getInstalledSoftware() {
+        return installedSoftware;
     }
 
     /**
@@ -212,5 +230,15 @@ public abstract class BaseDomain {
      */
     public int getTotalSize() {
         return spec.getTotalSize();
+    }
+
+    /**
+     * installs a program
+     */
+    public void installSoftware(Software software) {
+        installedSoftware.put(software.id, software);
+        // TODO : check
+        String filter = "location='" + this.name + "' AND costume_name='" + software.costumeName + "'";
+        DatabaseHandler.updateTable(DatabaseTables.Inventories_Software, filter, "equipped=true");
     }
 }

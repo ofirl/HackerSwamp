@@ -343,6 +343,11 @@ public class Parameters {
      */
     public static String CommandNameCollect = "collect";
 
+    /**
+     * install
+     */
+    public static String CommandNameInstall = "install";
+
     // endregion
 
     // region command errors
@@ -389,7 +394,12 @@ public class Parameters {
     /**
      * logs.view usage
      */
-    public static String CommandUsageLogsView = "Usage : logs.view <count(>0)>";
+    public static String CommandUsageLogsView = "Usage : logs.view [<count(>0)>]";
+
+    /**
+     * install usage
+     */
+    public static String CommandUsageInstall = "Usage : install <program> [<version>]";
 
     // endregion
 

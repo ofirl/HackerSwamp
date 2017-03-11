@@ -180,9 +180,11 @@ public class DatabaseHandler {
         elementTypes.put(DatabaseTables.Domains, DomainsTableRow.class);
         elementTypes.put(DatabaseTables.Hdds, HddsTableRow.class);
         elementTypes.put(DatabaseTables.Inventories, InventoriesTableRow.class);
+        elementTypes.put(DatabaseTables.Inventories_Software, InventoriesSoftwareTableRow.class);
         elementTypes.put(DatabaseTables.Macros, MacrosTableRow.class);
         elementTypes.put(DatabaseTables.MarketItems, MarketItemsTableRow.class);
         elementTypes.put(DatabaseTables.Market_Scripts, MarketScriptsTableRow.class);
+        elementTypes.put(DatabaseTables.Market_Scripts_Details, MarketScriptsDetailsTableRow.class);
         elementTypes.put(DatabaseTables.Equipped_Software, EquippedSoftwareTableRow.class);
         elementTypes.put(DatabaseTables.Motherboards, MotherboardsTableRow.class);
         elementTypes.put(DatabaseTables.NetworkCards, NetworkcardsTableRow.class);

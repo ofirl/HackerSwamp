@@ -159,6 +159,11 @@ public class CommandManager {
         subName = Parameters.CommandNameLoot;
         cmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Loot(), false);
 
+        // loot
+        name = "systemUser";
+        subName = Parameters.CommandNameInstall;
+        cmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Install(), false);
+
         // endregion
     }
 
