@@ -296,10 +296,14 @@ public class ItemManager {
         if (rowsSoftware == null)
             return inventory;
 
-        HashMap<Integer, String> softwareRowId = new HashMap<>();
         for (InventoriesSoftwareTableRow i :
-                rowsSoftware)
-            softwareRowId.put(i.id, i.costume_name);
+                rowsSoftware) {
+            BaseItem currentItem = getItemById(i.item);
+            if (currentItem == null)
+                continue;
+
+            inventory.put(i.item, ((Software) currentItem).createInventoryEntry(i.version, i.hidden, i.costume_name, i.equipped));
+        }
 
         List<InventoriesTableRow> rows = DatabaseHandler.getTableElements(DatabaseTables.Inventories, null, "owner='" + username + "'");
 
@@ -308,14 +312,7 @@ public class ItemManager {
 
         for (InventoriesTableRow i :
                 rows) {
-            if (softwareRowId.keySet().contains(i.id)) {
-                BaseItem currentItem = getItemById(i.item);
-                if (currentItem == null)
-                    continue;
-
-                inventory.put(i.item, ((Software) currentItem).createInventoryEntry(i.id, softwareRowId.get(i.id), i.equipped));
-            }
-            else
+            if (!inventory.keySet().contains(i.id))
                 inventory.put(i.item, getItemById(i.item));
         }
 
@@ -347,7 +344,7 @@ public class ItemManager {
 
         for (EquippedSoftwareTableRow i :
                 rows)
-            inventory.put(i.item, new Software(getItemById(i.item), i.location, i.version, i.hidden, i.id, i.costume_name, i.equipped));
+            inventory.put(i.item, new Software(getItemById(i.item), i.location, i.version, i.hidden, i.costume_name, i.equipped));
 
         return inventory;
     }
@@ -370,7 +367,7 @@ public class ItemManager {
             if (currentItem == null)
                 continue;
 
-            inventory.put(i.item, ((Software) currentItem).createInventoryEntry(i.id, i.costume_name, i.equipped));
+            inventory.put(i.item, ((Software) currentItem).createInventoryEntry(i.version, i.hidden, i.costume_name, i.equipped));
         }
 
         return inventory;
@@ -395,7 +392,7 @@ public class ItemManager {
             if (currentItem == null)
                 continue;
 
-            inventory.put(i.item, ((Software) currentItem).createInventoryEntry(i.id, i.costume_name, i.equipped));
+            inventory.put(i.item, ((Software) currentItem).createInventoryEntry(i.version, i.hidden, i.costume_name, i.equipped));
         }
 
         return inventory;

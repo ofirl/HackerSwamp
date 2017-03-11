@@ -363,6 +363,16 @@ public class Parameters {
      */
     public static String CommandNameDelete = "delete";
 
+    /**
+     * upload
+     */
+    public static String CommandNameUpload = "upload";
+
+    /**
+     * download
+     */
+    public static String CommandNameDownload = "download";
+
     // endregion
 
     // region command errors
@@ -406,6 +416,17 @@ public class Parameters {
      * errors for trying to uninstall a software that is not installed
      */
     public static String ErrorSoftwareNotInstalled = "Error : software not installed";
+
+    /**
+     * error for trying to upload to localhost
+     */
+    public static String ErrorUploadLocalHost = "Error : uploading to localhost isn't possible, connect to a remote domain first";
+
+    /**
+     * error for not enough free space on hdd
+     */
+    public static String ErrorNotEnoughFreeSpace = "Error : not enough fee space";
+
     // endregion
 
     // region command usages
@@ -423,7 +444,7 @@ public class Parameters {
     /**
      * logs.view usage
      */
-    public static String CommandUsageLogsView = "Usage : logs.view [<count(>0)>]";
+    public static String CommandUsageLogsView = "Usage : logs.view [count(>0)]";
 
     /**
      * install usage
@@ -439,6 +460,11 @@ public class Parameters {
      * delete usage
      */
     public static String CommandUsageDelete = "Usage : delete <program>";
+
+    /**
+     * upload usage
+     */
+    public static String CommandUsageUpload = "Usage : upload <program> [new name]";
 
     // endregion
 

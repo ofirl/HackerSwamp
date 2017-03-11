@@ -190,6 +190,11 @@ public class CommandManager {
         subName = Parameters.CommandNameDelete;
         cmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Delete(), false);
 
+        // upload
+        name = "systemUser";
+        subName = Parameters.CommandNameUpload;
+        cmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Upload(), false);
+
         // endregion
     }
 

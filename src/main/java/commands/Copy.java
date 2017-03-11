@@ -62,9 +62,6 @@ public class Copy extends BaseCommand {
         }
 
         // make sure we have a program name to copy and a new name
-        if (args.size() != 2)
-            return Parameters.CommandUsageCopy;
-
         String softwareName = null;
         if (args.containsKey("arg1"))
             softwareName = args.get("arg1").castValue(String.class);
@@ -120,7 +117,7 @@ public class Copy extends BaseCommand {
         // make sure there is enough space
         int availableSpace = DomainsManager.getDomainByName(copyLocation).getAvailableSize();
         if (foundSoftware.size > availableSpace)
-            return "Error : not enough free space";
+            return Parameters.ErrorNotEnoughFreeSpace;
 
         // TODO : add restriction : can't copy installed software that you don't own
 
