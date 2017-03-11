@@ -19,7 +19,7 @@ public class Market extends BaseCommand {
 
     static {
         // super command
-        superCommand = CommandManager.allCommands.get(Parameters.CommandNameMarket);
+        superCommand = CommandManager.getCommandByName(Parameters.CommandNameMarket);
 
         // sub commands hash maps init
         acceptedArguments.put("market", new HashMap<>());

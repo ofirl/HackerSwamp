@@ -18,7 +18,7 @@ public class BcMiner extends BaseCommand {
 
     static {
         // super command
-        superCommand = CommandManager.allCommands.get(Parameters.CommandNameBcMiner);
+        superCommand = CommandManager.getCommandByName(Parameters.CommandNameBcMiner);
 
         // sub commands hash maps init
         acceptedArguments.put("bcminer", new HashMap<>());

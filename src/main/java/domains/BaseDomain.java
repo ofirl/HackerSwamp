@@ -237,6 +237,7 @@ public abstract class BaseDomain {
      */
     public void installSoftware(Software software) {
         installedSoftware.put(software.id, software);
+        software.installed = true;
         String filter = "location='" + this.name + "' AND costume_name='" + software.costumeName + "'";
         DatabaseHandler.updateTable(DatabaseTables.Inventories_Software, filter, "equipped=true");
     }
@@ -245,8 +246,31 @@ public abstract class BaseDomain {
      * uninstalls a program
      */
     public void uninstallSoftware(Software software) {
-        installedSoftware.put(software.id, software);
+        installedSoftware.remove(software.id);
+        software.installed = false;
         String filter = "location='" + this.name + "' AND costume_name='" + software.costumeName + "'";
         DatabaseHandler.updateTable(DatabaseTables.Inventories_Software, filter, "equipped=false");
+    }
+
+    /**
+     * adds a software to the domain
+     * @param software software to add
+     * @param owner owner of the software
+     */
+    public void addSoftware(Software software, String owner) {
+        softwareInventory.put(software.id, software);
+        String columnOrder = "owner, item, location, version, costume_name";
+        String columnValues = "'" + owner + "'," + software.id + ",'" + this.name + "'," + software.version + ",'" + software.costumeName + "'";
+        DatabaseHandler.insertIntoTable(DatabaseTables.Inventories_Software, columnOrder, columnValues);
+    }
+
+    /**
+     * deletes a software from the domain
+     * @param software software to delete
+     */
+    public void deleteSoftware(Software software) {
+        softwareInventory.put(software.id, software);
+        String filter = "location='" + this.name + "' AND costume_name='" + software.costumeName + "'";
+        DatabaseHandler.removeFromTable(DatabaseTables.Inventories_Software, filter);
     }
 }

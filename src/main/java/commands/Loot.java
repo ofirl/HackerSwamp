@@ -15,7 +15,7 @@ public class Loot extends BaseCommand {
 
     static {
         // super command
-        superCommand = CommandManager.allCommands.get(Parameters.CommandNameLoot);
+        superCommand = CommandManager.getCommandByName(Parameters.CommandNameLoot);
 
         // sub commands hash maps init
         acceptedArguments.put("loot", new HashMap<>());

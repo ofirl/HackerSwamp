@@ -15,7 +15,7 @@ public class Collect extends BaseCommand {
 
     static {
         // super command
-        superCommand = CommandManager.allCommands.get(Parameters.CommandNameCollect);
+        superCommand = CommandManager.getCommandByName(Parameters.CommandNameCollect);
 
         // sub commands hash maps init
         acceptedArguments.put("collect", new HashMap<>());

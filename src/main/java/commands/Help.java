@@ -14,7 +14,7 @@ public class Help extends BaseCommand {
 
     static {
         // super command
-        superCommand = CommandManager.allCommands.get(Parameters.CommandNameHelp);
+        superCommand = CommandManager.getCommandByName(Parameters.CommandNameHelp);
 
         // sub commands hash maps init
         acceptedArguments.put("help", new HashMap<>());

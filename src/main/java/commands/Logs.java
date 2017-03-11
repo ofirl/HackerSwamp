@@ -16,7 +16,7 @@ public class Logs extends BaseCommand {
 
     static {
         // super command
-        superCommand = CommandManager.allCommands.get(Parameters.CommandNameLogs);
+        superCommand = CommandManager.getCommandByName(Parameters.CommandNameLogs);
 
         // sub commands hash maps init
         acceptedArguments.put("logs", new HashMap<>());

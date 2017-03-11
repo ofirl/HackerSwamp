@@ -13,7 +13,7 @@ public class Connect extends BaseCommand{
 
     static {
         // super command
-        superCommand = CommandManager.allCommands.get(Parameters.CommandNameConnect);
+        superCommand = CommandManager.getCommandByName(Parameters.CommandNameConnect);
 
         // sub commands hash maps init
         acceptedArguments.put("connect", new HashMap<>());
