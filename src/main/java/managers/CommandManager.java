@@ -57,52 +57,63 @@ public class CommandManager {
         name = "systemUser";
         subName = Parameters.CommandNameHelp;
         cmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Help(), true);
+
         // help.commands
         name = Parameters.CommandNameHelp;
         subName = Parameters.CommandNameHelpCommands;
         subCmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Help(), false);
         addSubCommand(cmd, subCmd);
+
         // connect
         name = "systemUser";
         subName = Parameters.CommandNameConnect;
         cmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Connect(), true);
+
         // syscmd
         name = "systemUser";
         subName = Parameters.CommandNameSystem;
         cmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new System(), true);
+
         // syscmd.spec
         name = Parameters.CommandNameSystem;
         subName = Parameters.CommandNameSystemSpec;
         subCmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new System(), false);
         addSubCommand(cmd, subCmd);
+
         // market
         name = "systemUser";
         subName = Parameters.CommandNameMarket;
         cmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Market(), true);
+
         // market.items
         name = Parameters.CommandNameMarket;
         subName = Parameters.CommandNameMarketItems;
         subCmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Market(), false);
         addSubCommand(cmd, subCmd);
+
         // market.scripts
         name = Parameters.CommandNameMarket;
         subName = Parameters.CommandNameMarketScripts;
         subCmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Market(), false);
         addSubCommand(cmd, subCmd);
+
         // macro
         name = "systemUser";
         subName = Parameters.CommandNameMacro;
         cmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Macro(), true);
+
         // macro.add
         name = Parameters.CommandNameMacro;
         subName = Parameters.CommandNameMacroAdd;
         subCmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Macro(), false);
         addSubCommand(cmd, subCmd);
+
         // macro.remove
         name = Parameters.CommandNameMacro;
         subName = Parameters.CommandNameMacroRemove;
         subCmd = addSystemCommand(commandIds.get(name + "." + subName), subName, new Macro(), false);
         addSubCommand(cmd, subCmd);
+
         // macro.view
         name = Parameters.CommandNameMacro;
         subName = Parameters.CommandNameMacroView;
