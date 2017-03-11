@@ -25,8 +25,6 @@ public class Install extends BaseCommand {
         // install
         acceptedArguments.get("install").put("arg1", new Argument("arg1", String.class));
         acceptedArguments.get("install").put("program", new Argument("program", String.class));
-        acceptedArguments.get("install").put("arg2", new Argument("arg2", int.class));
-        acceptedArguments.get("install").put("version", new Argument("version", int.class));
 
         // delete
         //acceptedArguments.get("delete").put("arg1", new Argument("arg1", String.class));
@@ -109,10 +107,10 @@ public class Install extends BaseCommand {
             }
 
         if (foundSoftware == null)
-            return "Error : program not found in inventory";
+            return Parameters.ErrorSoftwareNotFoundInInventory;
 
         if (foundSoftware.installed)
-            return "Error : software already installed";
+            return Parameters.ErrorSoftwareAlreadyInstalled;
 
         // TODO : move to copy command
         /*

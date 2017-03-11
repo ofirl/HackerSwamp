@@ -377,6 +377,15 @@ public class Parameters {
      */
     public static String ErrorDisconnectingLocalhost = "Error : cannot disconnect from localhost";
 
+    /**
+     * errors for software not found in inventory
+     */
+    public static String ErrorSoftwareNotFoundInInventory = "Error : program not found in inventory";
+
+    /**
+     * errors for trying to install a software that is already installed
+     */
+    public static String ErrorSoftwareAlreadyInstalled = "Error : software already installed";
     // endregion
 
     // region command usages
@@ -399,7 +408,7 @@ public class Parameters {
     /**
      * install usage
      */
-    public static String CommandUsageInstall = "Usage : install <program> [<version>]";
+    public static String CommandUsageInstall = "Usage : install <program>";
 
     // endregion
 
