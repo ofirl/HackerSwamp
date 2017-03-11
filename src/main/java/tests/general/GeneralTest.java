@@ -47,10 +47,7 @@ public class GeneralTest {
         String userInput = "";
 
         userInput += "connect bc.crypto.bank\n";
-        userInput += "copy bcMinerV1 bcMinerTest\n";
-        userInput += "install bcMinerTest\n";
-        userInput += "uninstall bcMinerTest\n";
-        userInput += "delete bcMinerTest \n";
+        userInput += "upload bcMinerV1\n";
 
         userInput += "init\n";
 
