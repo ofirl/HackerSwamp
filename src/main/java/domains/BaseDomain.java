@@ -237,8 +237,16 @@ public abstract class BaseDomain {
      */
     public void installSoftware(Software software) {
         installedSoftware.put(software.id, software);
-        // TODO : check
         String filter = "location='" + this.name + "' AND costume_name='" + software.costumeName + "'";
         DatabaseHandler.updateTable(DatabaseTables.Inventories_Software, filter, "equipped=true");
+    }
+
+    /**
+     * uninstalls a program
+     */
+    public void uninstallSoftware(Software software) {
+        installedSoftware.put(software.id, software);
+        String filter = "location='" + this.name + "' AND costume_name='" + software.costumeName + "'";
+        DatabaseHandler.updateTable(DatabaseTables.Inventories_Software, filter, "equipped=false");
     }
 }
