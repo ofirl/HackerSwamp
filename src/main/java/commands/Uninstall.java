@@ -9,22 +9,22 @@ import objects.*;
 
 import java.util.HashMap;
 
-public class Install extends BaseCommand {
+public class Uninstall extends BaseCommand {
     public static Command superCommand;
     public static HashMap<String, HashMap<String, Argument>> acceptedArguments = new HashMap<>();
 
     static {
         // super command
-        superCommand = CommandManager.allCommands.get(Parameters.CommandNameInstall);
+        superCommand = CommandManager.allCommands.get(Parameters.CommandNameUninstall);
 
         // sub commands hash maps init
-        acceptedArguments.put("install", new HashMap<>());
+        acceptedArguments.put("uninstall", new HashMap<>());
         //acceptedArguments.put("view", new HashMap<>());
         //acceptedArguments.put("delete", new HashMap<>());
 
         // install
-        acceptedArguments.get("install").put("arg1", new Argument("arg1", String.class));
-        acceptedArguments.get("install").put("program", new Argument("program", String.class));
+        acceptedArguments.get("uninstall").put("arg1", new Argument("arg1", String.class));
+        acceptedArguments.get("uninstall").put("program", new Argument("program", String.class));
 
         // delete
         //acceptedArguments.get("delete").put("arg1", new Argument("arg1", String.class));
@@ -34,7 +34,7 @@ public class Install extends BaseCommand {
     /**
      * empty constructor for the
      */
-    public Install() {
+    public Uninstall() {
         this(null);
     }
 
@@ -42,8 +42,8 @@ public class Install extends BaseCommand {
      * constructor
      * @param context the context to run in
      */
-    public Install(CommandContext context) {
-        super(context, Parameters.CommandNameInstall);
+    public Uninstall(CommandContext context) {
+        super(context, Parameters.CommandNameUninstall);
     }
 
     /**
@@ -51,17 +51,17 @@ public class Install extends BaseCommand {
      * @param context the context of the new instance
      * @return a new instance with the given context
      */
-    public Install createInstance(CommandContext context) {
-        return new Install(context);
+    public Uninstall createInstance(CommandContext context) {
+        return new Uninstall(context);
     }
 
     /**
-     * install command
+     * uninstall command
      * @return general help
      */
     public String main() {
         // check for invalid argument
-        if (!checkArguments(acceptedArguments.get("install"))) {
+        if (!checkArguments(acceptedArguments.get("uninstall"))) {
             return Parameters.ErrorCommandInvalidArguments;
         }
 
@@ -87,7 +87,6 @@ public class Install extends BaseCommand {
             if (activeUser == null)
                 return Parameters.ErrorActiveUserNotFound;
 
-            // TODO : change, get only the software at the location
             inventory = activeUser.getSoftwareInventory();
         }
         else {
@@ -95,6 +94,7 @@ public class Install extends BaseCommand {
             if (domain == null)
                 return Parameters.ErrorDomainNotFoundPrefix;
 
+            // TODO : change, get only the software at the location
             inventory = domain.getSoftwareInventory();
         }
 
@@ -110,8 +110,8 @@ public class Install extends BaseCommand {
         if (foundSoftware == null)
             return Parameters.ErrorSoftwareNotFoundInInventory;
 
-        if (foundSoftware.installed)
-            return Parameters.ErrorSoftwareAlreadyInstalled;
+        if (!foundSoftware.installed)
+            return Parameters.ErrorSoftwareNotInstalled;
 
         // TODO : move to copy command
         /*
@@ -123,7 +123,7 @@ public class Install extends BaseCommand {
 
         // TODO : add timer (based on cpu speed?)
         if (domainLocation)
-            DomainsManager.getDomainByName(installLocation).installSoftware(foundSoftware);
+            DomainsManager.getDomainByName(installLocation).uninstallSoftware(foundSoftware);
         else
             // TODO : implement install at user
             domainLocation = false;

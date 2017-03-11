@@ -1,6 +1,5 @@
 package managers;
 
-import com.sun.javafx.binding.SelectBinding;
 import database_objects.*;
 import interface_objects.DatabaseHandler;
 import interface_objects.DatabaseTables;

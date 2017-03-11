@@ -348,6 +348,11 @@ public class Parameters {
      */
     public static String CommandNameInstall = "install";
 
+    /**
+     * uninstall
+     */
+    public static String CommandNameUninstall = "uninstall";
+
     // endregion
 
     // region command errors
@@ -386,6 +391,11 @@ public class Parameters {
      * errors for trying to install a software that is already installed
      */
     public static String ErrorSoftwareAlreadyInstalled = "Error : software already installed";
+
+    /**
+     * errors for trying to uninstall a software that is not installed
+     */
+    public static String ErrorSoftwareNotInstalled = "Error : software not installed";
     // endregion
 
     // region command usages
