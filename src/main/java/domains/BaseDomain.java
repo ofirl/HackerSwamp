@@ -237,6 +237,7 @@ public abstract class BaseDomain {
      */
     public void installSoftware(Software software) {
         installedSoftware.put(software.id, software);
+        software.installed = true;
         String filter = "location='" + this.name + "' AND costume_name='" + software.costumeName + "'";
         DatabaseHandler.updateTable(DatabaseTables.Inventories_Software, filter, "equipped=true");
     }
@@ -245,7 +246,8 @@ public abstract class BaseDomain {
      * uninstalls a program
      */
     public void uninstallSoftware(Software software) {
-        installedSoftware.put(software.id, software);
+        installedSoftware.remove(software.id);
+        software.installed = false;
         String filter = "location='" + this.name + "' AND costume_name='" + software.costumeName + "'";
         DatabaseHandler.updateTable(DatabaseTables.Inventories_Software, filter, "equipped=false");
     }

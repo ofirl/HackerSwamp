@@ -122,6 +122,8 @@ public class Copy extends BaseCommand {
         if (foundSoftware.size > availableSpace)
             return "Error : not enough free space";
 
+        // TODO : add restriction : can't copy installed software that you don't own
+
         // TODO : add timer (based on cpu speed?)
         if (domainLocation)
             DomainsManager.getDomainByName(copyLocation).addSoftware(new Software(foundSoftware, newName), context.username);

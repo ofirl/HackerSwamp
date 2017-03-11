@@ -48,6 +48,9 @@ public class GeneralTest {
 
         userInput += "connect bc.crypto.bank\n";
         userInput += "copy bcMinerV1 bcMinerTest\n";
+        userInput += "install bcMinerTest\n";
+        userInput += "uninstall bcMinerTest\n";
+        userInput += "delete bcMinerTest \n";
 
         userInput += "init\n";
 
@@ -65,6 +68,10 @@ public class GeneralTest {
         userInput += "market.scripts {security:syscmd}\n";
         userInput += "connect first.bank.cash\n";
         userInput += "connect bc.crypto.bank\n";
+        userInput += "copy bcMinerV1 bcMinerTest\n";
+        userInput += "install bcMinerTest\n";
+        userInput += "uninstall bcMinerTest\n";
+        userInput += "delete bcMinerTest \n";
         userInput += "loot\n";
         userInput += "logs.view\n";
         userInput += "logs.view 2\n";
